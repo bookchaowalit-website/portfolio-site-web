@@ -757,7 +757,10 @@
     "copyright": "© {year} บุ๊ค (เชาวลิต กรีโภค)",
     "madeWith": "สร้างสรรค์ด้วย <span class=\"text-red-500/70\">♥</span> ณ กรุงเทพฯ ประเทศไทย",
     "roles": "Generalist • Solopreneur • นักแก้ปัญหา",
-    "rssFeed": "ฟีด RSS"
+    "rssFeed": "ฟีด RSS",
+    "supportLabel": "ชอบงานนี้? เลี้ยง",
+    "supportMatcha": "มัทฉะ",
+    "supportCocoa": "โกโก้"
   },
   "about_fitness": {
     "titleWord1": "เส้นทาง",

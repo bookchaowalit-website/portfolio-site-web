@@ -6,6 +6,11 @@ import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { useTranslations } from "next-intl";
 import { Github, Linkedin, Twitter, PenTool, BookOpen, Briefcase, Zap, Mail, Rss } from "lucide-react";
 
+const SUPPORT_LINKS = [
+  { key: "supportMatcha", emoji: "🍵", href: "https://buy.stripe.com/5kQ6oI8Z17mS4lL7Ei3ks03" },
+  { key: "supportCocoa", emoji: "🍫", href: "https://buy.stripe.com/9B65kE8Z1gXsbOdf6K3ks04" },
+] as const;
+
 export function Footer() {
   const t = useTranslations("footer");
   const tNav = useTranslations("nav");
@@ -188,6 +193,30 @@ export function Footer() {
               >
                 <Rss className="w-5 h-5" />
               </motion.a>
+            </motion.div>
+
+            {/* Support links (Stripe Payment Links) */}
+            <motion.div
+              className="flex flex-wrap justify-center items-center gap-3 mb-6"
+              initial={reducedMotion ? false : { opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.35 }}
+            >
+              <span className="text-sm text-muted-foreground font-[family-name:var(--font-doodle)]">
+                {t("supportLabel")}
+              </span>
+              {SUPPORT_LINKS.map((link) => (
+                <motion.a
+                  key={link.key}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={hoverSecondary}
+                  className="rounded-full border border-border px-3 py-1 text-sm text-foreground hover:border-primary hover:text-primary transition-colors duration-200"
+                >
+                  <span aria-hidden="true">{link.emoji}</span> {t(link.key)}
+                </motion.a>
+              ))}
             </motion.div>
 
             {/* Hand-drawn doodle symbols */}

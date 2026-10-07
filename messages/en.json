@@ -757,7 +757,10 @@
     "copyright": "© {year} Book (Chaowalit Greepoke)",
     "madeWith": "Made with <span class=\"text-red-500/70\">♥</span> in Bangkok, Thailand",
     "roles": "Generalist • Solopreneur • Problem Solver",
-    "rssFeed": "RSS Feed"
+    "rssFeed": "RSS Feed",
+    "supportLabel": "Enjoy my work? Buy me a",
+    "supportMatcha": "Matcha",
+    "supportCocoa": "Cocoa"
   },
   "about_fitness": {
     "titleWord1": "Fitness",
