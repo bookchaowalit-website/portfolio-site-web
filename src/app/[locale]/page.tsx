@@ -81,7 +81,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: seoDescriptions[locale as keyof typeof seoDescriptions] || seoDescriptions.en,
       siteName: 'Chaowalit Greepoke Portfolio',
       images: [{
-        url: `/opengraph-image`,
+        url: `/${locale}/opengraph-image`,
         width: 1200,
         height: 630,
         alt: 'Chaowalit Greepoke - Generalist & Solopreneur'
@@ -92,7 +92,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: seoTitles[locale as keyof typeof seoTitles] || seoTitles.en,
       description: seoDescriptions[locale as keyof typeof seoDescriptions] || seoDescriptions.en,
       creator: '@bookchaowalit',
-      images: [`/opengraph-image`]
+      images: [`/${locale}/opengraph-image`]
     }
   };
 }

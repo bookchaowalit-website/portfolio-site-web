@@ -2,7 +2,6 @@ import { MetadataRoute } from 'next'
 import { allProjects } from '@/data/app-projects'
 import { getActiveProjectDomains } from '@/data/project-domains'
 import { getAllBlogPosts } from '@/lib/blog'
-import inventory from '@/content/domain-inventory.json'
 
 type SitemapEntry = {
   url: string
@@ -22,10 +21,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     path: string,
     opts: { changeFrequency?: SitemapEntry['changeFrequency']; priority?: number; lastModified?: Date } = {}
   ): SitemapEntry[] {
-    const enUrl = `${baseUrl}/en${path}`
-    const thUrl = `${baseUrl}/th${path}`
+    // The locale root has no trailing slash; `/en/` would 308 to `/en`.
+    const suffix = path === '/' ? '' : path
+    const enUrl = `${baseUrl}/en${suffix}`
+    const thUrl = `${baseUrl}/th${suffix}`
+    // Only emit lastModified when a real content date is known; a build-time
+    // timestamp on every URL tells crawlers nothing.
     const shared = {
-      lastModified: opts.lastModified || new Date(),
+      ...(opts.lastModified ? { lastModified: opts.lastModified } : {}),
       changeFrequency: opts.changeFrequency || 'monthly' as const,
       priority: opts.priority ?? 0.5,
     }
@@ -82,15 +85,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     return entry(`/blog/tags/${slug}`, { changeFrequency: 'weekly', priority: 0.5 })
   })
 
-  // Knowledge domain pages (45 domains from inventory)
-  const domainPages: SitemapEntry[] = inventory.domains.map((domain) => {
-    const enUrl = `${baseUrl}/en/atlas#${domain.id}`
-    const thUrl = `${baseUrl}/th/atlas#${domain.id}`
-    return [
-      { url: enUrl, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.4, alternates: { languages: { en: enUrl, th: thUrl, 'x-default': enUrl } } },
-      { url: thUrl, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.4, alternates: { languages: { en: enUrl, th: thUrl, 'x-default': enUrl } } },
-    ]
-  }).flat()
-
-  return [...staticPages, ...projectPages, ...projectDomainPages, ...blogPages, ...blogTagPages, ...domainPages]
+  return [...staticPages, ...projectPages, ...projectDomainPages, ...blogPages, ...blogTagPages]
 }

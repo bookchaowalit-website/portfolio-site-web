@@ -92,6 +92,7 @@ export function renderOgImage({
           {(author || date) && (
             <div
               style={{
+                display: "flex",
                 fontSize: "16px",
                 color: "#666",
                 marginTop: "12px",

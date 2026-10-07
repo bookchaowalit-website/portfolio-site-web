@@ -135,7 +135,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       authors: [post.author],
       tags: post.tags,
       images: [{
-        url: post.image || '/og-blog-post.jpg',
+        url: post.image || `/${locale}/blog/${slug}/opengraph-image`,
         width: 1200,
         height: 630,
         alt: `${post.title} - ${post.author}`
@@ -146,7 +146,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       title: baseTitle,
       description: post.excerpt,
       creator: '@bookchaowalit',
-      images: [post.image || '/og-blog-post.jpg']
+      images: [post.image || `/${locale}/blog/${slug}/opengraph-image`]
     },
     other: {
       'article:author': post.author,
