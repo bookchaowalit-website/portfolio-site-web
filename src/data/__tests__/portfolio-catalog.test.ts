@@ -43,4 +43,26 @@ describe("portfolio catalog integrity", () => {
       ["booknbook", "legal-templates", "localcrm", "mcp-server", "philosophy-archive", "religion-compare", "solo-empire-cli"],
     );
   });
+  it("describes the browser-local demos only by what they implement", () => {
+    const demos = ["goal-tracker", "habit-tracker", "invoice-generator"].map((slug) => {
+      const project = allProjects.find((candidate) => candidate.slug === slug);
+      assert.ok(project, `${slug} must stay in the catalog`);
+      return project;
+    });
+    for (const project of demos) {
+      assert.equal(project.evidenceLevel, "Prototype", `${project.slug} is a browser demo, not a measured product`);
+      assert.match(project.caseStudy!.solution, /localStorage/);
+      assert.match(project.caseStudy!.solution, /no backend|nothing is sent to a server/);
+      const copy = JSON.stringify(project);
+      for (const claim of [/cloud sync/i, /heatmap/i, /yearly → quarterly/, /custom branding/i, /Used by freelancers/, /add (a )?milestones?/i]) {
+        assert.doesNotMatch(copy, claim, `${project.slug} must not claim unimplemented behaviour`);
+      }
+    }
+  });
+
+  it("points the portfolio mobile card at its canonical repository and web preview", () => {
+    const project = allProjects.find((candidate) => candidate.slug === "bookchaowalit-portfolio-mobile");
+    assert.equal(project?.githubUrl, "https://github.com/bookchaowalit-website/portfolio-site-mobile");
+    assert.equal(project?.url, "https://portfolio-mobile.bookchaowalit.com");
+  });
 });
