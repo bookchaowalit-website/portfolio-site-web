@@ -54,7 +54,7 @@ describe("portfolio catalog integrity", () => {
       assert.match(project.caseStudy!.solution, /localStorage/);
       assert.match(project.caseStudy!.solution, /no backend|nothing is sent to a server/);
       const copy = JSON.stringify(project);
-      for (const claim of [/cloud sync/i, /heatmap/i, /yearly → quarterly/, /custom branding/i, /Used by freelancers/]) {
+      for (const claim of [/cloud sync/i, /heatmap/i, /yearly → quarterly/, /custom branding/i, /Used by freelancers/, /add (a )?milestones?/i]) {
         assert.doesNotMatch(copy, claim, `${project.slug} must not claim unimplemented behaviour`);
       }
     }
