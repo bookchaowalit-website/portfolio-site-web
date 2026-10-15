@@ -49,8 +49,9 @@ describe("portfolio catalog integrity", () => {
     for (const project of allProjects) {
       assert.equal(publicSourceUrl(project), project.sourceUnavailable ? "" : project.githubUrl, project.slug);
     }
-    const localcrm = allProjects.find((project) => project.slug === "localcrm");
-    assert.ok(localcrm?.githubUrl, "localcrm keeps its internal source URL");
-    assert.equal(publicSourceUrl(localcrm!), "");
+    for (const slug of ["localcrm", "digital-products"]) {
+      const project = allProjects.find((item) => item.slug === slug);
+      assert.equal(project?.githubUrl, "", `${slug} ships no source URL to the client bundle`);
+    }
   });
 });

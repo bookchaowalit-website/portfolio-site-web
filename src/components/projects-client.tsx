@@ -202,7 +202,7 @@ function ProjectCard({
               {stars}
             </span>
           )}
-          {starsError && stars === 0 && project.githubUrl && (
+          {starsError && stars === 0 && project.githubUrl && !project.sourceUnavailable && (
             <span className="text-xs font-mono text-muted-foreground/60" title="Stars unavailable">
               —
             </span>
