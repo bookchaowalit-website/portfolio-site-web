@@ -4,6 +4,7 @@ import { describe, it } from "node:test";
 import {
   allProjects,
   getProjectStatusCounts,
+  publicSourceUrl,
 } from "../app-projects.ts";
 import {
   getActiveProjectDomains,
@@ -40,9 +41,20 @@ describe("portfolio catalog integrity", () => {
   it("hides source links that are currently unavailable", () => {
     assert.deepEqual(
       allProjects.filter((project) => project.sourceUnavailable).map((project) => project.slug).sort(),
-      ["booknbook", "legal-templates", "localcrm", "mcp-server", "philosophy-archive", "religion-compare", "solo-empire-cli"],
+      ["booknbook", "digital-products", "legal-templates", "localcrm", "mcp-server", "philosophy-archive", "religion-compare", "solo-empire-cli"],
     );
   });
+
+  it("never publishes a hidden source URL in structured data or MCP output", () => {
+    for (const project of allProjects) {
+      assert.equal(publicSourceUrl(project), project.sourceUnavailable ? "" : project.githubUrl, project.slug);
+    }
+    for (const slug of ["localcrm", "digital-products"]) {
+      const project = allProjects.find((item) => item.slug === slug);
+      assert.equal(project?.githubUrl, "", `${slug} ships no source URL to the client bundle`);
+    }
+  });
+
   it("describes the browser-local demos only by what they implement", () => {
     const demos = ["goal-tracker", "habit-tracker", "invoice-generator"].map((slug) => {
       const project = allProjects.find((candidate) => candidate.slug === slug);

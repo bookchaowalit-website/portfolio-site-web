@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { allProjects } from "@/data/app-projects";
+import { allProjects, publicSourceUrl } from "@/data/app-projects";
 import { ProjectDetailClient } from "./project-detail-client";
 import { BreadcrumbJsonLd } from '@/components/breadcrumb-json-ld';
 import { BreadcrumbNav } from '@/components/breadcrumb-nav';
@@ -125,6 +125,7 @@ export default async function ProjectDetailPage({ params }: Props) {
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://bookchaowalit.com';
   const projectPageUrl = `${baseUrl}/${locale}/projects/${slug}`;
+  const sourceUrl = publicSourceUrl(project);
 
   // SoftwareApplication structured data for rich Google results
   const softwareAppJsonLd = {
@@ -151,19 +152,19 @@ export default async function ProjectDetailPage({ params }: Props) {
       price: '0',
       priceCurrency: 'USD',
     },
-    ...(project.githubUrl && {
-      codeRepository: project.githubUrl,
+    ...(sourceUrl && {
+      codeRepository: sourceUrl,
     }),
   };
 
   // SoftwareSourceCode schema for GitHub projects — richer rich snippets
-  const sourceCodeJsonLd = project.githubUrl ? {
+  const sourceCodeJsonLd = sourceUrl ? {
     '@context': 'https://schema.org',
     '@type': 'SoftwareSourceCode',
     name: project.name,
     description: project.description,
-    url: project.githubUrl,
-    codeRepository: project.githubUrl,
+    url: sourceUrl,
+    codeRepository: sourceUrl,
     programmingLanguage: project.tech.map(t => ({
       '@type': 'ComputerLanguage',
       name: t,
