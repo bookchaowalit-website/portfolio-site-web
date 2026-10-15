@@ -40,7 +40,7 @@ describe("portfolio catalog integrity", () => {
   it("hides source links that are currently unavailable", () => {
     assert.deepEqual(
       allProjects.filter((project) => project.sourceUnavailable).map((project) => project.slug).sort(),
-      ["booknbook", "legal-templates", "localcrm", "mcp-server", "philosophy-archive", "religion-compare", "solo-empire-cli"],
+      ["booknbook", "digital-products", "legal-templates", "localcrm", "mcp-server", "philosophy-archive", "religion-compare", "solo-empire-cli"],
     );
   });
 });

@@ -41,6 +41,9 @@ jobs:
       - name: Data-product unit tests
         run: npm run test:data-products
 
+      - name: Portfolio catalog tests
+        run: npm run test:portfolio
+
   a11y-e2e:
     name: A11y / keyboard e2e
     runs-on: ubuntu-latest
