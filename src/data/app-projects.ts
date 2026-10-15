@@ -331,6 +331,11 @@ for (const project of allProjects) {
   }
 }
 
+/** The source URL that may be published (UI, JSON-LD, MCP); empty when the source is hidden. */
+export function publicSourceUrl(project: Pick<AppProject, "githubUrl" | "sourceUnavailable">): string {
+  return project.sourceUnavailable ? "" : project.githubUrl;
+}
+
 export function getProjectStatusCounts(projects: readonly AppProject[] = allProjects) {
   return projects.reduce(
     (counts, project) => {

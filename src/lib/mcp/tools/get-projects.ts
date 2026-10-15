@@ -4,7 +4,7 @@
  */
 
 import type { McpTool, McpToolResult } from '../types';
-import { allProjects, categoryMeta, type ProjectCategory } from '../../../data/app-projects';
+import { allProjects, categoryMeta, publicSourceUrl, type ProjectCategory } from '../../../data/app-projects';
 
 export const getProjectsTool: McpTool = {
   name: 'get_projects',
@@ -45,7 +45,7 @@ export async function handleGetProjects(args: Record<string, unknown>): Promise<
       description: project.description,
       technologies: project.tech,
       url: project.url,
-      githubUrl: project.githubUrl,
+      githubUrl: publicSourceUrl(project),
       featured: project.featured,
     }));
 

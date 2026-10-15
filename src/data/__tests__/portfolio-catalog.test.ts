@@ -4,6 +4,7 @@ import { describe, it } from "node:test";
 import {
   allProjects,
   getProjectStatusCounts,
+  publicSourceUrl,
 } from "../app-projects.ts";
 import {
   getActiveProjectDomains,
@@ -42,5 +43,14 @@ describe("portfolio catalog integrity", () => {
       allProjects.filter((project) => project.sourceUnavailable).map((project) => project.slug).sort(),
       ["booknbook", "digital-products", "legal-templates", "localcrm", "mcp-server", "philosophy-archive", "religion-compare", "solo-empire-cli"],
     );
+  });
+
+  it("never publishes a hidden source URL in structured data or MCP output", () => {
+    for (const project of allProjects) {
+      assert.equal(publicSourceUrl(project), project.sourceUnavailable ? "" : project.githubUrl, project.slug);
+    }
+    const localcrm = allProjects.find((project) => project.slug === "localcrm");
+    assert.ok(localcrm?.githubUrl, "localcrm keeps its internal source URL");
+    assert.equal(publicSourceUrl(localcrm!), "");
   });
 });
