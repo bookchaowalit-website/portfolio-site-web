@@ -16,7 +16,7 @@ import {
 describe("portfolio catalog integrity", () => {
   it("keeps the current catalog count and status breakdown explicit", () => {
     assert.equal(allProjects.length, 129);
-    assert.deepEqual(getProjectStatusCounts(), { live: 126, wip: 0, archived: 3 });
+    assert.deepEqual(getProjectStatusCounts(), { live: 127, wip: 0, archived: 2 });
   });
 
   it("keeps project records addressable and case-study complete", () => {
@@ -76,5 +76,10 @@ describe("portfolio catalog integrity", () => {
     const project = allProjects.find((candidate) => candidate.slug === "bookchaowalit-portfolio-mobile");
     assert.equal(project?.githubUrl, "https://github.com/bookchaowalit-website/portfolio-site-mobile");
     assert.equal(project?.url, "https://portfolio-mobile.bookchaowalit.com");
+  });
+  it("lists artblog as live, matching its 200 site and active repository", () => {
+    const project = allProjects.find((candidate) => candidate.slug === "artblog");
+    assert.equal(project?.status, "live");
+    assert.equal(project?.url, "https://artblog.bookchaowalit.com");
   });
 });
