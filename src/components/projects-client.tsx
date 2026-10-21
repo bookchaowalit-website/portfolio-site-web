@@ -119,7 +119,7 @@ function ProjectCard({
             >
               <ImageOff className="size-5" aria-hidden="true" />
               <span className="font-mono text-xs uppercase tracking-wider">{t("previewUnavailable")}</span>
-              <span className="max-w-xs text-xs leading-relaxed">{t("internalPreviewNote")}</span>
+              <span className="max-w-xs text-xs leading-relaxed">{t(project.status === "archived" ? "retiredPreviewNote" : "internalPreviewNote")}</span>
             </div>
           ) : !screenshotError ? (
             <Image

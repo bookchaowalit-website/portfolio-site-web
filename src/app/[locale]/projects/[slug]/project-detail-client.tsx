@@ -103,7 +103,7 @@ export function ProjectDetailClient({ project, relatedBlogPosts = [] }: { projec
   return (
     <div className="min-h-screen">
       {/* Screenshot hero — full bleed */}
-      <div className="relative w-full aspect-[21/9] bg-secondary overflow-hidden">
+      <div className="relative w-full aspect-[21/9] min-h-48 bg-secondary overflow-hidden">
         {project.demoUnavailable ? (
           <div
             className="relative flex h-full w-full flex-col items-center justify-center gap-2 bg-muted text-muted-foreground"
@@ -112,7 +112,7 @@ export function ProjectDetailClient({ project, relatedBlogPosts = [] }: { projec
           >
             <div className="absolute inset-6 border border-dashed border-border" aria-hidden="true" />
             <ImageOff className="size-8 relative" aria-hidden="true" />
-            <span className="text-sm relative">{t("previewUnavailable")}</span>
+            <span className="text-sm relative max-w-md px-10 text-center">{t("previewUnavailable")}</span>
           </div>
         ) : !screenshotError ? (
           <Image

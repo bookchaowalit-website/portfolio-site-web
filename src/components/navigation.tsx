@@ -50,7 +50,7 @@ export function Navigation() {
         <div className="flex items-center justify-between">
           <NavigationBrand />
 
-          <NavigationMenu className="hidden md:flex" viewport={false}>
+          <NavigationMenu className="hidden lg:flex" viewport={false}>
             <NavigationMenuList className="flex space-x-4">
               {navItems.map((item) => (
                 <NavigationMenuItem key={item.key}>
@@ -82,7 +82,7 @@ export function Navigation() {
             <Button
               variant="outline"
               size="sm"
-              className="md:hidden"
+              className="lg:hidden"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label={isMobileMenuOpen ? t('closeMobileMenu') || 'Close menu' : t('openMobileMenu') || 'Open menu'}
               aria-expanded={isMobileMenuOpen}
@@ -95,7 +95,7 @@ export function Navigation() {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div id="mobile-navigation" className="md:hidden border-t bg-background">
+          <div id="mobile-navigation" className="lg:hidden border-t bg-background">
             <div className="px-4 py-2 space-y-1">
               {navItems.map((item) => (
                 <Link
