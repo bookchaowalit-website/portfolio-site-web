@@ -16,7 +16,7 @@ import {
 describe("portfolio catalog integrity", () => {
   it("keeps the current catalog count and status breakdown explicit", () => {
     assert.equal(allProjects.length, 129);
-    assert.deepEqual(getProjectStatusCounts(), { live: 127, wip: 0, archived: 2 });
+    assert.deepEqual(getProjectStatusCounts(), { live: 123, wip: 0, archived: 6 });
   });
 
   it("keeps project records addressable and case-study complete", () => {
@@ -41,7 +41,7 @@ describe("portfolio catalog integrity", () => {
   it("hides source links that are currently unavailable", () => {
     assert.deepEqual(
       allProjects.filter((project) => project.sourceUnavailable).map((project) => project.slug).sort(),
-      ["booknbook", "digital-products", "legal-templates", "localcrm", "mcp-server", "philosophy-archive", "religion-compare", "solo-empire-cli"],
+      ["booknbook", "digital-products", "legal-templates", "linerichmenu", "localcrm", "philosophy-archive", "religion-compare"],
     );
   });
 
@@ -81,5 +81,25 @@ describe("portfolio catalog integrity", () => {
     const project = allProjects.find((candidate) => candidate.slug === "artblog");
     assert.equal(project?.status, "live");
     assert.equal(project?.url, "https://artblog.bookchaowalit.com");
+  });
+});
+
+describe("portfolio claims", () => {
+  it("makes no unevidenced scale or adoption claims", () => {
+    const scale = [/\b\d{2,3}\+ (apps|projects|domains|services|sites|deployments|tools)\b/i, /\b45\+? (knowledge )?domains\b/i, /\b21K\+/i];
+    for (const project of allProjects) {
+      const copy = JSON.stringify(project);
+      for (const claim of scale) {
+        assert.doesNotMatch(copy, claim, `${project.slug} claims a scale no repository shows`);
+      }
+    }
+  });
+
+  it("names a payment or fitness integration only to say it is absent", () => {
+    for (const project of allProjects) {
+      for (const field of [project.description, project.promise ?? "", project.caseStudy?.solution ?? "", project.caseStudy?.result ?? ""]) {
+        assert.doesNotMatch(field, /\b(Stripe|Strava|escrow)\b/i, `${project.slug} claims an integration it does not ship`);
+      }
+    }
   });
 });
