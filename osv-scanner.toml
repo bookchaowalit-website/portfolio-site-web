@@ -1,0 +1,48 @@
+# Reviewed OSV exceptions (DevSecOps Phase 1). Each entry needs a reason and an expiry.
+# Reviewed 2026-10-21 when the repository moved to platform-ci-workflows v1.1.1.
+# Fixable advisories were fixed instead (npm audit fix, postcss override); these remain.
+
+# Dev-only: Lighthouse CI (@lhci/cli -> lighthouse/puppeteer) downloads Chrome in CI only.
+# Nothing here is bundled into the site or runs on Vercel. No @lhci/cli release drops these.
+[[IgnoredVulns]]
+id = "GHSA-c475-qrg2-pj4r"
+ignoreUntil = 2027-01-21
+reason = "basic-ftp DoS in Client.list(); dev-only via @lhci/cli proxy-agent, never used against an FTP server."
+
+[[IgnoredVulns]]
+id = "GHSA-7pqw-9j4j-h8q3"
+ignoreUntil = 2027-01-21
+reason = "extract-zip symlink write; dev-only via @lhci/cli puppeteer browser download from a pinned source. No fixed release."
+
+[[IgnoredVulns]]
+id = "GHSA-jmr9-qjv8-65gv"
+ignoreUntil = 2027-01-21
+reason = "extract-zip symlink path traversal; dev-only via @lhci/cli puppeteer browser download. No fixed release."
+
+[[IgnoredVulns]]
+id = "GHSA-52f5-9888-hmc6"
+ignoreUntil = 2027-01-21
+reason = "tmp symlink dir write; dev-only via @lhci/cli (inquirer/external-editor), interactive prompts never run in CI."
+
+[[IgnoredVulns]]
+id = "GHSA-ph9p-34f9-6g65"
+ignoreUntil = 2027-01-21
+reason = "tmp prefix path traversal; dev-only via @lhci/cli, prefixes are not attacker-controlled."
+
+[[IgnoredVulns]]
+id = "GHSA-w5hq-g745-h8pq"
+ignoreUntil = 2027-01-21
+reason = "uuid v3/v5/v6 buffer bounds; dev-only via @lhci/cli, which does not pass a caller buffer."
+
+# Dev-only: ESLint (eslint-config-next -> fast-glob -> micromatch -> braces) globs our own sources.
+[[IgnoredVulns]]
+id = "GHSA-vfj7-8cjw-p6xm"
+ignoreUntil = 2027-01-21
+reason = "braces stack exhaustion on attacker-shaped patterns; dev-only lint globbing of repository files. No fixed release."
+
+# Build-time: gray-matter -> js-yaml 3 -> argparse -> sprintf-js. gray-matter parses our own MDX
+# front matter at build time; argparse (and so sprintf-js) is only used by the js-yaml CLI.
+[[IgnoredVulns]]
+id = "GHSA-hp3w-g68c-fv3c"
+ignoreUntil = 2027-01-21
+reason = "sprintf-js unbounded precision DoS; reached only through the js-yaml CLI, which the site never runs. No fixed release."

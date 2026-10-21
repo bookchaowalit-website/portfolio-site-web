@@ -18,6 +18,7 @@ import { getActiveProjectDomains, getProjectsForDomain, getProjectDomains, proje
 import { MixedTypographyTitle } from "@/components/ui/mixed-typography";
 import { laneFrameVariant } from "@/components/lane-icon";
 import { SketchyFrame } from "@/components/ui/notebook-elements";
+import { totalStars as countRepoStars, type ProjectStars } from "@/data/project-stars";
 import {
   ExternalLink,
   Search,
@@ -292,15 +293,13 @@ export function ProjectsClient({
   useEffect(() => {
     fetch("/api/github-stars")
       .then((r) => r.json())
-      .then((data: { slug: string; stars: number }[]) => {
+      .then((data: ProjectStars[]) => {
         const map: Record<string, number> = {};
-        let total = 0;
         for (const d of data) {
           map[d.slug] = d.stars;
-          total += d.stars;
         }
         setStarsMap(map);
-        setTotalStars(total);
+        setTotalStars(countRepoStars(data));
       })
       .catch((err) => {
         console.error('Failed to fetch GitHub stars:', err);

@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { allProjects } from '@/data/app-projects';
+import { allProjects, publicDemoUrl } from '@/data/app-projects';
 
 export const dynamic = 'force-dynamic';
 
 // Simple in-memory cache for screenshot URLs
 const screenshotCache = new Map<string, { url: string; timestamp: number }>();
 const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
-const allowedProjectUrls = new Set(allProjects.map((project) => project.url));
+const allowedProjectUrls = new Set(allProjects.map(publicDemoUrl).filter(Boolean));
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);

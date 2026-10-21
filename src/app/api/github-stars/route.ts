@@ -1,23 +1,18 @@
 import { NextResponse } from "next/server";
 
-interface RepoStars {
-  slug: string;
-  stars: number;
-}
+import { allProjects } from "@/data/app-projects";
+import { sourceOwners, starsBySlug, type ProjectStars } from "@/data/project-stars";
 
-const GITHUB_USER = "bookchaowalit";
 const CACHE_TTL = 3600_000; // 1 hour
+const MAX_PAGES_PER_OWNER = 3;
 
-let cached: { data: RepoStars[]; timestamp: number } | null = null;
+let cached: { data: ProjectStars[]; timestamp: number } | null = null;
 
-export async function GET() {
-  if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
-    return NextResponse.json(cached.data);
-  }
-
-  try {
+async function listRepos(owner: string): Promise<{ full_name: string; stargazers_count: number }[]> {
+  const repos: { full_name: string; stargazers_count: number }[] = [];
+  for (let page = 1; page <= MAX_PAGES_PER_OWNER; page += 1) {
     const res = await fetch(
-      `https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&type=owner&sort=updated`,
+      `https://api.github.com/users/${owner}/repos?per_page=100&type=owner&page=${page}`,
       {
         headers: {
           Accept: "application/vnd.github+json",
@@ -29,18 +24,22 @@ export async function GET() {
         next: { revalidate: 3600 },
       }
     );
+    if (!res.ok) throw new Error(`GitHub ${res.status} for ${owner}`);
+    const batch: { full_name: string; stargazers_count: number }[] = await res.json();
+    repos.push(...batch);
+    if (batch.length < 100) break;
+  }
+  return repos;
+}
 
-    if (!res.ok) {
-      return NextResponse.json([]);
-    }
+export async function GET() {
+  if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+    return NextResponse.json(cached.data);
+  }
 
-    const repos: { name: string; stargazers_count: number }[] = await res.json();
-
-    const data: RepoStars[] = repos.map((r) => ({
-      slug: r.name.replace(`bookchaowalit-`, "").replace("-frontend", ""),
-      stars: r.stargazers_count,
-    }));
-
+  try {
+    const repos = (await Promise.all(sourceOwners(allProjects).map(listRepos))).flat();
+    const data = starsBySlug(repos, allProjects);
     cached = { data, timestamp: Date.now() };
     return NextResponse.json(data);
   } catch {

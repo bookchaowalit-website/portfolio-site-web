@@ -1,0 +1,33 @@
+# Deploy verification. Vercel deploys main through its Git integration and reports a
+# GitHub deployment status; when the Production deployment succeeds, smoke-check the
+# live site. Read-only: no secrets, no deploy rights.
+name: Deploy smoke
+
+on:
+  deployment_status:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-smoke
+  cancel-in-progress: true
+
+jobs:
+  deploy-smoke:
+    name: Production smoke (bookchaowalit.com)
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.state == 'success' &&
+       github.event.deployment.environment == 'Production')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Smoke-check the production site
+        run: scripts/deploy-smoke.sh https://bookchaowalit.com

@@ -6,3 +6,5 @@ export async function register() {
     await import('../sentry.edge.config');
   }
 }
+
+export { captureRequestError as onRequestError } from '@sentry/nextjs';

@@ -1,4 +1,4 @@
-# bookchaowalit-portfolio-frontend — Interview Case Study
+# portfolio-site-web — Interview Case Study
 
 *Tier A Interview Flagship in the
 [Portfolio Interview Readiness Audit](../../../../../../docs/systems/interview-readiness-audit.md)
@@ -34,7 +34,7 @@ they won't believe `PRODUCT.md` in any of the flagship repos either.
 ### Project counts & claims — mostly accurate, one stale one fixed
 
 The real data source (`src/data/app-projects.ts`) has **129 projects**
-(126 live, 0 wip, 3 archived), every single one with a real `caseStudy`
+(123 live, 0 wip, 6 archived as of 2026-10-21), every single one with a real `caseStudy`
 object (challenge/solution/result) — not just a name and a link. Site-wide
 copy consistently says **"100+"**, which is honestly hedged (129 ≥ 100,
 the claim ages gracefully as the count grows) — no fix needed there.
@@ -47,21 +47,25 @@ dynamic (`totalProjects: allProjects.length`) — only the human-readable
 description text had gone stale. Fixed to interpolate the real count so
 it can't go stale again.
 
-### Links — structurally sound and release-checked
+### Links and claims — rechecked card by card (2026-10-21)
 
-Project URLs are generated programmatically (`vercel(slug)` /
-`gh(slug)` / `sub(slug)` helper functions from each project's `slug`),
-not hand-typed — so there's no category of "someone fat-fingered a URL"
-bug possible here. Whether all 129 target subdomains are actually *live*
-is a separate question this pass didn't chase down (many are the same
-Tier C portfolio-generator repos audited in Phase 1, several of which are
-unedited scaffolds) — that's tracked at the portfolio level already, not
-a bug specific to this repo. No `href="#"` placeholder links found
-anywhere (unlike `booknbook`'s footer before this session). The `live` label
-is the portfolio catalog's declared product status; it is not a claim that
-every linked deployment has passed a fresh health check on every release.
-The current release pass rechecked all public Live demos; internal-only
-entries remain explicitly marked without a public demo link.
+The 2026-08 pass trusted the `gh(slug)` helper because it was generated, not
+hand-typed. That was the bug: it hard-coded `bookchaowalit-website/bookchaowalit-<slug>-frontend`,
+so after the October repository renames and twin consolidation most source links
+pointed at old names or the wrong twin. Each card now carries its canonical
+`repo` (`owner/name`) and `githubUrl` is built from it; `gh()` refuses a bare
+slug. Cards whose source is private or gone carry no repo and publish no link,
+and a card whose demo is not a deployment we own publishes no demo link
+(`publicDemoUrl`).
+
+Every card was also checked against its repository's code. Most website
+cards described backends, integrations or adoption that the code does not
+have; they now describe what ships, and `evidenceLevel` separates client-only
+`Prototype` demos from `Live` tools. Evidence:
+[docs/audits/CARD-CLAIMS-REVIEW-2026-10.md](docs/audits/CARD-CLAIMS-REVIEW-2026-10.md) and
+[docs/audits/LIVE-LINK-AUDIT-2026-10.md](docs/audits/LIVE-LINK-AUDIT-2026-10.md)
+(re-run with `npm run audit:links`). Spec:
+[specs/001-truthful-portfolio/spec.md](specs/001-truthful-portfolio/spec.md).
 
 ### Domain taxonomy — Book Dev is the only populated workspace
 

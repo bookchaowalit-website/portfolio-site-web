@@ -103,7 +103,7 @@ export async function GET() {
       description: tool.description,
       inputSchema: tool.inputSchema,
     })),
-    documentation: 'https://github.com/bookchaowalit/bookchaowalit-portfolio',
+    documentation: 'https://github.com/bookchaowalit-website/portfolio-site-web',
     endpoint: '/api/mcp',
   });
 }

@@ -15,7 +15,7 @@ import {
   Github, Linkedin, Twitter, Activity, Globe
 } from "lucide-react";
 import inventory from "@/content/domain-inventory.json";
-import { categoryMeta, allProjects, type ProjectCategory } from "@/data/app-projects";
+import { categoryMeta, allProjects, publicDemoUrl, type ProjectCategory } from "@/data/app-projects";
 
 // Map atlas categories → portfolio project categories
 const atlasToProjectCategories: Record<string, ProjectCategory[]> = {
@@ -768,8 +768,8 @@ export function AtlasClient() {
                           <div key={project.slug} className="bg-muted/30 p-3 border border-border/30">
                             <div className="flex items-start justify-between gap-2 mb-1">
                               <h5 className="text-sm font-medium leading-tight">{project.name}</h5>
-                              {project.url && (
-                                <a href={project.url} target="_blank" rel="noopener noreferrer" className="shrink-0">
+                              {publicDemoUrl(project) && (
+                                <a href={publicDemoUrl(project)} target="_blank" rel="noopener noreferrer" className="shrink-0">
                                   <ExternalLink className="w-3.5 h-3.5 text-muted-foreground hover:text-primary transition-colors" />
                                 </a>
                               )}

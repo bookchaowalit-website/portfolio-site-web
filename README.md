@@ -1,6 +1,6 @@
-# bookchaowalit-portfolio-frontend
+# portfolio-site-web
 
-[![CI](https://github.com/bookchaowalit-website/bookchaowalit-portfolio-frontend/actions/workflows/ci.yml/badge.svg)](https://github.com/bookchaowalit-website/bookchaowalit-portfolio-frontend/actions/workflows/ci.yml)
+[![CI](https://github.com/bookchaowalit-website/portfolio-site-web/actions/workflows/ci.yml/badge.svg)](https://github.com/bookchaowalit-website/portfolio-site-web/actions/workflows/ci.yml)
 
 Personal portfolio website of **Chaowalit Greepoke** — Tech Generalist & Solopreneur from Bangkok, Thailand.
 
@@ -88,8 +88,8 @@ real number was 1.
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/bookchaowalit/bookchaowalit-portfolio-frontend.git
-cd bookchaowalit-portfolio-frontend
+git clone https://github.com/bookchaowalit-website/portfolio-site-web.git
+cd portfolio-site-web
 
 # 2. Install dependencies
 npm install
@@ -123,7 +123,7 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 CONTACT_EMAIL=contact@bookchaowalit.com
 
 # GitHub personal access token (optional, raises rate limit from 60 to 5000 req/hr)
-GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx
+GITHUB_TOKEN=<YOUR_GITHUB_TOKEN>
 
 # Resend API key for contact form email delivery
 RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxx
@@ -161,7 +161,7 @@ put API tokens in `NEXT_PUBLIC_*` variables.
 ## Project Structure
 
 ```
-bookchaowalit-portfolio-frontend/
+portfolio-site-web/
 ├── content/
 │   └── blog/                          # MDX blog posts (file-based CMS)
 │       ├── building-scalable-react-applications.mdx

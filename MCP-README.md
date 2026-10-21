@@ -303,4 +303,4 @@ src/lib/mcp/
 
 - [MCP Protocol Specification](https://spec.modelcontextprotocol.io/)
 - [Claude MCP Documentation](https://docs.anthropic.com/claude/docs/mcp)
-- [GitHub Repository](https://github.com/bookchaowalit/bookchaowalit-portfolio-frontend)
+- [GitHub Repository](https://github.com/bookchaowalit-website/portfolio-site-web)

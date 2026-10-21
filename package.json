@@ -23,8 +23,11 @@
     "test:data-products": "node --experimental-strip-types --test src/lib/data-products/__tests__/**/*.test.ts",
     "test:portfolio": "node --experimental-strip-types --test src/data/__tests__/*.test.ts",
     "typecheck": "tsc --noEmit",
-    "ci:local": "npm run typecheck && npm run lint && npm run test:data-products && npm run test:portfolio && npm run build",
-    "test:a11y": "playwright test e2e/a11y-axe.spec.ts --project=chromium"
+    "ci:local": "npm run typecheck && npm run lint && npm test && npm run build",
+    "test:a11y": "playwright test e2e/a11y-axe.spec.ts --project=chromium",
+    "test": "npm run test:data-products && npm run test:portfolio && npm run test:lib",
+    "test:lib": "node --experimental-strip-types --test src/lib/__tests__/*.test.ts",
+    "audit:links": "node --experimental-strip-types scripts/live-link-audit.mjs"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
@@ -78,5 +81,8 @@
   },
   "optionalDependencies": {
     "@swc/helpers": "^0.5.23"
+  },
+  "overrides": {
+    "postcss": "^8.5.31"
   }
 }
