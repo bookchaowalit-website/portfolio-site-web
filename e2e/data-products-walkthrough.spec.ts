@@ -51,7 +51,7 @@ function assertLocalOnly(requests: { method: string; url: string }[]) {
       // if third-party scripts load, ignore non-data-product hosts for this check
       // and only hard-fail data-product ports leaving localhost.
       true;
-    if (u.port && ["8101", "8102", "8103", "8104", "8105", "8106", "8107", "8108", "8110"].includes(u.port)) {
+    if (u.port && ["8101", "8102", "8103", "8104", "8105", "8106", "8108", "8110"].includes(u.port)) {
       expect(["127.0.0.1", "localhost", "::1"]).toContain(host);
     }
     void ok;
@@ -102,7 +102,6 @@ test.describe("Portfolio Live Systems walkthrough", () => {
 
     // Schema ports visible in map
     await expect(page.getByText("8101").first()).toBeVisible();
-    await expect(page.getByText("8107").first()).toBeVisible();
     await expect(page.getByText("8108").first()).toBeVisible();
     await expect(page.getByText("8110").first()).toBeVisible();
     await expect(page.getByRole("table", { name: /Local data-product API map/i })).toBeVisible();
@@ -180,7 +179,7 @@ test.describe("Portfolio Live Systems walkthrough", () => {
       });
     });
     // Remaining ports: network failure → fixture fallback or unavailable
-    for (const port of [8104, 8105, 8106, 8107, 8108, 8110]) {
+    for (const port of [8104, 8105, 8106, 8108, 8110]) {
       await page.route(`http://127.0.0.1:${port}/v1/records**`, async (route) => {
         await route.abort("connectionfailed");
       });
@@ -282,7 +281,7 @@ test.describe("Solo Empire Insights walkthrough", () => {
     await page.setViewportSize({ width: 360, height: 740 });
     await page.goto(`${INSIGHTS_URL}/?fixtures=1`);
     await expect(page.getByRole("heading", { name: /Solo Empire Insights/i })).toBeVisible();
-    await expect(page.locator('[aria-labelledby="product-ai_tools-title"]')).toBeVisible({ timeout: 15_000 });
+    await expect(page.locator('[aria-labelledby="title-seo"]')).toBeVisible({ timeout: 15_000 });
 
     await page.setViewportSize({ width: 1200, height: 800 });
     await expect(page.locator("#dp-grid")).toBeVisible();
@@ -311,7 +310,7 @@ test.describe("Solo Empire Insights walkthrough", () => {
         body: JSON.stringify({ error: "raw provider secret=abc", detail: "FIRECRAWL boom" }),
       });
     });
-    for (const port of [8104, 8105, 8106, 8107, 8110]) {
+    for (const port of [8104, 8105, 8106, 8110]) {
       await page.route(`http://127.0.0.1:${port}/v1/records**`, (route) =>
         route.abort("connectionfailed"),
       );

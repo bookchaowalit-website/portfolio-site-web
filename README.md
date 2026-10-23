@@ -134,14 +134,14 @@ RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxx
 # Production requires a verified sender address.
 ```
 
-The Live Systems page reads the seven frozen data-product APIs plus the
+The Live Systems page reads the six frozen data-product APIs (contract v3; `ai_tools` retired 2026-10-23) plus the
 additive `news.v1` and `discovery.v1` APIs from loopback ports 8101–8110 during
 local development.
 For a hosted read-only backend, set the
 URL-only public variables `NEXT_PUBLIC_DATA_PRODUCT_URL_CRYPTO`,
 `NEXT_PUBLIC_DATA_PRODUCT_URL_STOCKS`, `NEXT_PUBLIC_DATA_PRODUCT_URL_FX`,
 `NEXT_PUBLIC_DATA_PRODUCT_URL_DEFI`, `NEXT_PUBLIC_DATA_PRODUCT_URL_FLIGHTS`,
-`NEXT_PUBLIC_DATA_PRODUCT_URL_SEO`, `NEXT_PUBLIC_DATA_PRODUCT_URL_AI_TOOLS`, and
+`NEXT_PUBLIC_DATA_PRODUCT_URL_SEO`, and
 `NEXT_PUBLIC_DATA_PRODUCT_URL_NEWS`, and
 `NEXT_PUBLIC_DATA_PRODUCT_URL_DISCOVERY`.
 Configure the same frontend origin in each API's `CORS_ALLOWED_ORIGINS`; never

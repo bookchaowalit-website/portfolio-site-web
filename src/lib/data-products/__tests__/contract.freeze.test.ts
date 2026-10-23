@@ -1,6 +1,6 @@
 /**
- * Compatibility freeze test against data-product v2 contracts.
- * SSOT: solo-empire systems/architecture/data-product-contracts-v2.yaml
+ * Compatibility freeze test against data-product v3 contracts.
+ * SSOT: bookchaowalit/architecture-docs systems/architecture/data-product-contracts-v3.yaml
  * Breaking changes require a new schema_version (e.g. crypto.v2).
  */
 import assert from "node:assert/strict";
@@ -17,7 +17,7 @@ import {
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "../../../..");
 
-/** Frozen v2 map — must match systems/architecture/data-product-contracts-v2.yaml */
+/** Frozen v3 map — must match systems/architecture/data-product-contracts-v3.yaml (ai_tools / 8107 retired 2026-10-23) */
 const FROZEN = [
   { id: "crypto", port: 8101, schemaVersion: "crypto.v1", repo: "book-crypto-data" },
   { id: "stocks", port: 8102, schemaVersion: "stock.v1", repo: "book-stock-data" },
@@ -25,7 +25,6 @@ const FROZEN = [
   { id: "defi", port: 8104, schemaVersion: "defi.v1", repo: "book-defi-data" },
   { id: "flights", port: 8105, schemaVersion: "flight.v1", repo: "book-flight-data" },
   { id: "seo", port: 8106, schemaVersion: "seo.v1", repo: "book-seo-data" },
-  { id: "ai_tools", port: 8107, schemaVersion: "ai_tools.v1", repo: "book-ai-tools-data" },
 ] as const;
 
 const ENVELOPE_KEYS = [
@@ -37,10 +36,12 @@ const ENVELOPE_KEYS = [
   "next_cursor",
 ] as const;
 
-describe("data-product v2 contract freeze (portfolio consumer)", () => {
+describe("data-product v3 contract freeze (portfolio consumer)", () => {
   it("catalog matches frozen ports and schema_version values", () => {
-    // The v2 seven-product freeze is preserved; news.v1 and discovery.v1 are additive.
-    assert.equal(DATA_PRODUCT_CATALOG.length, 9);
+    // The v3 six-product freeze; news.v1 and discovery.v1 are additive. ai_tools was retired in v3.
+    assert.equal(DATA_PRODUCT_CATALOG.length, 8);
+    assert.equal(DATA_PRODUCT_CATALOG.find((p) => p.id === "ai_tools"), undefined);
+    assert.ok(!DATA_PRODUCT_CATALOG.some((p) => p.port === 8107), "retired port 8107 must not come back");
     for (const frozen of FROZEN) {
       const product = DATA_PRODUCT_CATALOG.find((p) => p.id === frozen.id);
       assert.ok(product, `missing product ${frozen.id}`);

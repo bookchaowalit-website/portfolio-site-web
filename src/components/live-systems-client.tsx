@@ -33,7 +33,7 @@ import {
 const architectureSteps = [
   {
     icon: Database,
-    label: "9 Data Products",
+    label: "8 Data Products",
     desc: "Independent domain APIs with normalized envelopes",
     color: "text-foreground",
   },
@@ -70,7 +70,6 @@ const apiSchedule = [
   { port: "8104", product: "DeFi Yields", endpoint: "GET /v1/records" },
   { port: "8105", product: "Flight Prices", endpoint: "GET /v1/records" },
   { port: "8106", product: "SEO Provenance", endpoint: "GET /v1/records" },
-  { port: "8107", product: "AI Tools", endpoint: "GET /v1/records" },
   { port: "8108", product: "News Signals", endpoint: "GET /v1/records" },
   { port: "8110", product: "Technology Discovery", endpoint: "GET /v1/records" },
 ];
@@ -258,7 +257,7 @@ export function LiveSystemsClient() {
       const fixtureCount = loaded.filter((r) => r.source === "fixture").length;
       setBanner(
         forceFixtures
-          ? `Offline fixture mode · ${fixtureCount}/9 products · free-only · no external writes`
+          ? `Offline fixture mode · ${fixtureCount}/8 products · free-only · no external writes`
           : `Loaded ${apiCount} from local APIs · ${fixtureCount} fixture fallbacks · free-only`,
       );
       setLoading(false);

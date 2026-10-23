@@ -35,9 +35,7 @@ function configuredBaseUrl(productId: string, fallback: string): string {
               ? process.env.NEXT_PUBLIC_DATA_PRODUCT_URL_FLIGHTS
               : productId === "seo"
                 ? process.env.NEXT_PUBLIC_DATA_PRODUCT_URL_SEO
-                : productId === "ai_tools"
-                  ? process.env.NEXT_PUBLIC_DATA_PRODUCT_URL_AI_TOOLS
-                  : productId === "news"
+                : productId === "news"
                     ? process.env.NEXT_PUBLIC_DATA_PRODUCT_URL_NEWS
                     : productId === "discovery"
                       ? process.env.NEXT_PUBLIC_DATA_PRODUCT_URL_DISCOVERY
