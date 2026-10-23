@@ -346,7 +346,7 @@ export function LiveSystemsClient() {
           Live <span className="text-primary">Data Products</span>
         </h1>
         <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          Portfolio consumers read versioned envelopes from nine local data-product APIs
+          Portfolio consumers read versioned envelopes from eight local data-product APIs
           (`127.0.0.1:8101–8110`). No upstream scraping, no paid fallbacks, and no external
           writes from this app. Offline demos use sanitized fixtures.
         </p>

@@ -105,4 +105,11 @@ describe("data-product v3 contract freeze (portfolio consumer)", () => {
       }
     }
   });
+
+  it("live systems copy states the catalog size (8 products, not the pre-v3 nine)", async () => {
+    for (const file of ["src/components/live-systems-client.tsx", "src/app/[locale]/live-systems/page.tsx"]) {
+      const src = await readFile(join(root, file), "utf8");
+      assert.doesNotMatch(src, /\bnine\b|ทั้ง 9 ตัว|\/9 products|9 Data Products/, file);
+    }
+  });
 });

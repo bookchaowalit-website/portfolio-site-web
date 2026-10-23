@@ -16,8 +16,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 
   const seoDescriptions = {
-    en: "Portfolio consumer for nine free-only local data-product APIs (ports 8101–8110) with fixture fallback, envelope contracts, and no external writes.",
-    th: "หน้า consumer สำหรับ data-product API แบบ free-only ทั้ง 9 ตัว (พอร์ต 8101–8110) พร้อม fixture fallback และไม่มีการ write ภายนอก"
+    en: "Portfolio consumer for eight free-only local data-product APIs (ports 8101–8110) with fixture fallback, envelope contracts, and no external writes.",
+    th: "หน้า consumer สำหรับ data-product API แบบ free-only ทั้ง 8 ตัว (พอร์ต 8101–8110) พร้อม fixture fallback และไม่มีการ write ภายนอก"
   };
 
   return {
