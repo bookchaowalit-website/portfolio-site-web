@@ -88,6 +88,8 @@ describe("consent banner", () => {
     const html = renderToStaticMarkup(element);
     assert.ok(html.includes(text("th").choices));
     assert.match(html, /min-h-\[44px\]/);
+    // In page flow under the footer: a floating control would cover content on phones.
+    assert.doesNotMatch(html, /\bfixed\b/);
   });
 
   it("en and th messages have the same keys and Thai text is translated", () => {

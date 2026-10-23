@@ -43,7 +43,7 @@ again, set `NEXT_PUBLIC_ANALYTICS_ENABLED=false` and redeploy.
   No autocapture, recordings, heatmaps, surveys, flags or remote scripts; URLs
   lose their query string, fragment and id-like segments; the IP is removed.
 - The choice is kept in `localStorage` (`portfolio.analytics-consent.v1`) and
-  can be changed from the small "Analytics choices" button.
+  can be changed from the small "Analytics choices" button at the bottom of every page (under the footer).
 
 ## Events
 

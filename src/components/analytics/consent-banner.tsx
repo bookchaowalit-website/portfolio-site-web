@@ -61,7 +61,7 @@ export function ConsentChoicesLink({ label, onOpen }: { label: string; onOpen: (
     <button
       type="button"
       onClick={onOpen}
-      className="fixed bottom-6 left-4 z-40 inline-flex min-h-[44px] items-center border border-border bg-background/90 px-3 font-mono text-xs text-muted-foreground backdrop-blur hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:left-6"
+      className="mx-auto mb-6 flex min-h-[44px] items-center px-3 font-mono text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       {label}
     </button>
