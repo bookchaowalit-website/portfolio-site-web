@@ -180,7 +180,7 @@ export default async function WebAppsPrivacyPage({ params }: Props) {
                 <li>{t('user_rights.objection')}</li>
               </ul>
               <p className="text-muted-foreground mt-4">
-                {t('user_rights.contact')}: <a href="mailto:bookchaowalit@gmail.com" className="text-foreground hover:underline">bookchaowalit@gmail.com</a>
+                {t('user_rights.contact')}: <a href="mailto:bookchaowalit@gmail.com" className="text-foreground hover:underline break-all">bookchaowalit@gmail.com</a>
               </p>
             </CardContent>
           </Card>
@@ -202,7 +202,7 @@ export default async function WebAppsPrivacyPage({ params }: Props) {
               <div className="text-muted-foreground">
                 <p>Bookchaowalit</p>
                 <p>{t('contact.website')}: <a href="https://bookchaowalit.com" className="text-foreground hover:underline">https://bookchaowalit.com</a></p>
-                <p>{t('contact.email')}: <a href="mailto:bookchaowalit@gmail.com" className="text-foreground hover:underline">bookchaowalit@gmail.com</a></p>
+                <p>{t('contact.email')}: <a href="mailto:bookchaowalit@gmail.com" className="text-foreground hover:underline break-all">bookchaowalit@gmail.com</a></p>
               </div>
             </CardContent>
           </Card>

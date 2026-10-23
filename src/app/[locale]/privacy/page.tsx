@@ -128,10 +128,10 @@ export default async function PrivacyPage({ params }: Props) {
             <div>
               <h3 className="text-lg font-semibold mb-2">{t('general.contact.title')}</h3>
               <p className="text-muted-foreground">
-                {t('general.contact.email')}: <a href="mailto:bookchaowalit@gmail.com" className="text-foreground hover:underline">bookchaowalit@gmail.com</a>
+                {t('general.contact.email')}: <a href="mailto:bookchaowalit@gmail.com" className="text-foreground hover:underline break-all">bookchaowalit@gmail.com</a>
               </p>
               <p className="text-muted-foreground">
-                {t('general.contact.website')}: <a href="https://bookchaowalit.com" className="text-foreground hover:underline">https://bookchaowalit.com</a>
+                {t('general.contact.website')}: <a href="https://bookchaowalit.com" className="text-foreground hover:underline break-all">https://bookchaowalit.com</a>
               </p>
             </div>
           </CardContent>
@@ -145,15 +145,15 @@ export default async function PrivacyPage({ params }: Props) {
             <p className="text-muted-foreground mb-6">{t('apps.description')}</p>
 
             <div className="grid md:grid-cols-2 gap-4">
-              <Link href="/privacy/messenger-bot">
-                <Button variant="outline" className="w-full h-auto p-4 flex flex-col items-center gap-2">
+              <Link href="/privacy/messenger-bot" className="block">
+                <Button variant="outline" className="w-full h-auto whitespace-normal p-4 flex flex-col items-center gap-2">
                   <div className="text-lg font-semibold">{t('apps.messenger_bot.title')}</div>
                   <div className="text-sm text-muted-foreground text-center">{t('apps.messenger_bot.description')}</div>
                 </Button>
               </Link>
 
-              <Link href="/privacy/web-apps">
-                <Button variant="outline" className="w-full h-auto p-4 flex flex-col items-center gap-2">
+              <Link href="/privacy/web-apps" className="block">
+                <Button variant="outline" className="w-full h-auto whitespace-normal p-4 flex flex-col items-center gap-2">
                   <div className="text-lg font-semibold">{t('apps.web_apps.title')}</div>
                   <div className="text-sm text-muted-foreground text-center">{t('apps.web_apps.description')}</div>
                 </Button>
