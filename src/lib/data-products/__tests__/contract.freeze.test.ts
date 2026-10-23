@@ -1,10 +1,10 @@
 /**
- * Compatibility freeze test against data-product v3 contracts.
- * SSOT: bookchaowalit/architecture-docs systems/architecture/data-product-contracts-v3.yaml
+ * Compatibility freeze test against data-product v4 contracts.
+ * SSOT: bookchaowalit/architecture-docs systems/architecture/data-product-contracts-v4.yaml
  * Breaking changes require a new schema_version (e.g. crypto.v2).
  */
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { describe, it } from "node:test";
 import { fileURLToPath } from "node:url";
@@ -17,13 +17,12 @@ import {
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "../../../..");
 
-/** Frozen v3 map — must match systems/architecture/data-product-contracts-v3.yaml (ai_tools / 8107 retired 2026-10-23) */
+/** Frozen v4 map — must match systems/architecture/data-product-contracts-v4.yaml (flights / 8105 retired in v4 and ai_tools / 8107 in v3, both 2026-10-23; ports never reused) */
 const FROZEN = [
   { id: "crypto", port: 8101, schemaVersion: "crypto.v1", repo: "book-crypto-data" },
   { id: "stocks", port: 8102, schemaVersion: "stock.v1", repo: "book-stock-data" },
   { id: "fx", port: 8103, schemaVersion: "fx.v1", repo: "book-fx-data" },
   { id: "defi", port: 8104, schemaVersion: "defi.v1", repo: "book-defi-data" },
-  { id: "flights", port: 8105, schemaVersion: "flight.v1", repo: "book-flight-data" },
   { id: "seo", port: 8106, schemaVersion: "seo.v1", repo: "book-seo-data" },
 ] as const;
 
@@ -36,12 +35,15 @@ const ENVELOPE_KEYS = [
   "next_cursor",
 ] as const;
 
-describe("data-product v3 contract freeze (portfolio consumer)", () => {
+describe("data-product v4 contract freeze (portfolio consumer)", () => {
   it("catalog matches frozen ports and schema_version values", () => {
-    // The v3 six-product freeze; news.v1 and discovery.v1 are additive. ai_tools was retired in v3.
-    assert.equal(DATA_PRODUCT_CATALOG.length, 8);
+    // The v4 five-product freeze; news.v1 and discovery.v1 are additive. ai_tools was retired in v3, flights in v4.
+    assert.equal(DATA_PRODUCT_CATALOG.length, 7);
     assert.equal(DATA_PRODUCT_CATALOG.find((p) => p.id === "ai_tools"), undefined);
-    assert.ok(!DATA_PRODUCT_CATALOG.some((p) => p.port === 8107), "retired port 8107 must not come back");
+    assert.equal(DATA_PRODUCT_CATALOG.find((p) => (p.id as string) === "flights"), undefined);
+    for (const port of [8105, 8107]) {
+      assert.ok(!DATA_PRODUCT_CATALOG.some((p) => p.port === port), `retired port ${port} must not come back`);
+    }
     for (const frozen of FROZEN) {
       const product = DATA_PRODUCT_CATALOG.find((p) => p.id === frozen.id);
       assert.ok(product, `missing product ${frozen.id}`);
@@ -106,10 +108,24 @@ describe("data-product v3 contract freeze (portfolio consumer)", () => {
     }
   });
 
-  it("live systems copy states the catalog size (8 products, not the pre-v3 nine)", async () => {
+  it("live systems copy states the catalog size (7 products, not the pre-v4 eight or pre-v3 nine)", async () => {
     for (const file of ["src/components/live-systems-client.tsx", "src/app/[locale]/live-systems/page.tsx"]) {
       const src = await readFile(join(root, file), "utf8");
       assert.doesNotMatch(src, /\bnine\b|ทั้ง 9 ตัว|\/9 products|9 Data Products/, file);
+      assert.doesNotMatch(src, /\beight\b|ทั้ง 8 ตัว|\/8 products|8 Data Products/, file);
+      assert.doesNotMatch(src, /Flight|8105/, file);
     }
+  });
+
+  it("retired flights fixtures and fallback row are gone", async () => {
+    await assert.rejects(access(join(root, "fixtures/data-products/flights.json")));
+    await assert.rejects(access(join(root, "public/data/data-products/flights.json")));
+    const fallback = JSON.parse(
+      await readFile(join(root, "public/data/data-products-fallback.json"), "utf8"),
+    ) as { products: { id: string; port: number }[] };
+    assert.equal(
+      fallback.products.some((p) => p.id === "flights" || p.port === 8105),
+      false,
+    );
   });
 });

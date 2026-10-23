@@ -51,7 +51,7 @@ function assertLocalOnly(requests: { method: string; url: string }[]) {
       // if third-party scripts load, ignore non-data-product hosts for this check
       // and only hard-fail data-product ports leaving localhost.
       true;
-    if (u.port && ["8101", "8102", "8103", "8104", "8105", "8106", "8108", "8110"].includes(u.port)) {
+    if (u.port && ["8101", "8102", "8103", "8104", "8106", "8108", "8110"].includes(u.port)) {
       expect(["127.0.0.1", "localhost", "::1"]).toContain(host);
     }
     void ok;
@@ -179,7 +179,7 @@ test.describe("Portfolio Live Systems walkthrough", () => {
       });
     });
     // Remaining ports: network failure → fixture fallback or unavailable
-    for (const port of [8104, 8105, 8106, 8108, 8110]) {
+    for (const port of [8104, 8106, 8108, 8110]) {
       await page.route(`http://127.0.0.1:${port}/v1/records**`, async (route) => {
         await route.abort("connectionfailed");
       });
@@ -310,7 +310,7 @@ test.describe("Solo Empire Insights walkthrough", () => {
         body: JSON.stringify({ error: "raw provider secret=abc", detail: "FIRECRAWL boom" }),
       });
     });
-    for (const port of [8104, 8105, 8106, 8110]) {
+    for (const port of [8104, 8106, 8110]) {
       await page.route(`http://127.0.0.1:${port}/v1/records**`, (route) =>
         route.abort("connectionfailed"),
       );

@@ -33,7 +33,7 @@ import {
 const architectureSteps = [
   {
     icon: Database,
-    label: "8 Data Products",
+    label: "7 Data Products",
     desc: "Independent domain APIs with normalized envelopes",
     color: "text-foreground",
   },
@@ -68,7 +68,6 @@ const apiSchedule = [
   { port: "8102", product: "Stock Portfolio", endpoint: "GET /v1/records" },
   { port: "8103", product: "Exchange Rates", endpoint: "GET /v1/records" },
   { port: "8104", product: "DeFi Yields", endpoint: "GET /v1/records" },
-  { port: "8105", product: "Flight Prices", endpoint: "GET /v1/records" },
   { port: "8106", product: "SEO Provenance", endpoint: "GET /v1/records" },
   { port: "8108", product: "News Signals", endpoint: "GET /v1/records" },
   { port: "8110", product: "Technology Discovery", endpoint: "GET /v1/records" },
@@ -257,7 +256,7 @@ export function LiveSystemsClient() {
       const fixtureCount = loaded.filter((r) => r.source === "fixture").length;
       setBanner(
         forceFixtures
-          ? `Offline fixture mode · ${fixtureCount}/8 products · free-only · no external writes`
+          ? `Offline fixture mode · ${fixtureCount}/7 products · free-only · no external writes`
           : `Loaded ${apiCount} from local APIs · ${fixtureCount} fixture fallbacks · free-only`,
       );
       setLoading(false);
@@ -346,7 +345,7 @@ export function LiveSystemsClient() {
           Live <span className="text-primary">Data Products</span>
         </h1>
         <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          Portfolio consumers read versioned envelopes from eight local data-product APIs
+          Portfolio consumers read versioned envelopes from seven local data-product APIs
           (`127.0.0.1:8101–8110`). No upstream scraping, no paid fallbacks, and no external
           writes from this app. Offline demos use sanitized fixtures.
         </p>
