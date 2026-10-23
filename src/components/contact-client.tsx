@@ -10,7 +10,7 @@ import { MixedTypographyTitle, NotebookSectionHeader } from "@/components/ui/mix
 import { SketchyFrame, StickyNote } from "@/components/ui/notebook-elements";
 import { motion, useReducedMotion } from "framer-motion";
 import { useState, useMemo, useCallback } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Mail, Phone, MapPin, Github, Linkedin, Twitter, PenTool, BookOpen, Briefcase, Zap, Bot, BarChart3, Code, ShoppingBag, TrendingUp, CheckCircle2, XCircle, Rocket } from "lucide-react";
 
 type ContactFormData = {
@@ -24,6 +24,7 @@ type ContactTouched = Partial<Record<keyof ContactFormData, boolean>>;
 
 export function ContactClient() {
   const t = useTranslations("contact");
+  const locale = useLocale();
   const reducedMotion = useReducedMotion();
 
   const [formData, setFormData] = useState<ContactFormData>({
@@ -88,7 +89,8 @@ export function ContactClient() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        // locale feeds the anonymous contact_sent count (KPI-O-01).
+        body: JSON.stringify({ ...formData, locale }),
       });
 
       const data = await response.json().catch(() => ({}));

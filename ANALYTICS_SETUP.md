@@ -1,70 +1,79 @@
 # Analytics Setup Guide
 
-How to configure Google Analytics 4 (GA4) and Google Search Console for the portfolio.
+How analytics works on bookchaowalit.com, and how to set up Google Search Console.
+
+GA4 was removed on 2026-10-23: it loaded on every page before any consent, and
+ADR-0005 rejects it as the default. Product analytics now uses PostHog (EU)
+behind a kill switch and a consent banner. Owner go-live steps:
+[docs/measurement/GO-LIVE.md](docs/measurement/GO-LIVE.md).
 
 ---
 
-## Google Analytics 4
+## Layers
 
-### 1. Create a GA4 Property
+| Layer | Tool | Cookies / consent | Code |
+|---|---|---|---|
+| Page counts | Vercel Web Analytics (`@vercel/analytics`) | no cookies; always on in production | `src/app/[locale]/layout.tsx` |
+| Product events | PostHog Cloud EU (`posthog-js` pinned `1.438.7`) | loaded **only after** "Allow analytics" | `src/lib/browser-analytics.ts`, `src/lib/posthog-adapter.ts`, `src/components/analytics/*` |
+| Contact count | PostHog capture API from the server | no personal data, no consent needed | `src/lib/server-analytics.ts`, `src/app/api/contact/route.ts` |
+| Errors | Sentry (scrubbed) | no visitor identifiers | `src/lib/sentry.ts` |
 
-1. Go to [Google Analytics](https://analytics.google.com/)
-2. Create a new GA4 property
-3. Copy the **Measurement ID** (format: `G-XXXXXXXXXX`)
+## PostHog: the flag
 
-### 2. Add Environment Variable
+Analytics is **off** unless all of these are set (Vercel project env, Production):
 
 ```bash
-# .env.local
-NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+NEXT_PUBLIC_ANALYTICS_ENABLED=true          # exactly "true"
+NEXT_PUBLIC_POSTHOG_KEY=phc_...             # project API key (public)
+NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com   # optional, this is the default
 ```
 
-GA is disabled silently when this variable is not set — no script is loaded, no events fire.
+They are `NEXT_PUBLIC_*`, so they are inlined at build time: set them before
+the deploy. While off, the consent banner is not rendered, `posthog-js` is never
+downloaded, nothing is written to storage and no request is made. To switch off
+again, set `NEXT_PUBLIC_ANALYTICS_ENABLED=false` and redeploy.
 
-### 3. How It Works
+## PostHog: consent
 
-`src/components/google-analytics.tsx` uses `@next/third-parties/google` to load the GA4 script. It tracks:
+- The banner (English and Thai, from `messages/*.json` → `analyticsConsent`)
+  offers **Decline** and **Allow analytics** with the same size and style.
+- Before a choice, and after Decline, the SDK is not loaded at all — stricter
+  than PostHog's cookieless mode.
+- After Allow: PostHog stores an anonymous id in `localStorage` (no cookies).
+  No autocapture, recordings, heatmaps, surveys, flags or remote scripts; URLs
+  lose their query string, fragment and id-like segments; the IP is removed.
+- The choice is kept in `localStorage` (`portfolio.analytics-consent.v1`) and
+  can be changed from the small "Analytics choices" button.
 
-| Event | Trigger | Parameters |
-|-------|---------|------------|
-| `page_view` | Every route change | `page_path` (via `usePathname`) |
-| `view_project` | `trackProjectView(name)` | `project_name`, `content_type` |
-| `form_submit` | `trackContactSubmission()` | `form_name`, `content_type` |
-| `read_blog` | `trackBlogRead(title)` | `blog_title`, `content_type` |
-| `view_business` | `trackBusinessView(name)` | `business_name`, `content_type` |
+## Events
 
-### 4. Using Event Tracking in Components
+Only the events in [docs/measurement/EVENTS.md](docs/measurement/EVENTS.md) can
+be sent (`$pageview`, `view_project`, `click_demo`, `click_source`,
+`contact_sent`); `src/lib/__tests__/event-catalog.test.ts` keeps code and
+catalog in step. To add one: list it in EVENTS.md, add it to the allow-list in
+`src/lib/browser-analytics.ts` (or `server-analytics.ts`) with enumerated or
+pattern-checked values, write the test first, then call it:
 
 ```tsx
-import { trackProjectView, trackContactSubmission, trackBlogRead, trackBusinessView } from '@/components/google-analytics';
+import { analytics } from '@/lib/browser-analytics';
 
-// Track a project view
-trackProjectView('My Project');
-
-// Track contact form submission
-trackContactSubmission();
-
-// Track a blog post read
-trackBlogRead('Post Title');
-
-// Track a business page view
-trackBusinessView('Business Name');
+analytics.track('view_project', { project_slug: 'booktrading', evidence_level: 'live' });
 ```
 
-For custom events:
+Never pass names, emails, message text, query strings or ids.
 
-```tsx
-import { trackEvent } from '@/components/google-analytics';
+## Verify it works
 
-trackEvent('custom_event_name', { key: 'value' });
-```
+1. Open the site in a private window with the network panel open.
+2. The banner shows; there is no request to `posthog.com` (and none to
+   `googletagmanager.com`). Click Decline: still nothing.
+3. Reopen "Analytics choices", click Allow, open a case study: requests to
+   `eu.i.posthog.com` appear; PostHog's "First-event check" insight lists
+   `$pageview` and `view_project` with `product = portfolio`.
 
-### 5. Verify It Works
-
-1. Install the [Google Analytics Debugger](https://chrome.google.com/webstore/detail/google-analytics-debugger/jnkmfdileelhofjcijlkphllbidcabog) Chrome extension
-2. Run `npm run dev` and visit `http://localhost:3000`
-3. Open DevTools console — you should see `gtag` calls
-4. Check **GA4 → Admin → DebugView** for real-time events
+Headless browsers: PostHog drops events when `navigator.webdriver` is true or
+the user agent says HeadlessChrome, so an automated headless run shows no
+capture. That is PostHog's bot filter, not a bug here.
 
 ---
 
@@ -105,8 +114,12 @@ NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=your-verification-code
 
 | File | Role |
 |------|------|
-| `src/components/google-analytics.tsx` | GA4 script loader + event tracking functions |
-| `src/app/[locale]/layout.tsx` | Renders `<GoogleAnalytics>` and verification meta |
+| `src/lib/browser-analytics.ts` | Provider-neutral analytics (flag, consent, allow-list) |
+| `src/lib/posthog-adapter.ts` | PostHog init options and URL scrubbing |
+| `src/lib/server-analytics.ts` | Server `contact_sent` event |
+| `src/components/analytics/consent-banner.tsx` | Consent banner and "Analytics choices" |
+| `src/components/analytics/analytics-provider.tsx` | Page views + banner state |
+| `analytics/posthog/dashboard.json` | PostHog dashboard spec |
+| `src/app/[locale]/layout.tsx` | Renders the provider (when enabled), Vercel Analytics and verification meta |
 | `src/app/sitemap.ts` | Dynamic sitemap.xml (all locales) |
 | `src/app/robots.ts` | robots.txt (allows all, disallows `/api/`) |
-| `.env.example` | Environment variable template |

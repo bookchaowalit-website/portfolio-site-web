@@ -1,0 +1,46 @@
+{
+  "$comment": "Portfolio pilot dashboard (PostHog EU). Create each insight as SQL (HogQL) in PostHog after sign-up; names and KPI IDs follow docs/measurement/KPI-PLAN.md. Guardrails KPI-G-01..G-03 live outside PostHog (link audit, catalog tests, Sentry).",
+  "dashboard": "Portfolio pilot",
+  "product": "portfolio",
+  "insights": [
+    {
+      "name": "First-event check (last 24 h)",
+      "kpi": null,
+      "events": ["$pageview", "view_project", "click_demo", "click_source", "contact_sent"],
+      "query": {
+        "kind": "HogQLQuery",
+        "query": "SELECT event, count() AS events, max(timestamp) AS last_seen FROM events WHERE properties.product = 'portfolio' AND timestamp >= now() - INTERVAL 1 DAY GROUP BY event ORDER BY events DESC"
+      }
+    },
+    {
+      "name": "KPI-O-01 Contact messages delivered per month",
+      "kpi": "KPI-O-01",
+      "min_volume": "count, no minimum",
+      "events": ["contact_sent"],
+      "query": {
+        "kind": "HogQLQuery",
+        "query": "SELECT toStartOfMonth(timestamp) AS month, countIf(event = 'contact_sent') AS contact_messages, countIf(event = 'contact_sent' AND properties.locale = 'th') AS thai FROM events WHERE properties.product = 'portfolio' AND timestamp >= now() - INTERVAL 12 MONTH GROUP BY month ORDER BY month"
+      }
+    },
+    {
+      "name": "KPI-L-01 Case-study views per consented visit",
+      "kpi": "KPI-L-01",
+      "min_volume": "200 consented visits per week, else not measurable",
+      "events": ["$pageview", "view_project"],
+      "query": {
+        "kind": "HogQLQuery",
+        "query": "SELECT toStartOfWeek(timestamp) AS week, uniqIf(`$session_id`, event = '$pageview') AS visits, countIf(event = 'view_project') AS project_views, if(visits >= 200, round(project_views / visits, 2), NULL) AS views_per_visit FROM events WHERE properties.product = 'portfolio' AND timestamp >= now() - INTERVAL 12 WEEK GROUP BY week ORDER BY week"
+      }
+    },
+    {
+      "name": "KPI-L-02 Demo / source click-through from a case study",
+      "kpi": "KPI-L-02",
+      "min_volume": "100 project views per week, else not measurable",
+      "events": ["view_project", "click_demo", "click_source"],
+      "query": {
+        "kind": "HogQLQuery",
+        "query": "SELECT toStartOfWeek(timestamp) AS week, countIf(event = 'view_project') AS project_views, countIf(event IN ('click_demo', 'click_source')) AS clicks, if(project_views >= 100, round(100 * clicks / project_views, 1), NULL) AS click_through_pct FROM events WHERE properties.product = 'portfolio' AND timestamp >= now() - INTERVAL 12 WEEK GROUP BY week ORDER BY week"
+      }
+    }
+  ]
+}

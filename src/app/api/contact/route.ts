@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { after, NextRequest, NextResponse } from 'next/server';
+import { trackServer } from '@/lib/server-analytics';
 import { Resend } from 'resend';
 
 // Initialize Resend only if API key is available
@@ -37,7 +38,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const { name, email, subject, message } = body;
+        const { name, email, subject, message, locale } = body;
 
         // Validate type, presence, and size on the server. Client validation is
         // helpful UX, but it cannot protect the email endpoint by itself.
@@ -151,6 +152,10 @@ export async function POST(request: NextRequest) {
         }
 
         console.log('Email sent successfully:', data);
+
+        // KPI-O-01: count the delivered message after the response is sent.
+        // Locale only, a fresh random id, no IP; off unless analytics is enabled.
+        after(() => trackServer('contact_sent', { locale }));
 
         return NextResponse.json({
             success: true,

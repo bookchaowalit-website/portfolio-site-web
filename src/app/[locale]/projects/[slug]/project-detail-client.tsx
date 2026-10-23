@@ -11,6 +11,7 @@ import {
 import { getProjectDomains, projectDomainMeta } from "@/data/project-domains";
 import { statusConfig } from "./status-config";
 import { SketchArrow } from "@/components/ui/notebook-elements";
+import { analytics, evidenceLevelProp } from "@/lib/browser-analytics";
 import {
   ArrowLeft,
   ArrowRight,
@@ -66,6 +67,12 @@ export function ProjectDetailClient({ project, relatedBlogPosts = [] }: { projec
         setStarsError(true);
       });
   }, [project.slug]);
+
+  // Case-study view (KPI-L-01). A no-op unless analytics is on and allowed.
+  const eventProps = { project_slug: project.slug, evidence_level: evidenceLevelProp(project.evidenceLevel) };
+  useEffect(() => {
+    analytics.track("view_project", { project_slug: project.slug, evidence_level: evidenceLevelProp(project.evidenceLevel) });
+  }, [project.slug, project.evidenceLevel]);
 
   const status = statusConfig[project.status];
   const domains = getProjectDomains(project).map((domain) => tProjects(projectDomainMeta[domain].labelKey));
@@ -224,6 +231,7 @@ export function ProjectDetailClient({ project, relatedBlogPosts = [] }: { projec
               href={project.url}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => analytics.track("click_demo", eventProps)}
               className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
             >
               <ExternalLink className="size-4" />
@@ -235,6 +243,7 @@ export function ProjectDetailClient({ project, relatedBlogPosts = [] }: { projec
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => analytics.track("click_source", eventProps)}
               className="inline-flex items-center gap-2 px-6 py-3 bg-secondary text-foreground text-sm font-medium hover:bg-secondary/80 transition-colors"
             >
               <Github className="size-4" />

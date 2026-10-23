@@ -614,7 +614,7 @@
       "intro_text": "Bookchaowalit respects the privacy rights of users. This policy explains how we collect, use, and protect your information when you use our services.",
       "data_collection": {
         "title": "Information We Collect",
-        "website_analytics": "Website usage analytics (Google Analytics)",
+        "website_analytics": "Optional usage analytics (PostHog, EU servers), only if you allow it in the analytics banner; cookieless page counts (Vercel Web Analytics)",
         "contact_info": "Contact form submissions",
         "usage_data": "General usage patterns and preferences"
       },
@@ -722,7 +722,7 @@
       "third_party": {
         "title": "Third-Party Services",
         "description": "We may use third-party services such as:",
-        "analytics_services": "Analytics services (Google Analytics)",
+        "analytics_services": "Analytics services (PostHog, EU; Vercel Web Analytics)",
         "hosting_providers": "Hosting and infrastructure providers",
         "payment_processors": "Payment processing services (when applicable)"
       },
@@ -1133,7 +1133,7 @@
     "statFiles": "Files",
     "statFolders": "Folders",
     "statIntegrations": "Integrations",
-        "statProjects": "Projects",
+    "statProjects": "Projects",
     "viewGraph": "Graph",
     "viewGrid": "Grid",
     "filterAll": "All",
@@ -1352,5 +1352,13 @@
     "readBlog": "read blog",
     "viewProjects": "view projects",
     "helpfulLinks": "helpful links:"
+  },
+  "analyticsConsent": {
+    "region": "Analytics consent",
+    "title": "Analytics",
+    "body": "May this site count which pages and projects you open? Counts go to PostHog (EU servers) only if you allow it. Your name, email, messages and searches are never sent, and nothing loads until you choose.",
+    "decline": "Decline",
+    "accept": "Allow analytics",
+    "choices": "Analytics choices"
   }
 }

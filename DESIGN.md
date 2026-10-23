@@ -207,7 +207,7 @@ Small tilted labels with hand-drawn feel. Used in skills/about sections.
 | Fonts | `next/font/google` (4 families) |
 | i18n | `next-intl` |
 | UI primitives | shadcn/ui (achromatic base) |
-| Analytics | Vercel Analytics + Google Analytics |
+| Analytics | Vercel Web Analytics + PostHog (EU, consent banner, off by default) |
 | Deployment | Vercel |
 
 ---

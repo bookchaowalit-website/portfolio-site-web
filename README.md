@@ -66,7 +66,7 @@ real number was 1.
 | i18n | next-intl | 4.x |
 | Blog Content | MDX (`@mdx-js/loader`, `next-mdx-remote`) | 3.x / 6.x |
 | Email | Resend | 6.x |
-| Analytics | Vercel Analytics + Google Analytics 4 | — |
+| Analytics | Vercel Web Analytics + PostHog (EU, behind a flag and consent) | — |
 | Icons | Lucide React | 0.542 |
 | Fonts | Geist Sans, Geist Mono, Sarabun (Thai), Itim (Thai) | — |
 | Validation | Zod | 4.x |
@@ -80,7 +80,7 @@ real number was 1.
 - **npm** (or pnpm/yarn)
 - A **Resend API key** (for contact form — optional in dev)
 - A **GitHub token** (optional, avoids rate limits on `/api/github`)
-- A **GA4 Measurement ID** (optional, for analytics)
+- A **PostHog EU project key** (optional, for consent-gated analytics)
 
 ---
 
@@ -116,8 +116,10 @@ Copy `.env.example` to `.env.local` and fill in values:
 # Base URL used for SEO metadata, sitemap, and Open Graph
 NEXT_PUBLIC_BASE_URL=https://bookchaowalit.com
 
-# Google Analytics 4 Measurement ID (optional)
-NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+# Product analytics (optional, off unless exactly "true" and a key is set)
+NEXT_PUBLIC_ANALYTICS_ENABLED=false
+NEXT_PUBLIC_POSTHOG_KEY=
+NEXT_PUBLIC_POSTHOG_HOST=https://eu.i.posthog.com
 
 # Contact form email recipient
 CONTACT_EMAIL=contact@bookchaowalit.com
@@ -150,7 +152,9 @@ put API tokens in `NEXT_PUBLIC_*` variables.
 | Variable | Required | Default | Notes |
 |----------|----------|---------|-------|
 | `NEXT_PUBLIC_BASE_URL` | Recommended | `https://bookchaowalit.com` | Used in sitemap, OG tags, canonical URLs |
-| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | No | — | Enables GA4 page tracking |
+| `NEXT_PUBLIC_ANALYTICS_ENABLED` | No | — | Exactly `true` turns on PostHog analytics (with `NEXT_PUBLIC_POSTHOG_KEY`); visitors still have to allow it |
+| `NEXT_PUBLIC_POSTHOG_KEY` | No | — | PostHog project API key |
+| `NEXT_PUBLIC_POSTHOG_HOST` | No | `https://eu.i.posthog.com` | PostHog host |
 | `CONTACT_EMAIL` | Yes (for contact form) | — | Recipient of contact form submissions |
 | `GITHUB_TOKEN` | No | — | Without token: 60 req/hr limit |
 | `RESEND_API_KEY` | No | — | Required for delivery; without it the form returns an unavailable state and keeps the user's input |
@@ -258,7 +262,7 @@ portfolio-site-web/
 │   │   ├── error-boundary.tsx         # React error boundary with reset
 │   │   ├── footer.tsx
 │   │   ├── github-activity.tsx        # GitHub repos with sessionStorage cache
-│   │   ├── google-analytics.tsx       # GA4 page view tracking
+│   │   ├── analytics/                 # Consent banner + PostHog page views
 │   │   ├── language-switcher.tsx      # EN/TH toggle
 │   │   ├── navigation.tsx            # Main nav with mobile menu
 │   │   ├── navigation-brand.tsx      # Brand/logo in nav
@@ -291,7 +295,7 @@ portfolio-site-web/
 ├── postcss.config.mjs                # PostCSS with @tailwindcss/postcss
 ├── tsconfig.json                     # TypeScript config with @/ path alias
 ├── .env.example                      # Environment variable template
-├── ANALYTICS_SETUP.md                # GA4 setup guide
+├── ANALYTICS_SETUP.md                # Analytics (PostHog + consent) and Search Console guide
 ├── MCP-README.md                     # MCP server documentation
 └── package.json
 ```
@@ -385,7 +389,7 @@ Below-the-fold sections lazy-loaded with `next/dynamic`. Loaded on the home page
 Page-specific client components with `"use client"` directive. Each handles its own state, animations, and data.
 
 **Shared Components** (`src/components/`)
-Navigation, Footer, ErrorBoundary, PageTransition, ThemeToggle, LanguageSwitcher, ShareButton, GoogleAnalytics.
+Navigation, Footer, ErrorBoundary, PageTransition, ThemeToggle, LanguageSwitcher, ShareButton, AnalyticsProvider.
 
 ### Lazy Loading Strategy
 
@@ -558,24 +562,19 @@ Generated programmatically via `src/app/icon.tsx` and `src/app/apple-icon.tsx`.
 
 ### Vercel Analytics
 
-Automatically included via `@vercel/analytics/react` in the root layout. No configuration needed.
+Automatically included via `@vercel/analytics/react` in the locale layout. No configuration needed; it sets no cookies.
 
-### Google Analytics 4
+### PostHog (consent-gated)
 
-Set `NEXT_PUBLIC_GA_MEASUREMENT_ID` in `.env.local`. Page views are tracked automatically via `src/components/google-analytics.tsx`.
-
-**Predefined event tracking functions:**
+Off unless `NEXT_PUBLIC_ANALYTICS_ENABLED=true` and `NEXT_PUBLIC_POSTHOG_KEY` are set. Even then, `posthog-js` loads only after the visitor clicks "Allow analytics" in the banner. Only the events in [docs/measurement/EVENTS.md](./docs/measurement/EVENTS.md) can be sent:
 
 ```typescript
-import { trackProjectView, trackContactSubmission, trackBlogRead, trackBusinessView } from '@/components/google-analytics';
+import { analytics } from '@/lib/browser-analytics';
 
-trackProjectView('Project Name');
-trackContactSubmission();
-trackBlogRead('Blog Title');
-trackBusinessView('Business Name');
+analytics.track('view_project', { project_slug: 'booktrading', evidence_level: 'live' });
 ```
 
-See [ANALYTICS_SETUP.md](./ANALYTICS_SETUP.md) for GA4 property setup.
+GA4 was removed on 2026-10-23 (it loaded before consent). See [ANALYTICS_SETUP.md](./ANALYTICS_SETUP.md) and [docs/measurement/GO-LIVE.md](./docs/measurement/GO-LIVE.md).
 
 ---
 

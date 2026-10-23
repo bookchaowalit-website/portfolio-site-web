@@ -11,12 +11,15 @@ import { loadMessages } from '@/i18n/request';
 import { notFound } from 'next/navigation';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { BackToTop } from '@/components/back-to-top';
+import { readConfig } from '@/lib/browser-analytics';
 
 const Footer = dynamic(() => import("@/components/footer").then(mod => ({ default: mod.Footer })), {
   loading: () => null
 });
 
-const GoogleAnalytics = dynamic(() => import("@/components/google-analytics").then(mod => ({ default: mod.GoogleAnalytics })), {
+// Consent banner + page views (PostHog, ADR-0005). Only rendered when
+// NEXT_PUBLIC_ANALYTICS_ENABLED is "true" and a PostHog key is set.
+const AnalyticsProvider = dynamic(() => import("@/components/analytics/analytics-provider").then(mod => ({ default: mod.AnalyticsProvider })), {
   loading: () => null
 });
 
@@ -175,7 +178,6 @@ export default async function LocaleLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://icon.horse" />
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
@@ -202,9 +204,7 @@ export default async function LocaleLayout({
           <Footer />
           <BackToTop />
           <Analytics mode="production" />
-          {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
-            <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
-          )}
+          {readConfig() && <AnalyticsProvider />}
         </NextIntlClientProvider>
       </body>
     </html>
