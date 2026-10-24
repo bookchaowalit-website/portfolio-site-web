@@ -46,10 +46,80 @@
 - ยังไม่ได้รัน `ui_review.mjs` ที่ 375px ในรอบนี้ (ต้องใช้ visual gate)
 
 ## Review evidence
-pending
+
+- **test**: ผ่าน
+  ---
+        duration_ms: 1.244944
+        type: 'test'
+        ...
+      # Subtest: times out after the configured limit without throwing
+      ok 7 - times out after the configured limit without throwing
+        ---
+        duration_ms: 20.803904
+        type: 'test'
+        ...
+      1..7
+  ok 11 - server analytics (contact_sent)
+    ---
+    duration_ms: 52.531465
+    type: 'suite'
+    ...
+  1..11
+  # tests 52
+  # suites 11
+  # pass 52
+  # fail 0
+  # cancelled 0
+  # skipped 0
+  # todo 0
+  # duration_ms 751.279158
+- **typecheck**: ผ่าน
+  > bookchaowalit-portfolio@0.1.0 typecheck
+  > tsc --noEmit
+- **lint**: ผ่าน
+  > bookchaowalit-portfolio@0.1.0 lint
+  > eslint
+
+
+  /home/runner/work/portfolio-site-web/portfolio-site-web/mdx-components.tsx
+    50:7  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+  ✖ 1 problem (0 errors, 1 warning)
+- **build**: ผ่าน
+  ├ ○ /projects-rss.xml                                  430 B         165 kB          1h      1y
+  ├ ○ /robots.txt                                        430 B         165 kB
+  ├ ○ /rss-th.xml                                        429 B         165 kB          1h      1y
+  ├ ○ /rss.xml                                           429 B         165 kB          1h      1y
+  └ ○ /sitemap.xml                                       429 B         165 kB
+  + First Load JS shared by all                         165 kB
+    ├ chunks/4952-1190d6011ab3e00f.js                   106 kB
+    ├ chunks/4bd1b696-72b775907cb33954.js              54.4 kB
+    └ other shared chunks (total)                      4.07 kB
+
+
+  ○  (Static)   prerendered as static content
+  ●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+  ƒ  (Dynamic)  server-rendered on demand
+
+
+  [@sentry/nextjs] Importing `withSentryConfig` from `@sentry/nextjs` is deprecated and will stop working in v11. Import it from `@sentry/nextjs/config` instead:
+    import { withSentryConfig } from '@sentry/nextjs/config';
+  [@sentry/nextjs - Node.js] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+  [@sentry/nextjs - Node.js] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+  [@sentry/nextjs - Edge] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+  [@sentry/nextjs - Edge] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+  [@sentry/nextjs - Client] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+  [@sentry/nextjs - Client] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+   ⚠ Using edge runtime on a page currently disables static generation for that page
+- **claude-review**: ผ่าน
+  approve; 2 finding(s)
+  [P3] public/sw.js:1 Generated service-worker build artifact is modified in the diff; unrelated to the task. → Drop the sw.js change from the commit (git checkout public/sw.js) unless it is intentionally tracked.
+  [P3] src/app/[locale]/projects/opengraph-image.tsx:1 The OG image still carries the '100 Micro-Frontends' claim, which the card-claims review rules out. → Open a follow-up issue as the task record notes, and fix it there.
+- Run: https://github.com/bookchaowalit-website/portfolio-site-web/actions/runs/40142406942 · 2026-10-25 06:29 ICT
 
 ## Visual review
-pending
+
+- **visual-ai**: ผ่าน — audit {'blocker': 0, 'major': 0, 'minor': 0}; AI verdict pass; checked ['/en/blog/building-100-micro-frontends @375', '/en/blog/building-100-micro-frontends @768', '/en/blog/building-100-micro-frontends @1440']
 
 ## Definition of Done
 - [x] ไม่มีตัวเลข "100" / analytics ต่อแอป / metrics ที่ไม่มีแหล่ง
