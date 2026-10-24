@@ -7,13 +7,15 @@ tags: ["Architecture", "Micro-Frontends", "Next.js", "Vercel", "Solopreneur"]
 featured: true
 ---
 
-When I set out to build my portfolio, I didn't just want a single monolithic app. I wanted to prove a point: **one developer can run a large fleet of independently deployed applications** using modern tooling and a disciplined architecture. The fleet is still growing, and not every app is production-grade: some are live products, others are prototypes or experiments, and the project gallery labels each one honestly.
+When I set out to build my portfolio, I didn't just want a single monolithic app. I wanted to prove a point: **one developer can run a large fleet of independently deployed applications** using modern tooling and a disciplined architecture.
+
+The fleet is still growing, and not every app is production-grade: some are live products, others are prototypes or experiments, and the project gallery labels each one honestly.
 
 ## The Architecture
 
 Each micro-frontend is a standalone Next.js application with its own:
 - Repository and deployment pipeline
-- Custom domain or subdomain (where it needs one)
+- Custom domain or subdomain (if needed)
 - Independent versioning and release cycle
 
 Monitoring is uneven by design: error tracking with Sentry and analytics with PostHog are wired into a subset of the apps, mostly the products that have real users, and are not yet in every app.

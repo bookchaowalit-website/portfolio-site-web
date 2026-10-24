@@ -59,3 +59,7 @@ pending
 
 ## Release / deploy
 Merge เข้า `main` = deploy production ผ่าน Vercel Git; loop เปิด PR และเจ้าของอนุมัติด้วย label `autopilot:approved`
+
+## Attempt 2 (หมายเหตุ)
+- แยกย่อหน้ายาว 415 ตัวอักษรในบทนำเป็นสองย่อหน้า และเปลี่ยน "(where it needs one)" เป็น "(if needed)" เพื่อแก้ `long-text-block` / `split-bracket` จาก visual audit
+- `npm test`, `npm run typecheck`, `npm run lint` ผ่าน
