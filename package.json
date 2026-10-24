@@ -83,6 +83,15 @@
     "@swc/helpers": "^0.5.23"
   },
   "overrides": {
-    "postcss": "^8.5.31"
+    "postcss": "^8.5.31",
+    "@serwist/build": {
+      "zod": "$zod"
+    },
+    "@serwist/next": {
+      "zod": "$zod"
+    },
+    "@serwist/webpack-plugin": {
+      "zod": "$zod"
+    }
   }
 }

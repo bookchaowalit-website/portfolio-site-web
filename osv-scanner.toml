@@ -34,6 +34,11 @@ id = "GHSA-w5hq-g745-h8pq"
 ignoreUntil = 2027-01-21
 reason = "uuid v3/v5/v6 buffer bounds; dev-only via @lhci/cli, which does not pass a caller buffer."
 
+[[IgnoredVulns]]
+id = "GHSA-mrhx-c7xc-m3w5"
+ignoreUntil = 2027-01-24
+reason = "zod 3.25.76 array-validation DoS; dev-only via @lhci/cli -> lighthouse -> puppeteer-core -> chromium-bidi, which validates CDP messages from the CI Chrome it launches. Fixed only in zod 4.6.6, which chromium-bidi (^3.24.1) cannot take. The site's own zod is 4.6.6 (serwist copies forced by overrides). Added 2026-10-24."
+
 # Dev-only: ESLint (eslint-config-next -> fast-glob -> micromatch -> braces) globs our own sources.
 [[IgnoredVulns]]
 id = "GHSA-vfj7-8cjw-p6xm"
