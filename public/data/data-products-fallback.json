@@ -53,36 +53,12 @@
       "status": "fixture"
     },
     {
-      "id": "flights",
-      "name": "Flight Prices",
-      "icon": "\u2708\ufe0f",
-      "repo": "book-flight-data",
-      "port": 8105,
-      "schema_version": "flight.v1",
-      "record_count": 2,
-      "data_status": "stale",
-      "retrieved_at": "2026-08-01T12:00:00Z",
-      "status": "fixture"
-    },
-    {
       "id": "seo",
       "name": "SEO Rankings",
       "icon": "\ud83d\udd0d",
       "repo": "book-seo-data",
       "port": 8106,
       "schema_version": "seo.v1",
-      "record_count": 2,
-      "data_status": "stale",
-      "retrieved_at": "2026-08-01T12:00:00Z",
-      "status": "fixture"
-    },
-    {
-      "id": "ai_tools",
-      "name": "AI Tools",
-      "icon": "\ud83e\udd16",
-      "repo": "book-ai-tools-data",
-      "port": 8107,
-      "schema_version": "ai_tools.v1",
       "record_count": 2,
       "data_status": "stale",
       "retrieved_at": "2026-08-01T12:00:00Z",

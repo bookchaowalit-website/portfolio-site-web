@@ -15,8 +15,8 @@ import {
 
 describe("portfolio catalog integrity", () => {
   it("keeps the current catalog count and status breakdown explicit", () => {
-    assert.equal(allProjects.length, 129);
-    assert.deepEqual(getProjectStatusCounts(), { live: 123, wip: 0, archived: 6 });
+    assert.equal(allProjects.length, 128);
+    assert.deepEqual(getProjectStatusCounts(), { live: 122, wip: 0, archived: 6 });
   });
 
   it("keeps project records addressable and case-study complete", () => {
@@ -77,6 +77,14 @@ describe("portfolio catalog integrity", () => {
     assert.equal(project?.githubUrl, "https://github.com/bookchaowalit-website/portfolio-site-mobile");
     assert.equal(project?.url, "https://portfolio-mobile.bookchaowalit.com");
   });
+  it("shows url-shortener only as the short-path option inside redirect-manager (merged 2026-10-23)", () => {
+    assert.equal(allProjects.find((project) => project.slug === "url-shortener"), undefined);
+    assert.ok(!allProjects.some((project) => project.repo === "bookchaowalit-website/marketing-url-shortener-web"));
+    const redirect = allProjects.find((project) => project.slug === "redirect-manager");
+    assert.match(redirect?.description ?? "", /short path/i);
+    assert.match(redirect?.caseStudy?.solution ?? "", /\/s\//);
+  });
+
   it("lists artblog as live, matching its 200 site and active repository", () => {
     const project = allProjects.find((candidate) => candidate.slug === "artblog");
     assert.equal(project?.status, "live");

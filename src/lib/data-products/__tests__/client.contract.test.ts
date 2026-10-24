@@ -61,11 +61,11 @@ it("explicit URL wins over environment and malformed empty data remains an error
 });
 
 describe("portfolio data-product catalog", () => {
-  it("covers frozen ports 8101-8107 plus news.v1 and discovery.v1", () => {
-    assert.equal(DATA_PRODUCT_CATALOG.length, 9);
+  it("covers frozen v4 ports 8101-8104 and 8106 plus news.v1 and discovery.v1", () => {
+    assert.equal(DATA_PRODUCT_CATALOG.length, 7);
     assert.deepEqual(
       DATA_PRODUCT_CATALOG.map((p) => p.port).sort(),
-      [8101, 8102, 8103, 8104, 8105, 8106, 8107, 8108, 8110],
+      [8101, 8102, 8103, 8104, 8106, 8108, 8110],
     );
     assert.equal(FREE_ONLY_DEFAULTS.freeOnly, true);
     assert.equal(FREE_ONLY_DEFAULTS.allowExternalWrites, false);
@@ -109,11 +109,11 @@ describe("portfolio client contracts", () => {
       loadFixture,
     });
     assert.equal(calls, 0);
-    assert.equal(results.length, 9);
+    assert.equal(results.length, 7);
     assert.ok(results.every((r) => r.source === "fixture"));
     assert.ok(results.every((r) => r.envelope && isDataProductEnvelope(r.envelope)));
     const summaries = toHealthSummaries(results);
-    assert.equal(summaries.length, 9);
+    assert.equal(summaries.length, 7);
   });
 
   it("parses mocked API envelopes", async () => {
@@ -210,12 +210,12 @@ describe("portfolio client contracts", () => {
 
   it("handles HTTP error with fixture fallback", async () => {
     const fetchImpl = mockFetch({
-      "127.0.0.1:8105/v1/records": () =>
+      "127.0.0.1:8104/v1/records": () =>
         new Response(JSON.stringify({ error: "provider exploded", detail: "paid tier" }), {
           status: 503,
         }),
     });
-    const result = await fetchProductRecords("flights", {
+    const result = await fetchProductRecords("defi", {
       useFixtures: false,
       fetchImpl,
       loadFixture,
