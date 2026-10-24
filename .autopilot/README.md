@@ -31,6 +31,11 @@ PR ที่ autopilot เปิดด้วย `GITHUB_TOKEN` จะไม่ t
 
 ห้ามเปลี่ยน `merge.mode` กลับเป็น `local-merge` จนกว่าเจ้าของจะตัดสินใจใหม่
 
+**Branch protection ของ `main` (สถานะ 2026-10-24):** ต้องผ่าน required checks 3 ตัว แบบ strict และไม่บังคับกับ admin
+(`Typecheck, lint, unit`, `A11y / keyboard e2e`, `Lighthouse (a11y gate)`) โดย `Typecheck, lint, unit` ไม่มีแล้วหลังย้ายไปใช้ shared CI (ตอนนี้ชื่อ `web / node (.)`)
+bot (`GITHUB_TOKEN`) จึง push merge commit เข้า `main` ไม่ได้ เมื่อเจอแบบนี้ loop จะคอมเมนต์คำสั่ง merge ในเครื่องที่ PR ถอด label อนุมัติออก (คอมเมนต์ครั้งเดียว) และแจ้ง Telegram 🔒
+ให้เจ้าของ merge เอง (admin bypass ได้) · ถ้าอยากให้ bot merge เองได้ ต้องให้เจ้าของแก้ protection ก่อน (เช่น อัปเดตชื่อ required check และให้ loop dispatch CI บน branch) ซึ่งเป็นการตัดสินใจของเจ้าของ
+
 ## ภาพรวม
 
 ```
