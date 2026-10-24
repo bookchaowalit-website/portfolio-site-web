@@ -5,6 +5,7 @@ import "../globals.css";
 import { Navigation } from "@/components/navigation";
 import { PageTransition } from "@/components/page-transition";
 import { Analytics } from '@vercel/analytics/react';
+import { SwRegister } from '@/components/sw-register';
 import { NextIntlClientProvider } from 'next-intl';
 import { routing } from '@/i18n/routing';
 import { loadMessages } from '@/i18n/request';
@@ -204,6 +205,7 @@ export default async function LocaleLayout({
           <Footer />
           <BackToTop />
           <Analytics mode="production" />
+          <SwRegister />
           {readConfig() && <AnalyticsProvider />}
         </NextIntlClientProvider>
       </body>

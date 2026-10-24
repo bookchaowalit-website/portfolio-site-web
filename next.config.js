@@ -11,7 +11,7 @@ const withSerwist = withSerwistInit({
   swDest: 'public/sw.js',
   swSrc: 'src/app/sw.ts',
   disable: process.env.NODE_ENV === 'development',
-  register: true,
+  register: false, // registered by src/components/sw-register.tsx so failures are caught
   scope: '/',
   // Never precache the deprecated scraper-dashboard JSON. Consumers use
   // /data/data-products/*.json envelopes or local APIs on ports 8101–8110.
