@@ -4,7 +4,7 @@ tags: [kpi, measurement, portfolio, analytics, adr-0005]
 created: 2026-10-21
 updated: 2026-10-23
 description: North star, input and guardrail KPIs for bookchaowalit.com, the PostHog events behind them (behind a flag and a consent banner), how the baseline is collected, and what is still open before they can be measured.
-status: draft
+status: approved
 template: architecture-docs templates/sdlc/kpi-and-instrumentation-plan.md
 ---
 
@@ -37,7 +37,7 @@ owner sets the three variables in [GO-LIVE.md](GO-LIVE.md). Event catalog:
 | Status | draft — instrumented behind a flag (off by default, W4 pilot 2026-10-23); guardrails live |
 | Metric owner | Owner (bookchaowalit) |
 | AI maker | Claude Code (Wave 5 P1 session 2026-10-21; W4 session w4c-loop-pilot 2026-10-23) |
-| AI reviewer | Pending — a fresh Claude reviewer before the first outcome review |
+| AI reviewer | independent Claude reviewer subagent (`solo:solo-reviewer`, Sonnet, read-only, no maker context), 2026-10-24: approved (see Approval) |
 | Charter objectives | OBJ-01 below (no separate charter for this repository) |
 | Analytics / data source of truth | PostHog Cloud EU, shared own-products project, `product = "portfolio"` (ADR-0005 D-2) — off until GO-LIVE step 3. Vercel Web Analytics (cookieless page counts, ADR-0005 layer 3) stays as it is. GA4 removed 2026-10-23 |
 | Dashboard | PostHog dashboard "Portfolio pilot" — spec in [`analytics/posthog/dashboard.json`](../../analytics/posthog/dashboard.json), created by the owner after sign-up; Sentry project `personal-yu0/portfolio-site-web` |
@@ -182,3 +182,12 @@ Privacy and data rules:
 | G5 (06 Requirements) | Objective has outcome, leading and guardrail KPIs with formulas | pending | Owner — own product, no external signatory | | this file |
 | G10 (11 Deployment) | Checks 1–5 and 7 pass; check 6 passes or is waived with a dated action | pending | Owner | | |
 | G11 (12 Operations) | Dashboard live, first outcome review scheduled | pending | Owner | | |
+
+## Approval (2026-10-24)
+
+| Field | Value |
+|---|---|
+| Checker | independent Claude reviewer subagent (`solo:solo-reviewer`, Sonnet, read-only, no maker context) |
+| Approver | AI approval under the owner's process (approvals by the owner or AI with evidence; maker and checker are different agents). Recorded by Claude session oa-remainder on the owner's instruction "ทำที่เหลือให้หน่อย" (2026-10-24) |
+| Verdict | **approved** |
+| Evidence | contact_sent, view_project, click_demo, click_source in src/ with tests; server-analytics.ts ($ip null, randomUUID); consent key; analytics/posthog/dashboard.json; audit:links; events marked off, dashboard planned. |
