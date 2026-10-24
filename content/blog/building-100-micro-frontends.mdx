@@ -1,21 +1,22 @@
 ---
-title: "Building 100 Micro-Frontends: Lessons from a Solopreneur Journey"
-excerpt: "How I built and deployed 100 independently deployed micro-frontends on Vercel, the architecture decisions, trade-offs, and what I learned about scaling a one-person dev operation."
+title: "Building a Fleet of Micro-Frontends: Lessons from a Solopreneur Journey"
+excerpt: "How I build and deploy many small, independently deployed Next.js apps on Vercel: the architecture decisions, trade-offs, and what I learned about scaling a one-person dev operation."
 author: "Chaowalit Greepoke"
 publishedAt: "2026-03-15"
 tags: ["Architecture", "Micro-Frontends", "Next.js", "Vercel", "Solopreneur"]
 featured: true
 ---
 
-When I set out to build my portfolio, I didn't just want a single monolithic app. I wanted to prove a point: **one developer can ship 100 independently deployed applications** using modern tooling and a disciplined architecture.
+When I set out to build my portfolio, I didn't just want a single monolithic app. I wanted to prove a point: **one developer can run a large fleet of independently deployed applications** using modern tooling and a disciplined architecture. The fleet is still growing, and not every app is production-grade: some are live products, others are prototypes or experiments, and the project gallery labels each one honestly.
 
 ## The Architecture
 
 Each micro-frontend is a standalone Next.js application with its own:
 - Repository and deployment pipeline
-- Custom domain or subdomain
+- Custom domain or subdomain (where it needs one)
 - Independent versioning and release cycle
-- Separate analytics and error tracking
+
+Monitoring is uneven by design: error tracking with Sentry and analytics with PostHog are wired into a subset of the apps, mostly the products that have real users, and are not yet in every app.
 
 ## Why Micro-Frontends?
 
@@ -23,15 +24,15 @@ Each micro-frontend is a standalone Next.js application with its own:
 Each app can be updated, rolled back, or rebuilt without affecting any other. When I experiment with a new framework or pattern, I can test it in one app first.
 
 ### Performance
-Small bundles load fast. Most of my tools are under 100KB gzipped. No bloated mega-bundle serving unused code to every visitor.
+Small bundles load fast. Most of my tools ship little JavaScript, with no bloated mega-bundle serving unused code to every visitor.
 
 ### Learning
-Building 100 apps taught me more than building one big one. Each project is a chance to explore a different pattern: MDX blogs, canvas-based tools, real-time dashboards, AI integrations.
+Building many apps taught me more than building one big one. Each project is a chance to explore a different pattern: MDX blogs, canvas-based tools, real-time dashboards, AI integrations.
 
 ## The Tech Stack
 
-Every project shares a common foundation:
-- **Next.js 15** with App Router
+Most projects share a common foundation:
+- **Next.js** with App Router
 - **TypeScript** for type safety
 - **Tailwind CSS** for styling
 - **Vercel** for deployment
@@ -41,14 +42,14 @@ But each project is free to add its own dependencies based on its needs.
 ## Key Trade-offs
 
 ### The Good
-- Zero cross-app breakage
-- Deploy in seconds, not minutes
+- Changes in one app rarely break another
+- Fast deploys, because each app is small
 - Easy to archive or sunset projects
 
 ### The Challenging
 - Shared component libraries require discipline
 - Authentication must be solved once and reused
-- Analytics aggregation across 100 domains
+- Analytics and error tracking have to be rolled out app by app, and aggregating them across many domains is still unfinished work
 
 ## What I'd Do Differently
 
@@ -56,13 +57,7 @@ If I started over, I would:
 1. Create a shared design system package from day one
 2. Set up a monorepo with Turborepo earlier
 3. Automate more of the project scaffolding
-
-## The Numbers
-
-- **100** independently deployed apps
-- **9** categories (tools, productivity, content, creative, business, social, AI & data, misc, client work)
-- **~4.5s** total build time per app
-- **0** cross-app production incidents
+4. Wire in error tracking and analytics at scaffolding time instead of retrofitting them
 
 ---
 

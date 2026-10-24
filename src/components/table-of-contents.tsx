@@ -62,7 +62,8 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
           "bg-background/95 backdrop-blur-sm border-l border-border shadow-lg",
           "lg:sticky lg:top-24 lg:w-56 lg:shrink-0 lg:border-l-0 lg:bg-transparent lg:shadow-none",
           // Mobile visibility toggle
-          isOpen ? "translate-x-0" : "translate-x-full lg:translate-x-0"
+          // Closed: removed from layout; an off-screen fixed panel widens the page at 375px
+          isOpen ? "translate-x-0" : "max-lg:hidden"
         )}
       >
         <div className="p-4 lg:p-0">
