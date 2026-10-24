@@ -49,10 +49,79 @@
 - `npm run build` — ผ่าน
 
 ## Review evidence
-pending
+
+- **test**: ผ่าน
+  ---
+        duration_ms: 0.237833
+        type: 'test'
+        ...
+      # Subtest: registers /sw.js with scope / by default
+      ok 4 - registers /sw.js with scope / by default
+        ---
+        duration_ms: 0.741161
+        type: 'test'
+        ...
+      1..4
+  ok 10 - registerServiceWorker
+    ---
+    duration_ms: 3.020034
+    type: 'suite'
+    ...
+  1..10
+  # tests 54
+  # suites 10
+  # pass 54
+  # fail 0
+  # cancelled 0
+  # skipped 0
+  # todo 0
+  # duration_ms 603.204789
+- **typecheck**: ผ่าน
+  > bookchaowalit-portfolio@0.1.0 typecheck
+  > tsc --noEmit
+- **lint**: ผ่าน
+  > bookchaowalit-portfolio@0.1.0 lint
+  > eslint
+
+
+  /home/runner/work/portfolio-site-web/portfolio-site-web/mdx-components.tsx
+    50:7  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+  ✖ 1 problem (0 errors, 1 warning)
+- **build**: ผ่าน
+  ├ ○ /projects-rss.xml                                  429 B         165 kB          1h      1y
+  ├ ○ /robots.txt                                        430 B         165 kB
+  ├ ○ /rss-th.xml                                        429 B         165 kB          1h      1y
+  ├ ○ /rss.xml                                           430 B         165 kB          1h      1y
+  └ ○ /sitemap.xml                                       429 B         165 kB
+  + First Load JS shared by all                         165 kB
+    ├ chunks/496-9c3b34683215dd52.js                    106 kB
+    ├ chunks/4bd1b696-72b775907cb33954.js              54.4 kB
+    └ other shared chunks (total)                      4.07 kB
+
+
+  ○  (Static)   prerendered as static content
+  ●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+  ƒ  (Dynamic)  server-rendered on demand
+
+
+  [@sentry/nextjs] Importing `withSentryConfig` from `@sentry/nextjs` is deprecated and will stop working in v11. Import it from `@sentry/nextjs/config` instead:
+    import { withSentryConfig } from '@sentry/nextjs/config';
+  [@sentry/nextjs - Node.js] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+  [@sentry/nextjs - Node.js] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+  [@sentry/nextjs - Edge] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+  [@sentry/nextjs - Edge] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+  [@sentry/nextjs - Client] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+  [@sentry/nextjs - Client] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+   ⚠ Using edge runtime on a page currently disables static generation for that page
+- **claude-review**: ผ่าน
+  approve; 1 finding(s)
+  [P3] src/lib/sw-register.ts:27 SKIP_WAITING postMessage is redundant because sw.ts already sets skipWaiting: true → Optional: drop the postMessage, or keep it as a harmless safeguard.
+- Run: https://github.com/bookchaowalit-website/portfolio-site-web/actions/runs/40132147412 · 2026-10-25 04:04 ICT
 
 ## Visual review
-N/A — ไม่มีการเปลี่ยน UI
+
+- **visual-ai**: ผ่าน — audit {'blocker': 0, 'major': 3, 'minor': 8}; AI verdict pass; checked ['/en @375', '/en @768', '/en @1440']
 
 ## Definition of Done
 - [x] reject ไม่ throw และไม่ส่ง Sentry (warn เท่านั้น)
