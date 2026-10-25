@@ -218,7 +218,7 @@ function SourceCard({
         )}
         {summary.errorMessage && (
           <div
-            className="col-span-2 text-[11px] text-yellow-600 dark:text-yellow-400"
+            className="col-span-2 text-[11px] text-yellow-700 dark:text-yellow-400"
             role="note"
           >
             {summary.errorMessage}

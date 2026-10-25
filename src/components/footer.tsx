@@ -278,12 +278,8 @@ export function Footer() {
             </motion.div>
 
             {/* Simple copyright */}
-            <motion.div
-              initial={reducedMotion ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.6 }}
-              className="text-center"
-            >
+            {/* No opacity fade: axe samples mid-fade text and reports false contrast failures */}
+            <div className="text-center">
               <p className="text-sm text-muted-foreground font-[family-name:var(--font-doodle)]">
                 {t("copyright", { year: currentYear })}
               </p>
@@ -291,7 +287,7 @@ export function Footer() {
               <p className="text-xs text-foreground mt-1">
                 {t("roles")}
               </p>
-            </motion.div>
+            </div>
           </div>
         </div>
       </footer>
