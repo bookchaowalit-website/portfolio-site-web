@@ -113,7 +113,7 @@ export function KnowledgeAtlasSection() {
                       <div className="flex flex-wrap gap-1">
                         <Badge
                           variant="secondary"
-                          className="text-[10px] py-0 px-1.5"
+                          className="text-xs py-0 px-1.5"
                           style={{ borderColor: color, color }}
                         >
                           {domainCount} {domainCount === 1 ? "domain" : "domains"}
@@ -123,13 +123,13 @@ export function KnowledgeAtlasSection() {
                         {cat.domains.slice(0, 4).map((d) => {
                           const domain = inventory.domains.find((dom) => dom.id === d);
                           return domain ? (
-                            <span key={d} className="text-[10px] text-muted-foreground">
+                            <span key={d} className="text-xs text-muted-foreground">
                               {domain.name}
                             </span>
                           ) : null;
                         })}
                         {cat.domains.length > 4 && (
-                          <span className="text-[10px] text-muted-foreground/60">
+                          <span className="text-xs text-muted-foreground/60">
                             +{cat.domains.length - 4}
                           </span>
                         )}

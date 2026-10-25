@@ -193,6 +193,7 @@ export function DomainMap() {
                     x={node.x}
                     y={node.y + node.radius + 12}
                     textAnchor="middle"
+                    aria-hidden="true"
                     className="text-[9px] fill-foreground pointer-events-none select-none"
                     opacity={isHovered ? 1 : 0.7}
                   >

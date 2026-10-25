@@ -98,13 +98,13 @@ function NotebookPostEntry({
               {post.tags.slice(0, 3).map((tag) => (
                 <span
                   key={tag}
-                  className="font-[family-name:var(--font-doodle)] text-[11px] text-foreground/70 border border-border/60 px-1.5 py-0.5 hover:border-primary/30 transition-colors"
+                  className="font-[family-name:var(--font-doodle)] text-xs text-foreground/70 border border-border/60 px-1.5 py-0.5 hover:border-primary/30 transition-colors"
                 >
                   #{tag}
                 </span>
               ))}
               {post.tags.length > 3 && (
-                <span className="font-[family-name:var(--font-doodle)] text-[11px] text-foreground/70">
+                <span className="font-[family-name:var(--font-doodle)] text-xs text-foreground/70">
                   +{post.tags.length - 3}
                 </span>
               )}

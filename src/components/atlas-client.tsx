@@ -304,7 +304,7 @@ export function AtlasClient() {
             <div className="flex flex-col items-center gap-1">
               <div className="text-primary">{stat.icon}</div>
               <div className="text-2xl font-bold">{stat.value}</div>
-              <div className="text-[11px] text-muted-foreground">{stat.label}</div>
+              <div className="text-xs text-muted-foreground">{stat.label}</div>
             </div>
           </StickyNote>
         ))}
@@ -392,6 +392,7 @@ export function AtlasClient() {
                       x={avgX}
                       y={avgY - (isMobile ? 30 : 45)}
                       textAnchor="middle"
+                      aria-hidden="true"
                       className="text-[10px] font-semibold pointer-events-none select-none"
                       fill={isActive ? categoryColors[cat.id] : "#999"}
                       opacity={isActive ? 0.8 : 0.25}
@@ -496,6 +497,7 @@ export function AtlasClient() {
                           x={node.x}
                           y={node.y + node.radius + 13}
                           textAnchor="middle"
+                          aria-hidden="true"
                           className="text-[9px] fill-foreground pointer-events-none select-none"
                           fontWeight={isHovered || isSelected ? 600 : 400}
                           opacity={isHovered || isSelected ? 1 : 0.65}
@@ -585,17 +587,17 @@ export function AtlasClient() {
                         <div className="flex items-center gap-2">
                           <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: catColor }} />
                           <h3 className="text-sm font-bold">{domain.name}</h3>
-                          <Badge variant="secondary" className="text-[10px] ml-auto shrink-0">{domain.depth}</Badge>
+                          <Badge variant="secondary" className="text-xs ml-auto shrink-0">{domain.depth}</Badge>
                         </div>
                         <p className="text-xs text-muted-foreground line-clamp-2">{domain.description}</p>
-                        <div className="flex gap-3 text-[11px] text-muted-foreground">
+                        <div className="flex gap-3 text-xs text-muted-foreground">
                           <span>{domain.fileCount.toLocaleString()} files</span>
                           <span>{domain.subdirectories.length} folders</span>
                         </div>
                         {domain.integrations.length > 0 && (
                           <div className="flex flex-wrap gap-1">
                             {domain.integrations.slice(0, 3).map((int) => (
-                              <Badge key={int} variant="outline" className="text-[10px]">{int}</Badge>
+                              <Badge key={int} variant="outline" className="text-xs">{int}</Badge>
                             ))}
                           </div>
                         )}
@@ -643,19 +645,19 @@ export function AtlasClient() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                 <div className="bg-secondary/40 p-3 text-center">
                   <div className="text-lg font-bold">{selectedData.fileCount.toLocaleString()}</div>
-                  <div className="text-[11px] text-muted-foreground">{t("files")}</div>
+                  <div className="text-xs text-muted-foreground">{t("files")}</div>
                 </div>
                 <div className="bg-secondary/40 p-3 text-center">
                   <div className="text-lg font-bold">{selectedData.subdirectories.length}</div>
-                  <div className="text-[11px] text-muted-foreground">{t("subdirectories")}</div>
+                  <div className="text-xs text-muted-foreground">{t("subdirectories")}</div>
                 </div>
                 <div className="bg-secondary/40 p-3 text-center">
                   <div className="text-lg font-bold">{selectedData.integrations.length}</div>
-                  <div className="text-[11px] text-muted-foreground">{t("integrations")}</div>
+                  <div className="text-xs text-muted-foreground">{t("integrations")}</div>
                 </div>
                 <div className="bg-secondary/40 p-3 text-center">
                   <div className="text-lg font-bold">{selectedData.notableArtifacts.length}</div>
-                  <div className="text-[11px] text-muted-foreground">{t("artifacts")}</div>
+                  <div className="text-xs text-muted-foreground">{t("artifacts")}</div>
                 </div>
               </div>
 
@@ -777,7 +779,7 @@ export function AtlasClient() {
                             <p className="text-xs text-muted-foreground line-clamp-2 mb-2">{project.description}</p>
                             <div className="flex flex-wrap gap-1">
                               {project.tech.slice(0, 3).map(tech => (
-                                <Badge key={tech} variant="outline" className="text-[10px] px-1.5 py-0">{tech}</Badge>
+                                <Badge key={tech} variant="outline" className="text-xs px-1.5 py-0">{tech}</Badge>
                               ))}
                             </div>
                           </div>
@@ -824,7 +826,7 @@ export function AtlasClient() {
                   {item.domains.map((d) => {
                     const domain = inventory.domains.find((dom) => dom.id === d);
                     return domain ? (
-                      <Badge key={d} variant="secondary" className="text-[10px]">{domain.name}</Badge>
+                      <Badge key={d} variant="secondary" className="text-xs">{domain.name}</Badge>
                     ) : null;
                   })}
                 </div>
