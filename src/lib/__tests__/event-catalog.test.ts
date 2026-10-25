@@ -105,7 +105,9 @@ describe("event catalog", () => {
     const front = review.slice(0, review.indexOf("\n---", 4));
     assert.doesNotMatch(front, /status:\s*template/);
     assert.match(review, /\| Review ID \| OR-201 \|/);
-    assert.match(review, /\| Status \| pending go-live \|/);
+    // Still pending (backlog-sync acts only on "decided"); the due date is filled in at go-live.
+    assert.match(review, /\| Status \| pending\b[^|]*\|/);
+    assert.match(review, /\| Due \| \d{4}-\d{2}-\d{2}\b/);
     assert.match(review, /^\| # \| Decision \| Type \| Owner \| Due \| Tracked in \|$/m);
     assert.match(review, /^\| 1 \| \[[^\]]+\] \|/m);
     assert.ok(fs.existsSync(path.join(root, "docs/measurement/EXPERIMENT-LOG.md")));
