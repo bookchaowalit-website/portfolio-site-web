@@ -41,7 +41,7 @@ owner sets the three variables in [GO-LIVE.md](GO-LIVE.md). Event catalog:
 | Charter objectives | OBJ-01 below (no separate charter for this repository) |
 | Analytics / data source of truth | PostHog Cloud EU, shared own-products project, `product = "portfolio"` (ADR-0005 D-2) — off until GO-LIVE step 3. Vercel Web Analytics (cookieless page counts, ADR-0005 layer 3) stays as it is. GA4 removed 2026-10-23 |
 | Dashboard | PostHog dashboard "Portfolio pilot" — spec in [`analytics/posthog/dashboard.json`](../../analytics/posthog/dashboard.json), created by the owner after sign-up; Sentry project `personal-yu0/portfolio-site-web` |
-| Next review | OR-201 ([OUTCOME-REVIEW-001.md](OUTCOME-REVIEW-001.md)) — due go-live + 30 days; pending go-live |
+| Next review | OR-201 ([OUTCOME-REVIEW-001.md](OUTCOME-REVIEW-001.md)) — due 2026-11-25 (go-live 2026-10-26 + 30 days) |
 
 ## KPI tree
 
