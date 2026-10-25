@@ -348,7 +348,7 @@ export function CommandPalette() {
                   className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none"
                   aria-label={t("searchLabel")}
                 />
-                <kbd className="hidden sm:inline text-[10px] font-mono text-muted-foreground border border-border px-1.5 py-0.5">
+                <kbd className="hidden sm:inline text-xs font-mono text-muted-foreground border border-border px-1.5 py-0.5">
                   ESC
                 </kbd>
               </div>
@@ -362,7 +362,7 @@ export function CommandPalette() {
                 )}
                 {Object.entries(grouped).map(([group, groupItems]) => (
                   <div key={group}>
-                    <div className="px-4 py-1.5 text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+                    <div className="px-4 py-1.5 text-xs font-mono uppercase tracking-wider text-muted-foreground">
                       {group}
                     </div>
                     {groupItems.map((item) => {
@@ -405,7 +405,7 @@ export function CommandPalette() {
               </div>
 
               {/* Footer hint */}
-              <div className="flex items-center justify-between border-t border-border px-4 py-2 text-[10px] text-muted-foreground">
+              <div className="flex items-center justify-between border-t border-border px-4 py-2 text-xs text-muted-foreground">
                 <div className="flex items-center gap-3">
                   <span className="flex items-center gap-1">
                     <kbd className="font-mono border border-border px-1 py-0.5">↑↓</kbd>

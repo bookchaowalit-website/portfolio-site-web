@@ -28,7 +28,7 @@ function StatusBadge({ project }: { project: AppProject }) {
   if (project.status === "live") {
     return (
       <span
-        className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-white bg-foreground px-1.5 py-0.5"
+        className="inline-flex items-center gap-1 text-xs uppercase tracking-wider text-white bg-foreground px-1.5 py-0.5"
         title={evidenceLabel}
       >
         <span className="size-1.5 rounded-full bg-white animate-pulse" />
@@ -38,14 +38,14 @@ function StatusBadge({ project }: { project: AppProject }) {
   }
   if (project.status === "wip") {
     return (
-      <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-foreground bg-muted px-1.5 py-0.5">
+      <span className="inline-flex items-center gap-1 text-xs uppercase tracking-wider text-foreground bg-muted px-1.5 py-0.5">
         <span className="size-1.5 rounded-full bg-foreground/50" />
         {evidenceLabel}
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-muted-foreground bg-muted px-1.5 py-0.5">
+    <span className="inline-flex items-center gap-1 text-xs uppercase tracking-wider text-muted-foreground bg-muted px-1.5 py-0.5">
       {evidenceLabel}
     </span>
   );
@@ -211,7 +211,7 @@ export function FeaturedProjects() {
                 {project.tech.slice(0, 3).map((tech) => (
                   <span
                     key={tech}
-                    className="text-[10px] px-1.5 py-0.5 bg-foreground/5 text-foreground/80 border border-foreground/10"
+                    className="text-xs px-1.5 py-0.5 bg-foreground/5 text-foreground/80 border border-foreground/10"
                   >
                     {tech}
                   </span>
@@ -219,21 +219,21 @@ export function FeaturedProjects() {
               </div>
 
               <div className="flex items-center justify-between pt-2 border-t border-foreground/10">
-                <span className="flex items-center gap-1 text-[10px] uppercase tracking-wider text-foreground/70">
+                <span className="flex items-center gap-1 text-xs uppercase tracking-wider text-foreground/70">
                   {getProjectDomains(project).map((domain) => tProjects(projectDomainMeta[domain].labelKey)).join(" · ")}
                 </span>
                 <div className="flex items-center gap-2">
                   {project.promise ? (
                     <Link
                       href={{ pathname: "/projects/[slug]", params: { slug: project.slug } }}
-                      className="inline-flex min-h-11 items-center px-2 text-[10px] uppercase tracking-wider text-foreground/70 hover:text-foreground transition-colors underline underline-offset-2"
+                      className="inline-flex min-h-11 items-center px-2 text-xs uppercase tracking-wider text-foreground/70 hover:text-foreground transition-colors underline underline-offset-2"
                     >
                       {tProjects("readCaseStudy")}
                     </Link>
                   ) : (
                     <button
                       onClick={() => setPreview(project)}
-                      className="inline-flex min-h-11 items-center px-2 text-[10px] uppercase tracking-wider text-foreground/70 hover:text-foreground transition-colors underline underline-offset-2"
+                      className="inline-flex min-h-11 items-center px-2 text-xs uppercase tracking-wider text-foreground/70 hover:text-foreground transition-colors underline underline-offset-2"
                       aria-label={`Preview ${project.name}`}
                     >
                       {tProjects("preview")}

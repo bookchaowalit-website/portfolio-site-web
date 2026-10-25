@@ -66,7 +66,7 @@ function FocusLaneCard({
         <div className="flex h-11 w-11 shrink-0 items-center justify-center border border-border bg-muted/40">
           <Icon className="h-5 w-5 text-foreground" aria-hidden="true" />
         </div>
-        <span className="border border-border px-2 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+        <span className="border border-border px-2 py-1 font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground">
           {statusLabel}
         </span>
       </div>
@@ -77,7 +77,7 @@ function FocusLaneCard({
       </p>
 
       <div className="mt-auto border-t border-border pt-5">
-        <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+        <p className="mb-2 font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground">
           {proofLabel}
         </p>
         <div className="flex flex-wrap gap-x-5 gap-y-1">

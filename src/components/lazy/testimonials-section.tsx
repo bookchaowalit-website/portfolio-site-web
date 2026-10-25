@@ -81,7 +81,7 @@ export function TestimonialsSection({ testimonials }: TestimonialsSectionProps) 
                   </div>
                   <Badge
                     variant="secondary"
-                    className="bg-muted text-foreground text-[10px] font-[family-name:var(--font-doodle)]"
+                    className="bg-muted text-foreground text-xs font-[family-name:var(--font-doodle)]"
                   >
                     {getCategoryLabel(testimonial.category)}
                   </Badge>
