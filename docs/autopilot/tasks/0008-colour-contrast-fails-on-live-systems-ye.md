@@ -43,10 +43,81 @@
 - `npm run test:a11y` / axe — ไม่ได้รันในที่นี้ ให้ visual gate ยืนยัน
 
 ## Review evidence
-pending
+
+- **test**: ผ่าน
+  ---
+        duration_ms: 0.970593
+        type: 'test'
+        ...
+      # Subtest: times out after the configured limit without throwing
+      ok 7 - times out after the configured limit without throwing
+        ---
+        duration_ms: 20.615158
+        type: 'test'
+        ...
+      1..7
+  ok 10 - server analytics (contact_sent)
+    ---
+    duration_ms: 51.901277
+    type: 'suite'
+    ...
+  1..10
+  # tests 52
+  # suites 10
+  # pass 52
+  # fail 0
+  # cancelled 0
+  # skipped 0
+  # todo 0
+  # duration_ms 626.759491
+- **typecheck**: ผ่าน
+  > bookchaowalit-portfolio@0.1.0 typecheck
+  > tsc --noEmit
+- **lint**: ผ่าน
+  > bookchaowalit-portfolio@0.1.0 lint
+  > eslint
+
+
+  /home/runner/work/portfolio-site-web/portfolio-site-web/mdx-components.tsx
+    50:7  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+  ✖ 1 problem (0 errors, 1 warning)
+- **build**: ผ่าน
+  ├ ○ /projects-rss.xml                                  430 B         165 kB          1h      1y
+  ├ ○ /robots.txt                                        430 B         165 kB
+  ├ ○ /rss-th.xml                                        429 B         165 kB          1h      1y
+  ├ ○ /rss.xml                                           429 B         165 kB          1h      1y
+  └ ○ /sitemap.xml                                       429 B         165 kB
+  + First Load JS shared by all                         165 kB
+    ├ chunks/4952-f9d357887781d5fe.js                   106 kB
+    ├ chunks/4bd1b696-72b775907cb33954.js              54.4 kB
+    └ other shared chunks (total)                      4.08 kB
+
+
+  ○  (Static)   prerendered as static content
+  ●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+  ƒ  (Dynamic)  server-rendered on demand
+
+
+  [@sentry/nextjs] Importing `withSentryConfig` from `@sentry/nextjs` is deprecated and will stop working in v11. Import it from `@sentry/nextjs/config` instead:
+    import { withSentryConfig } from '@sentry/nextjs/config';
+  [@sentry/nextjs - Node.js] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+  [@sentry/nextjs - Node.js] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+  [@sentry/nextjs - Edge] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+  [@sentry/nextjs - Edge] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+  [@sentry/nextjs - Client] Warning: No auth token provided. Will not create release. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+  [@sentry/nextjs - Client] Warning: No auth token provided. Will not upload source maps. Please set the `authToken` option. You can find information on how to generate a Sentry auth token here: https://docs.sentry.io/api/auth/
+   ⚠ Using edge runtime on a page currently disables static generation for that page
+- **claude-review**: ผ่าน
+  approve; 3 finding(s)
+  [P2] public/sw.js:1 Generated minified service worker is modified in the commit; unrelated to the contrast fix. → Revert public/sw.js (git checkout main -- public/sw.js).
+  [P2] src/components/footer.tsx:281 The /about fix rests on an unverified guess that axe sampled the text mid-fade; the muted-foreground colour itself looks compliant. → Confirm with the visual gate's axe run on /en/about at 375px; if the violation persists, inspect the actual computed colours and backgrounds.
+  [P3] src/lib/__tests__/contrast-classes.test.ts:1 Source-string greps are a brittle guard and do not test contrast. → Rely on the a11y suite, or compute contrast from the tokens.
+- Run: https://github.com/bookchaowalit-website/portfolio-site-web/actions/runs/40233247685 · 2026-10-26 04:08 ICT
 
 ## Visual review
-pending
+
+- **visual-ai**: ผ่าน — audit {'blocker': 0, 'major': 3, 'minor': 3}; AI verdict pass; checked ['/en/live-systems @375', '/en/live-systems @1440 (first slice only)', '/en/about @375', '/en/about @1440 (first slice only)']
 
 ## Definition of Done
 - [ ] ไม่มี `color-contrast` บน `/en/live-systems` และ `/en/about` (รอ visual gate / axe)
