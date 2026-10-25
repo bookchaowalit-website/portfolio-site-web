@@ -234,7 +234,7 @@ export function FeaturedProjects() {
                     <button
                       onClick={() => setPreview(project)}
                       className="inline-flex min-h-11 items-center px-2 text-[10px] uppercase tracking-wider text-foreground/70 hover:text-foreground transition-colors underline underline-offset-2"
-                      aria-label={`Preview ${project.name}`}
+                      aria-label={`${tProjects("preview")} ${project.name}`}
                     >
                       {tProjects("preview")}
                     </button>

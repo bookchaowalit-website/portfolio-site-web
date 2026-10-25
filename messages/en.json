@@ -1055,7 +1055,7 @@
   },
   "command": {
     "paletteLabel": "Command palette",
-    "openPalette": "Open command palette (Cmd+K)",
+    "openPalette": "⌘K — Open command palette",
     "searchPlaceholder": "Type a command or search pages...",
     "searchLabel": "Search commands",
     "noResults": "No results found for",
