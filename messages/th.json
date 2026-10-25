@@ -1055,7 +1055,7 @@
   },
   "command": {
     "paletteLabel": "เมนูคำสั่ง",
-    "openPalette": "เปิดถาดคำสั่ง (Cmd+K)",
+    "openPalette": "⌘K — เปิดถาดคำสั่ง",
     "searchPlaceholder": "พิมพ์คำสั่งหรือค้นหาหน้า...",
     "searchLabel": "ค้นหาคำสั่ง",
     "noResults": "ไม่พบผลลัพธ์สำหรับ",
