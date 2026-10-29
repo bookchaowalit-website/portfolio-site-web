@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Sarabun, Kalam } from "next/font/google";
+import { Geist, Geist_Mono, Noto_Sans_Thai, Kalam } from "next/font/google";
 import dynamic from "next/dynamic";
 import "../globals.css";
 import { Navigation } from "@/components/navigation";
@@ -11,6 +11,7 @@ import { loadMessages } from '@/i18n/request';
 import { notFound } from 'next/navigation';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { BackToTop } from '@/components/back-to-top';
+import { MotionProvider } from '@/components/motion-provider';
 import { readConfig } from '@/lib/browser-analytics';
 
 const Footer = dynamic(() => import("@/components/footer").then(mod => ({ default: mod.Footer })), {
@@ -38,8 +39,9 @@ const geistMono = Geist_Mono({
   fallback: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"],
 });
 
-const sarabun = Sarabun({
-  variable: "--font-sarabun",
+// Design floor (ADR-0007): Thai text renders in Noto Sans Thai.
+const notoSansThai = Noto_Sans_Thai({
+  variable: "--font-thai",
   subsets: ["latin", "thai"],
   weight: ["300", "400", "500", "600", "700"],
   display: "swap",
@@ -184,9 +186,10 @@ export default async function LocaleLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${sarabun.variable} ${kalam.variable} antialiased ${isThai ? 'font-thai' : ''}`}
+        className={`${geistSans.variable} ${geistMono.variable} ${notoSansThai.variable} ${kalam.variable} antialiased ${isThai ? 'font-thai' : ''}`}
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
+        <MotionProvider>
           <a
             href="#main-content"
             className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
@@ -205,6 +208,7 @@ export default async function LocaleLayout({
           <BackToTop />
           <Analytics mode="production" />
           {readConfig() && <AnalyticsProvider />}
+        </MotionProvider>
         </NextIntlClientProvider>
       </body>
     </html>

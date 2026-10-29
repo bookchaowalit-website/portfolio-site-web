@@ -296,7 +296,7 @@ export function ContactClient() {
                   <p className="font-medium">{t("email")}</p>
                   <a
                     href="mailto:bookchaowalit@gmail.com"
-                    className="text-sm text-muted-foreground underline decoration-border underline-offset-2 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="inline-block py-1 text-sm text-muted-foreground underline decoration-border underline-offset-2 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     bookchaowalit@gmail.com
                   </a>
@@ -311,7 +311,7 @@ export function ContactClient() {
                   <p className="font-medium">{t("phone")}</p>
                   <a
                     href="tel:+66654169146"
-                    className="text-sm text-muted-foreground underline decoration-border underline-offset-2 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="inline-block py-1 text-sm text-muted-foreground underline decoration-border underline-offset-2 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     +66 65-416-9146
                   </a>
