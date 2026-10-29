@@ -185,7 +185,7 @@ export function FeaturedProjects() {
                 {project.promise ? (
                   <Link
                     href={{ pathname: "/projects/[slug]", params: { slug: project.slug } }}
-                    className="text-sm font-bold leading-tight hover:underline"
+                    className="inline-block py-1 text-sm font-bold leading-tight hover:underline"
                   >
                     {project.name}
                   </Link>

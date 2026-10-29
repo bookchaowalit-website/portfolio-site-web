@@ -47,7 +47,7 @@ export function Footer() {
               <motion.div whileHover={hoverSecondary}>
                 <Link
                   href="/"
-                  className="text-muted-foreground hover:text-primary font-[family-name:var(--font-doodle)] text-lg transition-colors duration-200"
+                  className="inline-block py-1 text-muted-foreground hover:text-primary font-[family-name:var(--font-doodle)] text-lg transition-colors duration-200"
                   style={{ transform: `rotate(1deg)` }}
                 >
                   {tNav("home")}
@@ -56,7 +56,7 @@ export function Footer() {
               <motion.div whileHover={hoverSecondary}>
                 <Link
                   href="/about"
-                  className="text-muted-foreground hover:text-primary font-[family-name:var(--font-doodle)] text-lg transition-colors duration-200"
+                  className="inline-block py-1 text-muted-foreground hover:text-primary font-[family-name:var(--font-doodle)] text-lg transition-colors duration-200"
                   style={{ transform: `rotate(-0.5deg)` }}
                 >
                   {tNav("about")}
@@ -65,7 +65,7 @@ export function Footer() {
               <motion.div whileHover={hoverSecondary}>
                 <Link
                   href="/projects"
-                  className="text-muted-foreground hover:text-primary font-[family-name:var(--font-doodle)] text-lg transition-colors duration-200"
+                  className="inline-block py-1 text-muted-foreground hover:text-primary font-[family-name:var(--font-doodle)] text-lg transition-colors duration-200"
                   style={{ transform: `rotate(0.5deg)` }}
                 >
                   {tNav("projects")}
@@ -74,7 +74,7 @@ export function Footer() {
               <motion.div whileHover={hoverSecondary}>
                 <Link
                   href="/blog"
-                  className="text-muted-foreground hover:text-primary font-[family-name:var(--font-doodle)] text-lg transition-colors duration-200"
+                  className="inline-block py-1 text-muted-foreground hover:text-primary font-[family-name:var(--font-doodle)] text-lg transition-colors duration-200"
                   style={{ transform: `rotate(-1deg)` }}
                 >
                   {tNav("blog")}
@@ -83,7 +83,7 @@ export function Footer() {
               <motion.div whileHover={hoverSecondary}>
                 <Link
                   href="/now"
-                  className="text-muted-foreground hover:text-primary font-[family-name:var(--font-doodle)] text-lg transition-colors duration-200"
+                  className="inline-block py-1 text-muted-foreground hover:text-primary font-[family-name:var(--font-doodle)] text-lg transition-colors duration-200"
                   style={{ transform: `rotate(-0.5deg)` }}
                 >
                   {tNav("now")}
@@ -92,7 +92,7 @@ export function Footer() {
               <motion.div whileHover={hoverSecondary}>
                 <Link
                   href="/contact"
-                  className="text-muted-foreground hover:text-primary font-[family-name:var(--font-doodle)] text-lg transition-colors duration-200"
+                  className="inline-block py-1 text-muted-foreground hover:text-primary font-[family-name:var(--font-doodle)] text-lg transition-colors duration-200"
                   style={{ transform: `rotate(0.5deg)` }}
                 >
                   {tNav("contact")}
@@ -112,7 +112,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={hoverPrimary}
-                className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center text-muted-foreground hover:text-primary transition-colors duration-200"
                 aria-label="GitHub"
               >
                 <Github className="w-5 h-5" />
@@ -122,7 +122,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={hoverPrimary}
-                className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center text-muted-foreground hover:text-primary transition-colors duration-200"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="w-5 h-5" />
@@ -132,7 +132,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={hoverPrimary}
-                className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center text-muted-foreground hover:text-primary transition-colors duration-200"
                 aria-label="Twitter"
               >
                 <Twitter className="w-5 h-5" />
@@ -142,7 +142,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={hoverPrimary}
-                className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center text-muted-foreground hover:text-primary transition-colors duration-200"
                 aria-label="Dev.to"
               >
                 <PenTool className="w-5 h-5" />
@@ -152,7 +152,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={hoverPrimary}
-                className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center text-muted-foreground hover:text-primary transition-colors duration-200"
                 aria-label="Medium"
               >
                 <BookOpen className="w-5 h-5" />
@@ -162,7 +162,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={hoverPrimary}
-                className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center text-muted-foreground hover:text-primary transition-colors duration-200"
                 aria-label="Upwork"
               >
                 <Briefcase className="w-5 h-5" />
@@ -172,7 +172,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={hoverPrimary}
-                className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center text-muted-foreground hover:text-primary transition-colors duration-200"
                 aria-label="Fastwork"
               >
                 <Zap className="w-5 h-5" />
@@ -180,7 +180,7 @@ export function Footer() {
               <motion.a
                 href="mailto:bookchaowalit@gmail.com"
                 whileHover={hoverPrimary}
-                className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center text-muted-foreground hover:text-primary transition-colors duration-200"
                 aria-label="Email"
               >
                 <Mail className="w-5 h-5" />
@@ -188,7 +188,7 @@ export function Footer() {
               <motion.a
                 href="/rss.xml"
                 whileHover={hoverPrimary}
-                className="text-muted-foreground hover:text-primary transition-colors duration-200"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center text-muted-foreground hover:text-primary transition-colors duration-200"
                 aria-label={t("rssFeed")}
               >
                 <Rss className="w-5 h-5" />

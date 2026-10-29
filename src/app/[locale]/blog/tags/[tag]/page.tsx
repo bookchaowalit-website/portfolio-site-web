@@ -157,7 +157,7 @@ export default async function BlogTagPage({ params }: Props) {
             {t('tagLabel')}
           </span>
         </div>
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 font-[family-name:var(--font-sarabun)]">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 font-[family-name:var(--font-thai)]">
           #{displayTag}
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">

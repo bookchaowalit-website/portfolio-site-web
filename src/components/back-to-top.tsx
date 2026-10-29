@@ -32,6 +32,9 @@ export function BackToTop() {
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
       )}
       aria-label={t('backToTop')}
+      // Hidden state is invisible, so keep it out of the tab order too.
+      tabIndex={visible ? 0 : -1}
+      aria-hidden={!visible}
     >
       <ArrowUp size={20} />
     </button>

@@ -81,7 +81,7 @@ function NotebookPostEntry({
           </div>
 
           {/* Title — handwritten style */}
-          <h3 className="text-lg font-bold leading-snug mb-2 group-hover:text-primary transition-colors text-balance font-[family-name:var(--font-sarabun)]">
+          <h3 className="text-lg font-bold leading-snug mb-2 group-hover:text-primary transition-colors text-balance font-[family-name:var(--font-thai)]">
             <Link href={{pathname: '/blog/[slug]', params: {slug: post.slug}}} className="after:content-[''] after:block after:h-px after:bg-primary/0 group-hover:after:bg-primary/40 after:transition-colors">
               {post.title}
             </Link>

@@ -1,16 +1,20 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+/* Design floor 1.0.0 (ADR-0007): unchanged copies, in the base layer so Tailwind utilities still win. */
+@import "./design-floor/tokens.css" layer(base);
+@import "./design-floor/aliases/shadcn.css" layer(base);
+@import "./app-theme.css" layer(base);
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-doodle: var(--font-kalam);
-  --font-script: var(--font-kalam);
-  --font-comic: var(--font-geist-sans);
+  --font-sans: var(--font-geist-sans), var(--font-thai);
+  --font-mono: var(--font-geist-mono), var(--font-thai);
+  --font-doodle: var(--font-kalam), var(--font-thai);
+  --font-script: var(--font-kalam), var(--font-thai);
+  --font-comic: var(--font-geist-sans), var(--font-thai);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -47,26 +51,7 @@
 }
 
 :root {
-  --radius: 0rem;
   /* Monochrome notebook neutrals — semantic colors stay reserved for status. */
-  --background: oklch(0.995 0 0);
-  --foreground: oklch(0.20 0 0);
-  --card: oklch(0.995 0 0);
-  --card-foreground: oklch(0.20 0 0);
-  --popover: oklch(0.995 0 0);
-  --popover-foreground: oklch(0.20 0 0);
-  --primary: oklch(0.20 0 0);
-  --primary-foreground: oklch(0.995 0 0);
-  --secondary: oklch(0.96 0 0);
-  --secondary-foreground: oklch(0.20 0 0);
-  --muted: oklch(0.965 0 0);
-  --muted-foreground: oklch(0.50 0 0);
-  --accent: oklch(0.96 0 0);
-  --accent-foreground: oklch(0.20 0 0);
-  --destructive: oklch(0.55 0.22 25); /* Red for destructive actions */
-  --border: oklch(0.90 0 0);
-  --input: oklch(0.91 0 0);
-  --ring: oklch(0.20 0 0);
   --chart-1: oklch(0.30 0 0);
   --chart-2: oklch(0.45 0 0);
   --chart-3: oklch(0.60 0 0);
@@ -83,24 +68,6 @@
 }
 
 .dark {
-  --background: oklch(0.16 0 0);
-  --foreground: oklch(0.94 0 0);
-  --card: oklch(0.19 0 0);
-  --card-foreground: oklch(0.94 0 0);
-  --popover: oklch(0.19 0 0);
-  --popover-foreground: oklch(0.94 0 0);
-  --primary: oklch(0.94 0 0);
-  --primary-foreground: oklch(0.16 0 0);
-  --secondary: oklch(0.26 0 0);
-  --secondary-foreground: oklch(0.94 0 0);
-  --muted: oklch(0.23 0 0);
-  --muted-foreground: oklch(0.70 0 0);
-  --accent: oklch(0.26 0 0);
-  --accent-foreground: oklch(0.94 0 0);
-  --destructive: oklch(0.55 0.22 25); /* Red for destructive actions */
-  --border: oklch(0.31 0 0);
-  --input: oklch(0.29 0 0);
-  --ring: oklch(0.94 0 0);
   --chart-1: oklch(0.85 0 0);
   --chart-2: oklch(0.75 0 0);
   --chart-3: oklch(0.60 0 0);
@@ -117,10 +84,10 @@
 }
 
 .font-thai {
-  --font-sans: var(--font-sarabun);
-  --font-doodle: var(--font-sarabun);
-  --font-script: var(--font-sarabun);
-  --font-comic: var(--font-sarabun);
+  --font-sans: var(--font-thai);
+  --font-doodle: var(--font-thai);
+  --font-script: var(--font-thai);
+  --font-comic: var(--font-thai);
 }
 
 @layer base {

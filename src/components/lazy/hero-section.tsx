@@ -77,7 +77,7 @@ export function HeroSection() {
 
           {/* Concrete value prop — immediately communicates what I do */}
           <motion.p
-            className="text-lg md:text-xl text-muted-foreground max-w-lg mx-auto text-balance font-[family-name:var(--font-sarabun)]"
+            className="text-lg md:text-xl text-muted-foreground max-w-lg mx-auto text-balance font-[family-name:var(--font-thai)]"
             initial={reducedMotion ? false : { opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={reducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.4 }}

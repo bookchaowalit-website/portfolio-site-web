@@ -61,7 +61,7 @@ Dark: `0.85 → 0.75 → 0.60 → 0.45 → 0.30` (chroma: 0)
 | **Body/UI** | Geist Sans | `--font-geist-sans` / `--font-sans` | 400 (default) | Yes |
 | **Mono/Code** | Geist Mono | `--font-geist-mono` / `--font-mono` | 400 (default) | Yes |
 | **Doodle/Hand** | Kalam | `--font-kalam` / `--font-doodle` / `--font-script` | 300, 400, 700 | No |
-| **Thai** | Sarabun | `--font-sarabun` | 300–700 | Yes |
+| **Thai** | Noto Sans Thai (design floor, ADR-0007; was Sarabun) | `--font-thai` | 300–700 | Yes |
 
 ### Font Aliases (CSS)
 
@@ -73,7 +73,35 @@ Dark: `0.85 → 0.75 → 0.60 → 0.45 → 0.30` (chroma: 0)
 
 ### Thai Override (`.font-thai`)
 
-All font aliases remap to `--font-sarabun` for Thai locale. Applied via `className` on `<body>` when `locale === 'th'`.
+All font aliases remap to `--font-thai` (Noto Sans Thai) for Thai locale. Applied via `className` on `<body>` when `locale === 'th'`.
+
+### Known gap: Geist and Kalam do not render
+
+The next/font variables are set on `<body>`, but Tailwind resolves `--default-font-family` and the `--font-doodle` / `--font-script` / `--font-comic` theme variables on `<html>`, where those variables are undefined. The site therefore renders in the browser's system sans, and the Kalam accents fall back to it too. Moving the variables to `<html>` fixes it but changes the look of every page (Kalam appears on all card text), so it waits for an owner decision. Until then `app-theme.css` keeps the system Latin stack and inserts Noto Sans Thai before the generic family.
+
+### Design floor and tokens
+
+Design floor 1.0.0 (ADR-0007, WCAG 2.2 AA), checked with `design-floor.json` and `check.mjs`.
+
+- Vendored, unchanged: `src/app/design-floor/tokens.css` (header `css-vars` 1.0.0) and `src/app/design-floor/aliases/shadcn.css` (aliases-shadcn 1.0.0). Both are imported into the `base` layer so Tailwind utilities still win.
+- Values live in `src/app/app-theme.css`:
+
+| Token | Light | Dark (`.dark`) |
+|---|---|---|
+| `--color-bg` | `oklch(0.995 0 0)` | `oklch(0.16 0 0)` |
+| `--color-surface` | `oklch(0.96 0 0)` | `oklch(0.26 0 0)` |
+| `--color-fg` | `oklch(0.20 0 0)` | `oklch(0.94 0 0)` |
+| `--color-fg-muted` | `oklch(0.50 0 0)` | `oklch(0.70 0 0)` |
+| `--color-accent` / `--color-focus` | `oklch(0.20 0 0)` | `oklch(0.94 0 0)` |
+| `--color-border` | `oklch(0.90 0 0)` | `oklch(0.31 0 0)` |
+| `--color-danger` | `oklch(0.55 0.22 25)` | same |
+
+- shadcn variables (`--background`, `--primary`, …) now come from the alias file. `app-theme.css` overrides `--card`, `--popover`, `--muted`, `--input` and `--radius` where this world differs. Chart and sidebar variables stay in `globals.css`.
+- Floor-specific CSS:
+  - Thai line-heights: `:lang(th)` raises Tailwind's `--text-*--line-height`.
+  - `scroll-padding-top` keeps focused controls clear of the sticky nav.
+- Motion: `MotionProvider` sets `MotionConfig reducedMotion="user"`.
+- Waivers: none.
 
 ### Type Scale
 
