@@ -12,16 +12,16 @@ const read = (rel: string) => fs.readFileSync(path.join(root, rel), "utf8");
 const layout = read("src/app/[locale]/layout.tsx");
 
 const tag = (name: string) => {
-  const match = layout.match(new RegExp(`<${name}\\b[\\s\\S]*?>`));
-  assert.ok(match, `<${name}> not found in layout`);
-  return match[0];
+  const start = layout.indexOf(`<${name}`);
+  assert.ok(start >= 0, `<${name}> not found in layout`);
+  return layout.slice(start, layout.indexOf(">\n", start) + 1);
 };
 
 describe("font variables", () => {
   it("are set on <html>, not <body>", () => {
     for (const font of ["geistSans", "geistMono", "notoSansThai", "kalam"]) {
-      assert.match(tag("html"), new RegExp(`${font}\\.variable`), font);
-      assert.doesNotMatch(tag("body"), new RegExp(`${font}\\.variable`), font);
+      assert.ok(tag("html").includes(`${font}.variable`), font);
+      assert.ok(!tag("body").includes(`${font}.variable`), font);
     }
   });
 
