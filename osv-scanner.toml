@@ -51,3 +51,17 @@ reason = "braces stack exhaustion on attacker-shaped patterns; dev-only lint glo
 id = "GHSA-hp3w-g68c-fv3c"
 ignoreUntil = 2027-01-21
 reason = "sprintf-js unbounded precision DoS; reached only through the js-yaml CLI, which the site never runs. No fixed release."
+
+# Build-time: @serwist/next -> @serwist/build -> glob 13 lists our own build output when the
+# service worker is generated. Serwist never passes an AbortSignal, so the bypass has no effect.
+[[IgnoredVulns]]
+id = "GHSA-3g3m-2fjr-6pw4"
+ignoreUntil = 2027-02-01
+reason = "glob 13 abort-signal bypass; build-time only via serwist, which never aborts a walk. Fixed only in glob 14, outside serwist's range. Added 2026-11-02."
+
+# Dev/build-time: minimatch 10 (serwist glob, typescript-estree) and 3 (@eslint/eslintrc) match
+# patterns written in this repository, never user input.
+[[IgnoredVulns]]
+id = "GHSA-g3hv-75wg-m249"
+ignoreUntil = 2027-02-01
+reason = "minimatch pattern amplification DoS; reached only with repo-authored glob patterns at lint/build time. Fixed only in minimatch 11, outside every consumer's range. Added 2026-11-02."
