@@ -175,7 +175,10 @@ export default async function LocaleLayout({
   };
 
   return (
-    <html lang={locale}>
+    <html
+      lang={locale}
+      className={`${geistSans.variable} ${geistMono.variable} ${notoSansThai.variable} ${kalam.variable} ${isThai ? 'font-thai' : ''}`}
+    >
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -185,9 +188,7 @@ export default async function LocaleLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${notoSansThai.variable} ${kalam.variable} antialiased ${isThai ? 'font-thai' : ''}`}
-      >
+      <body className="antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
         <MotionProvider>
           <a

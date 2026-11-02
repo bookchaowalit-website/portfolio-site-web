@@ -73,11 +73,11 @@ Dark: `0.85 → 0.75 → 0.60 → 0.45 → 0.30` (chroma: 0)
 
 ### Thai Override (`.font-thai`)
 
-All font aliases remap to `--font-thai` (Noto Sans Thai) for Thai locale. Applied via `className` on `<body>` when `locale === 'th'`.
+All font aliases remap to `--font-thai` (Noto Sans Thai) for Thai locale. Applied via `className` on `<html>` when `locale === 'th'`. Latin words on Thai pages still render in Geist; Thai glyphs fall through to Noto Sans Thai.
 
-### Known gap: Geist and Kalam do not render
+### Font variables live on `<html>`
 
-The next/font variables are set on `<body>`, but Tailwind resolves `--default-font-family` and the `--font-doodle` / `--font-script` / `--font-comic` theme variables on `<html>`, where those variables are undefined. The site therefore renders in the browser's system sans, and the Kalam accents fall back to it too. Moving the variables to `<html>` fixes it but changes the look of every page (Kalam appears on all card text), so it waits for an owner decision. Until then `app-theme.css` keeps the system Latin stack and inserts Noto Sans Thai before the generic family.
+The next/font variable classes and `.font-thai` are set on `<html>`, because Tailwind resolves `--default-font-family` and the `--font-doodle` / `--font-script` / `--font-comic` theme variables there. Until 2026-11-02 they sat on `<body>`, so the whole site rendered in the system sans and Kalam never showed. `src/lib/__tests__/font-variables.test.ts` guards this.
 
 ### Design floor and tokens
 

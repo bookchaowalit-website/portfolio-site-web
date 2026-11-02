@@ -65,14 +65,3 @@
 html {
   scroll-padding-top: 5rem;
 }
-
-/*
- * Floor rule thai-font: the page renders in the browser's system stack
- * (Tailwind resolves --default-font-family on <html>, where the next/font
- * variables are not defined). Keep that Latin stack exactly and insert
- * Noto Sans Thai before the generic family, so Thai glyphs never fall back
- * to an OS Thai font.
- */
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, var(--font-thai), sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-}
