@@ -92,6 +92,36 @@ describe("consent banner", () => {
     assert.doesNotMatch(html, /\bfixed\b/);
   });
 
+  it("reserves its own height as bottom scroll space so focus is never hidden behind it (WCAG 2.4.11)", () => {
+    const observers: any[] = [];
+    const g = globalThis as any;
+    g.ResizeObserver = class {
+      cb: () => void;
+      disconnected = false;
+      constructor(cb: () => void) { this.cb = cb; observers.push(this); }
+      observe() {}
+      disconnect() { this.disconnected = true; }
+    };
+    g.document = { documentElement: { style: {} }, body: { style: {} } };
+    try {
+      const el = { offsetHeight: 120 };
+      const cleanup = banner.reserveScrollSpace(el);
+      assert.equal(g.document.documentElement.style.scrollPaddingBottom, "152px");
+      assert.equal(g.document.body.style.paddingBottom, "152px");
+      el.offsetHeight = 200; // narrow screen: the text wraps and the banner grows
+      observers[0].cb();
+      assert.equal(g.document.documentElement.style.scrollPaddingBottom, "232px");
+      cleanup();
+      assert.equal(observers[0].disconnected, true);
+      assert.equal(g.document.documentElement.style.scrollPaddingBottom, "");
+      assert.equal(g.document.body.style.paddingBottom, "");
+      assert.equal(banner.reserveScrollSpace(null), undefined);
+    } finally {
+      delete g.ResizeObserver;
+      delete g.document;
+    }
+  });
+
   it("en and th messages have the same keys and Thai text is translated", () => {
     const en = text("en");
     const th = text("th");

@@ -27,6 +27,30 @@ export function panelState(enabled: boolean, consent: Consent, reopened: boolean
 const CHOICE_BUTTON =
   'inline-flex min-h-[44px] flex-1 items-center justify-center border border-foreground bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:flex-none sm:min-w-[9rem]'
 
+// WCAG 2.4.11: the fixed banner must not hide the focused control. While it is
+// shown, its height (plus the bottom gap) is reserved as scroll padding, so
+// focusing a control behind it scrolls the control above the banner, and the
+// same space is added below the page so the last row can scroll clear too.
+const BANNER_GAP_PX = 32
+
+export function reserveScrollSpace(el: HTMLElement | null) {
+  if (!el || typeof ResizeObserver === 'undefined') return
+  const root = document.documentElement
+  const apply = () => {
+    const space = `${el.offsetHeight + BANNER_GAP_PX}px`
+    root.style.scrollPaddingBottom = space
+    document.body.style.paddingBottom = space
+  }
+  apply()
+  const observer = new ResizeObserver(apply)
+  observer.observe(el)
+  return () => {
+    observer.disconnect()
+    root.style.scrollPaddingBottom = ''
+    document.body.style.paddingBottom = ''
+  }
+}
+
 export function ConsentBanner({
   text,
   onAccept,
@@ -38,6 +62,7 @@ export function ConsentBanner({
 }) {
   return (
     <div
+      ref={reserveScrollSpace}
       role="region"
       aria-label={text.region}
       className="fixed inset-x-4 bottom-4 z-50 mx-auto max-w-xl border border-border bg-background p-4 text-sm shadow-lg sm:inset-x-6 sm:bottom-6 sm:p-5"
