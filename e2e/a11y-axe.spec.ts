@@ -18,15 +18,18 @@ test.describe("axe accessibility smoke", () => {
         }
         window.scrollTo(0, 0);
       });
+      // Decorative loops (the typing cursor blinks between 1 and 0 forever) are marked
+      // data-motion-loop: they never settle, so they are left out of the wait and of axe.
       await page.waitForFunction(
         () =>
-          [...document.querySelectorAll<HTMLElement>("[style*='opacity']")].every(
-            (el) => el.style.opacity === "" || Number(el.style.opacity) >= 1,
-          ),
+          [...document.querySelectorAll<HTMLElement>("[style*='opacity']")]
+            .filter((el) => !el.closest("[data-motion-loop]"))
+            .every((el) => el.style.opacity === "" || Number(el.style.opacity) >= 1),
         undefined,
         { timeout: 10_000 },
       );
       const results = await new AxeBuilder({ page })
+        .exclude("[data-motion-loop]")
         .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
         .analyze();
 

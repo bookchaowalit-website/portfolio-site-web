@@ -87,6 +87,8 @@ export function SmoothTypingText({
       {renderText()}
       {showCursor && (
         <motion.span
+          aria-hidden="true"
+          data-motion-loop=""
           animate={reducedMotion ? {} : { opacity: [1, 0, 1] }}
           transition={reducedMotion ? { duration: 0 } : { duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
           className="inline-block"
