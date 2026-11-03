@@ -17,11 +17,13 @@ flowchart TD
   T -- "broken card link" --> R2["Set demoUnavailable or drop repo in app-projects.ts"]
   T -- "contact 503" --> R3["Check RESEND_API_KEY and RESEND_FROM in Vercel"]
   T -- "analytics leak suspicion" --> R4["Set NEXT_PUBLIC_ANALYTICS_ENABLED=false and redeploy"]
-  T -- "autopilot misbehaves" --> R5["Open issue Autopilot paused or unset AUTOPILOT_ENABLED"]
+  T -- "autopilot misbehaves" --> R5["Open an issue with label autopilot:paused (title alone is ignored) or unset AUTOPILOT_ENABLED"]
   T -- "CI only, not user-facing" --> R6["Fix forward on main"]
   R1 --> F["Fix forward: commit, push main, Vercel deploy"]
   R2 --> F
-  R3 --> V
+  R3 --> R3a["Redeploy Production so the new env vars load"]
+  R3a --> R3b["Submit a real contact form and confirm the email arrives"]
+  R3b --> V
   R4 --> F
   R5 --> F
   R6 --> F
@@ -32,7 +34,9 @@ flowchart TD
 
 Sources: `.github/workflows/deploy-smoke.yml`, `.github/workflows/ci.yml`, `docs/measurement/KPI-PLAN.md` (alert channels), `.autopilot/config.json` (`notify.events`),
 `.autopilot/README.md` (planner reads `source:incident`; pause issue), `.github/workflows/autopilot.yml` (`vars.AUTOPILOT_ENABLED`), `docs/measurement/GO-LIVE.md` ("Turning it off again"),
-`RUNBOOK.md` (Rollback), `src/app/api/contact/route.ts`, `scripts/live-link-audit.mjs`
+`RUNBOOK.md` (Rollback), `src/app/api/contact/route.ts`, `scripts/live-link-audit.mjs`, `.autopilot/autopilot.py` (`paused_issue()` filters by label `autopilot:paused`), `scripts/deploy-smoke.sh`
+
+หมายเหตุ: `scripts/deploy-smoke.sh` ตรวจแค่ GET หน้าเว็บ จึงผ่านได้แม้ `/api/contact` ยังตอบ 503 — เหตุการณ์ contact ต้องยืนยันด้วยการส่งฟอร์มจริงและเห็นอีเมลเข้า
 
 ## Severity (เสนอจากสิ่งที่มี ไม่ได้กำหนดไว้ใน repo)
 
