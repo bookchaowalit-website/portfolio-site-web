@@ -85,13 +85,18 @@
   "overrides": {
     "postcss": "^8.5.31",
     "@serwist/build": {
-      "zod": "$zod"
+      "zod": "$zod",
+      "glob": "^14.0.3"
     },
     "@serwist/next": {
-      "zod": "$zod"
+      "zod": "$zod",
+      "glob": "^14.0.3"
     },
     "@serwist/webpack-plugin": {
       "zod": "$zod"
+    },
+    "@sentry/bundler-plugins": {
+      "glob": "^14.0.3"
     }
   }
 }
