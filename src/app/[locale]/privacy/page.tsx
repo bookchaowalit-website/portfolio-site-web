@@ -128,7 +128,7 @@ export default async function PrivacyPage({ params }: Props) {
             <div>
               <h3 className="text-lg font-semibold mb-2">{t('general.contact.title')}</h3>
               <p className="text-muted-foreground">
-                {t('general.contact.email')}: <a href="mailto:bookchaowalit@gmail.com" className="text-foreground hover:underline break-all">bookchaowalit@gmail.com</a>
+                {t('general.contact.email')}: <a href="mailto:bookchaowalit.work@gmail.com" className="text-foreground hover:underline break-all">bookchaowalit.work@gmail.com</a>
               </p>
               <p className="text-muted-foreground">
                 {t('general.contact.website')}: <a href="https://bookchaowalit.com" className="text-foreground hover:underline break-all">https://bookchaowalit.com</a>

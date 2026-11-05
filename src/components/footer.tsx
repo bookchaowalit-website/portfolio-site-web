@@ -178,7 +178,7 @@ export function Footer() {
                 <Zap className="w-5 h-5" />
               </motion.a>
               <motion.a
-                href="mailto:bookchaowalit@gmail.com"
+                href="mailto:bookchaowalit.work@gmail.com"
                 whileHover={hoverPrimary}
                 className="inline-flex min-h-11 min-w-11 items-center justify-center text-muted-foreground hover:text-primary transition-colors duration-200"
                 aria-label="Email"

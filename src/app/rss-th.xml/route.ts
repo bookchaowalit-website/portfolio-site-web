@@ -15,7 +15,7 @@ function generateThaiRssFeed(): string {
       <link>${postUrl}</link>
       <guid isPermaLink="true">${postUrl}</guid>
       <description><![CDATA[${post.excerpt}]]></description>
-      <author>bookchaowalit@gmail.com (เชาวลิต กรีโภค)</author>
+      <author>bookchaowalit.work@gmail.com (เชาวลิต กรีโภค)</author>
       <pubDate>${new Date(post.publishedAt).toUTCString()}</pubDate>
       ${post.tags.map(tag => `<category><![CDATA[${tag}]]></category>`).join('\n      ')}
     </item>`;
@@ -30,8 +30,8 @@ function generateThaiRssFeed(): string {
     <language>th</language>
     <atom:link href="${baseUrl}/rss-th.xml" rel="self" type="application/rss+xml"/>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-    <managingEditor>bookchaowalit@gmail.com (เชาวลิต กรีโภค)</managingEditor>
-    <webMaster>bookchaowalit@gmail.com (เชาวลิต กรีโภค)</webMaster>
+    <managingEditor>bookchaowalit.work@gmail.com (เชาวลิต กรีโภค)</managingEditor>
+    <webMaster>bookchaowalit.work@gmail.com (เชาวลิต กรีโภค)</webMaster>
 ${items}
   </channel>
 </rss>`;

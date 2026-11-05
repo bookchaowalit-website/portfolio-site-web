@@ -537,7 +537,7 @@
     "errorFixErrors": "Please fix the errors above before submitting.",
     "successMessage": "Message sent successfully! I'll get back to you soon.",
     "errorMessage": "Failed to send message. Please try again.",
-    "errorServiceUnavailable": "The contact form is temporarily unavailable. Please email bookchaowalit@gmail.com directly.",
+    "errorServiceUnavailable": "The contact form is temporarily unavailable. Please email bookchaowalit.work@gmail.com directly.",
     "errorNetwork": "Network error. Please check your connection and try again.",
     "sending": "Sending...",
     "howToReachMe": "How to reach me",

@@ -26,7 +26,7 @@ export function BusinessClient() {
         linkedin: "https://www.linkedin.com/in/chaowalit-greepoke-b687351a0/",
         github: "https://github.com/bookchaowalit",
         twitter: "",
-        email: "bookchaowalit@gmail.com"
+        email: "bookchaowalit.work@gmail.com"
       },
       status: t("activeStatus")
     }

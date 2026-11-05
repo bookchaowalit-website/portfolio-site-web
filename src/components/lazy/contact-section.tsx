@@ -102,7 +102,7 @@ export function ContactSection() {
                 </motion.div>
                 <motion.div whileHover={reducedMotion ? undefined : { scale: 1.05 }} whileTap={reducedMotion ? undefined : { scale: 0.95 }}>
                   <Button variant="outline" size="lg" asChild>
-                    <a href="mailto:bookchaowalit@gmail.com">
+                    <a href="mailto:bookchaowalit.work@gmail.com">
                       <Mail className="w-4 h-4 mr-2" /> {t('emailMe')}
                     </a>
                   </Button>

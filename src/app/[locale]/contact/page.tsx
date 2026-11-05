@@ -85,7 +85,7 @@ export default async function Contact({ params }: Props) {
     description: locale === 'th'
       ? 'ติดต่อเชาวลิต กรีโภค สำหรับโครงการ AI และการพัฒนา Full-Stack'
       : 'Get in touch with Chaowalit Greepoke for AI & full-stack development projects.',
-    email: 'bookchaowalit@gmail.com',
+    email: 'bookchaowalit.work@gmail.com',
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Bangkok',

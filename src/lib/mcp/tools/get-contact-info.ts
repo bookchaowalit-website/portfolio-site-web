@@ -21,7 +21,7 @@ export async function handleGetContactInfo(): Promise<McpToolResult> {
       title: 'Generalist & Solopreneur',
       location: 'Bangkok, Thailand',
       languages: ['Thai', 'English'],
-      email: process.env.CONTACT_EMAIL || 'bookchaowalit@gmail.com',
+      email: process.env.CONTACT_EMAIL || 'bookchaowalit.work@gmail.com',
       phone: '+66 65-416-9146',
       website: 'https://bookchaowalit.com',
       social: {

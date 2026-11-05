@@ -18,14 +18,14 @@ export async function GET() {
     <language>th</language>
     <atom:link href="${BASE_URL}/projects-rss-th.xml" rel="self" type="application/rss+xml"/>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-    <managingEditor>bookchaowalit@gmail.com (เชาวลิต กรีโภค)</managingEditor>
-    <webMaster>bookchaowalit@gmail.com (เชาวลิต กรีโภค)</webMaster>
+    <managingEditor>bookchaowalit.work@gmail.com (เชาวลิต กรีโภค)</managingEditor>
+    <webMaster>bookchaowalit.work@gmail.com (เชาวลิต กรีโภค)</webMaster>
 ${featured.map(project => `    <item>
       <title><![CDATA[${project.name}]]></title>
       <link>${BASE_URL}/th/projects/${project.slug}</link>
       <guid isPermaLink="true">${BASE_URL}/th/projects/${project.slug}</guid>
       <description><![CDATA[${project.description}]]></description>
-      <author>bookchaowalit@gmail.com (เชาวลิต กรีโภค)</author>
+      <author>bookchaowalit.work@gmail.com (เชาวลิต กรีโภค)</author>
       ${project.tech.map(tag => `<category><![CDATA[${tag}]]></category>`).join('\n      ')}
     </item>`).join('\n')}
   </channel>

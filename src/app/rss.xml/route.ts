@@ -16,8 +16,8 @@ export async function GET() {
     <link>${BASE_URL}/en/blog</link>
     <description>Web development, AI integration, and solopreneur insights from Bangkok-based developer Chaowalit Greepoke.</description>
     <language>en</language>
-    <managingEditor>bookchaowalit@gmail.com (Chaowalit Greepoke)</managingEditor>
-    <webMaster>bookchaowalit@gmail.com (Chaowalit Greepoke)</webMaster>
+    <managingEditor>bookchaowalit.work@gmail.com (Chaowalit Greepoke)</managingEditor>
+    <webMaster>bookchaowalit.work@gmail.com (Chaowalit Greepoke)</webMaster>
     <atom:link href="${BASE_URL}/rss.xml" rel="self" type="application/rss+xml"/>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
 ${posts.map(post => `    <item>
@@ -25,7 +25,7 @@ ${posts.map(post => `    <item>
       <link>${BASE_URL}/en/blog/${post.slug}</link>
       <guid isPermaLink="true">${BASE_URL}/en/blog/${post.slug}</guid>
       <description><![CDATA[${post.excerpt}]]></description>
-      <author>bookchaowalit@gmail.com (Chaowalit Greepoke)</author>
+      <author>bookchaowalit.work@gmail.com (Chaowalit Greepoke)</author>
       <pubDate>${new Date(post.publishedAt).toUTCString()}</pubDate>
       ${post.tags.map(tag => `<category><![CDATA[${tag}]]></category>`).join('\n      ')}
     </item>`).join('\n')}
