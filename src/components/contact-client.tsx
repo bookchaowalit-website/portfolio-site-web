@@ -295,10 +295,10 @@ export function ContactClient() {
                 <div>
                   <p className="font-medium">{t("email")}</p>
                   <a
-                    href="mailto:bookchaowalit@gmail.com"
+                    href="mailto:bookchaowalit.work@gmail.com"
                     className="inline-block py-1 text-sm text-muted-foreground underline decoration-border underline-offset-2 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
-                    bookchaowalit@gmail.com
+                    bookchaowalit.work@gmail.com
                   </a>
                 </div>
               </div>

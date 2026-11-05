@@ -16,8 +16,8 @@ export async function GET() {
     <link>${BASE_URL}/en/projects</link>
     <description>100+ independently deployed projects by Bangkok-based developer Chaowalit Greepoke — tools, AI, design, business, mobile apps, and more.</description>
     <language>en</language>
-    <managingEditor>bookchaowalit@gmail.com (Chaowalit Greepoke)</managingEditor>
-    <webMaster>bookchaowalit@gmail.com (Chaowalit Greepoke)</webMaster>
+    <managingEditor>bookchaowalit.work@gmail.com (Chaowalit Greepoke)</managingEditor>
+    <webMaster>bookchaowalit.work@gmail.com (Chaowalit Greepoke)</webMaster>
     <atom:link href="${BASE_URL}/projects-rss.xml" rel="self" type="application/rss+xml"/>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
 ${featured.map(project => `    <item>
@@ -25,7 +25,7 @@ ${featured.map(project => `    <item>
       <link>${BASE_URL}/en/projects/${project.slug}</link>
       <guid isPermaLink="true">${BASE_URL}/en/projects/${project.slug}</guid>
       <description><![CDATA[${project.description}]]></description>
-      <author>bookchaowalit@gmail.com (Chaowalit Greepoke)</author>
+      <author>bookchaowalit.work@gmail.com (Chaowalit Greepoke)</author>
       ${project.tech.map(tag => `<category><![CDATA[${tag}]]></category>`).join('\n      ')}
     </item>`).join('\n')}
   </channel>
