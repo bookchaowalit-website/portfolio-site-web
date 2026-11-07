@@ -121,9 +121,23 @@ export default async function LocaleLayout({
     "@graph": [
       {
         "@type": "Person",
-        "name": "Chaowalit Greepoke",
-        "alternateName": "Book",
+        "@id": "https://bookchaowalit.com/#person",
+        "name": isThai ? "เชาวลิต กรีโภค" : "Chaowalit Greepoke",
+        // Both spellings plus the nickname, so search engines tie the Thai
+        // and English names to this one entity (not another "Chaowalit").
+        "alternateName": [
+          "Chaowalit Greepoke",
+          "เชาวลิต กรีโภค",
+          "Book Chaowalit",
+          "บุ๊ค เชาวลิต",
+          "bookchaowalit"
+        ],
+        "givenName": isThai ? "เชาวลิต" : "Chaowalit",
+        "familyName": isThai ? "กรีโภค" : "Greepoke",
+        "nationality": { "@type": "Country", "name": "Thailand" },
+        "knowsLanguage": ["th", "en"],
         "description": "Generalist and Solopreneur who enjoys solving problems and building things end-to-end",
+        "disambiguatingDescription": "Bangkok-based software developer and solopreneur behind bookchaowalit.com",
         "jobTitle": "Generalist & Solopreneur",
         "url": "https://bookchaowalit.com",
         "image": "https://bookchaowalit.com/profile-2026.webp",
@@ -152,14 +166,16 @@ export default async function LocaleLayout({
           "https://medium.com/@bookchaowalit",
           "https://www.upwork.com/freelancers/~01bb8b7612ad1fd8bc",
           "https://fastwork.co/user/bookchao",
-          "https://www.strava.com/athletes/bookchaowalit",
-          "https://bookchaowalit.com"
+          "https://www.strava.com/athletes/bookchaowalit"
         ]
       },
       {
         "@type": "WebSite",
+        "@id": "https://bookchaowalit.com/#website",
         "name": "Chaowalit Greepoke - Portfolio",
+        "alternateName": "เชาวลิต กรีโภค - พอร์ตโฟลิโอ",
         "url": "https://bookchaowalit.com",
+        "publisher": { "@id": "https://bookchaowalit.com/#person" },
         "description": "Generalist and Solopreneur from Bangkok, Thailand",
         "inLanguage": ["en", "th"],
         "potentialAction": {
