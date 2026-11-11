@@ -57,3 +57,7 @@ test-results/
 # a11y audit evidence (timestamped local reports, not source)
 a11y-evidence/
 
+
+# Storybook
+storybook-static/
+*storybook.log

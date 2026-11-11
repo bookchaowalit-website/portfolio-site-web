@@ -22,6 +22,7 @@ const eslintConfig = [
   {
     ignores: [
       "node_modules/**",
+      "storybook-static/**",
       ".next/**",
       "out/**",
       "build/**",
