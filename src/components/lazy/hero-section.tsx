@@ -22,12 +22,9 @@ export function HeroSection() {
 
   return (
     <section className={heroSpacing}>
-      <motion.div
-        className="space-y-4"
-        initial={reducedMotion ? false : { opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
-      >
+      {/* No entrance fade here: the h1 below is the LCP element and must be
+          painted from the server HTML, not after hydration. */}
+      <div className="space-y-4">
         <motion.div
           className="relative w-32 h-32 mx-auto"
           initial={reducedMotion ? false : { scale: 0, rotate: -180 }}
@@ -92,7 +89,7 @@ export function HeroSection() {
           </div>
 
         </div>
-      </motion.div>
+      </div>
 
       <div className="flex gap-4 justify-center">
         <motion.div
