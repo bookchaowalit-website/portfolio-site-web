@@ -112,3 +112,9 @@ Next, no owner input needed: SEO `meta-description` is streamed into `<body>` on
 - After (local `next start`): SEO 100 on all four pages (was 91–92); a11y 100; one description tag
   per page; e2e 24/24. Perf on `/en` runs 79–90 under host load avg ~14 (before: 88), no sign of
   regression beyond noise — to be confirmed on production.
+- Codex review of iteration 4: (a) P2 "`htmlLimitedBots` delays TTFB on dynamic routes" — disputed:
+  the build lists every page route as static (●); only OG/Twitter images, icons and `/api/*` are
+  dynamic (ƒ), so metadata is resolved at build time. A comment in `next.config.js` asks to revisit
+  if a page turns dynamic. (b) P2 the CSP test depended on `NODE_ENV` — fixed (asserts both modes
+  explicitly; passes with `NODE_ENV=development`). (c) P3 the head test ignored status/redirects —
+  fixed (`maxRedirects: 0`, 200, `<html lang>` per locale).

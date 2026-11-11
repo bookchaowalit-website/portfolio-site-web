@@ -11,8 +11,8 @@ const byKey = new Map(securityHeaders.map((h: { key: string; value: string }) =>
 
 describe("security headers", () => {
   it("sends a CSP that blocks base-tag injection, plugins, framing and foreign form posts", () => {
-    const csp = byKey.get("Content-Security-Policy");
-    assert.ok(csp, "Content-Security-Policy header is missing");
+    assert.equal(byKey.get("Content-Security-Policy"), buildContentSecurityPolicy());
+    const csp = buildContentSecurityPolicy({ dev: false });
     const directives = new Map(
       csp.split(";").map((d: string) => d.trim()).filter(Boolean).map((d: string) => {
         const [name, ...values] = d.split(/\s+/);
