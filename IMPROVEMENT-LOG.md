@@ -95,3 +95,20 @@ renders (server-rendered from a cookie, or a smaller bar) — a PDPA consent UX 
 
 Next, no owner input needed: SEO `meta-description` is streamed into `<body>` on every page
 (92 → 100 once it is in `<head>`); TBT ~0.5 s from chunk `4952`.
+
+## Iteration 4 — SEO metadata in `<head>` (+ Codex P2 on the dev CSP)
+
+- Codex review P2 (confirmed): `upgrade-insecure-requests` broke `next dev` over plain HTTP in
+  Safari. `buildContentSecurityPolicy({ dev })` now leaves it out in development; production keeps
+  it. Test added. (Two other Codex P2s — Newsletter story fetch mock, ThemeToggle vs toolbar theme —
+  are in the Storybook commit #38 from another session, not in this loop's changes; left to that work.)
+- Picked: SEO 91–92 on every page; `meta-description` failed because Next 15 streams async
+  `generateMetadata` into `<body>` for non-bot user agents, and the static prerender did the same.
+- Test first: `e2e/home.spec.ts` "Metadata in <head>" fetches raw HTML of `/en`, `/th`,
+  `/en/blog`, `/en/projects` and requires `description`, `og:title`, `og:description` before
+  `</head>` (failed on all four).
+- Change: `htmlLimitedBots: /.*/` in `next.config.js` — metadata is rendered blocking, in `<head>`,
+  for every user agent. Pages are static, so no extra request-time wait.
+- After (local `next start`): SEO 100 on all four pages (was 91–92); a11y 100; one description tag
+  per page; e2e 24/24. Perf on `/en` runs 79–90 under host load avg ~14 (before: 88), no sign of
+  regression beyond noise — to be confirmed on production.

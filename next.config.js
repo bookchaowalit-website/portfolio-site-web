@@ -33,6 +33,10 @@ const withBundleAnalyzer = bundleAnalyzer({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Render metadata in <head> for every user agent, not only known bots.
+  // Next streams async generateMetadata into <body> by default, and search
+  // engines, link previews and Lighthouse only read <head> (e2e/home.spec.ts).
+  htmlLimitedBots: /.*/,
   // Configure `pageExtensions` to include markdown and MDX files
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   
