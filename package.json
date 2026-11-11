@@ -85,16 +85,24 @@
   "overrides": {
     "postcss": "^8.5.31",
     "@serwist/build": {
-      "zod": "$zod"
+      "zod": "$zod",
+      "glob": "^14.0.4"
     },
     "@serwist/next": {
-      "zod": "$zod"
+      "zod": "$zod",
+      "glob": "^14.0.4"
     },
     "@serwist/webpack-plugin": {
       "zod": "$zod"
     },
     "get-uri": {
       "basic-ftp": "^6.2.1"
+    },
+    "@sentry/bundler-plugins": {
+      "glob": "^14.0.4"
+    },
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "^11.0.8"
     }
   }
 }

@@ -26,3 +26,16 @@ Scorecard and rules: [IMPROVEMENT-GOAL.md](IMPROVEMENT-GOAL.md).
   `/en` `/th` `/en/contact` `/en/projects` at 375/768/1440 show no CSP violation, no page error,
   no horizontal overflow (only the expected `/_vercel/*` 404s off Vercel).
 - Not yet: `script-src`/`style-src` need per-request nonces — next security step.
+
+## Iteration 2 — moderate advisories (glob, minimatch)
+
+- Picked: security, 8 moderate prod advisories (GHSA-3g3m-2fjr-6pw4 glob, GHSA-g3hv-75wg-m249 minimatch)
+  pulled in by the Serwist and Sentry build plugins, plus typescript-eslint (dev).
+- Test first: `src/lib/__tests__/dependency-advisories.test.ts` reads `package-lock.json`
+  (failed: glob 13.0.6, minimatch 10.2.5 ×2).
+- Change: scoped overrides `glob ^14.0.4` under `@serwist/next`, `@serwist/build`,
+  `@sentry/bundler-plugins`; `minimatch ^11.0.8` under `@typescript-eslint/typescript-estree`.
+  Lockfile written with npm 10 (CI runs `npm ci` on Node 22). `npm audit fix` was tried and
+  rejected: it rewrote unrelated packages.
+- After: `npm audit` 0 vulnerabilities (prod and dev, was 8 / 13); `ci:local` passes;
+  the service worker still precaches 217 entries (glob is what builds that list).
