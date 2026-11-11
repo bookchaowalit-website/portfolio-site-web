@@ -63,3 +63,27 @@ test.describe('Homepage', () => {
     await expect(page.locator('main#main-content')).toBeVisible();
   });
 });
+
+// IMPROVEMENT-GOAL.md, SEO: search engines and link previews only trust
+// metadata inside <head>. Next streams async metadata into <body> unless told
+// otherwise, which made Lighthouse fail `meta-description` on every page.
+test.describe('Metadata in <head>', () => {
+  for (const path of ['/en', '/th', '/en/blog', '/en/projects']) {
+    test(`description and Open Graph tags are in <head> (${path})`, async ({ request }) => {
+      const response = await request.get(path, { maxRedirects: 0 });
+      expect(response.status(), `${path} must answer itself, not redirect`).toBe(200);
+      const html = await response.text();
+      // Each locale serves its own description, so a broken route that falls
+      // back to another page would not pass silently.
+      const lang = path.startsWith('/th') ? 'th' : 'en';
+      expect(html).toContain(`<html lang="${lang}"`);
+      const headEnd = html.indexOf('</head>');
+      expect(headEnd).toBeGreaterThan(0);
+      for (const tag of ['name="description"', 'property="og:title"', 'property="og:description"']) {
+        const at = html.indexOf(tag);
+        expect(at, `${tag} missing on ${path}`).toBeGreaterThan(-1);
+        expect(at, `${tag} is after </head> on ${path}`).toBeLessThan(headEnd);
+      }
+    });
+  }
+});

@@ -6,14 +6,24 @@
 // Sentry). A script-src/style-src policy needs per-request nonces and is a
 // separate step tracked in IMPROVEMENT-LOG.md.
 
+/**
+ * upgrade-insecure-requests is left out in development: `next dev` serves
+ * plain HTTP and Safari would upgrade its JS/CSS requests to HTTPS and fail.
+ * @param {{ dev?: boolean }} [options]
+ * @returns {string}
+ */
+export function buildContentSecurityPolicy({ dev = process.env.NODE_ENV === 'development' } = {}) {
+  return [
+    "base-uri 'self'",
+    "object-src 'none'",
+    "frame-ancestors 'none'",
+    "form-action 'self'",
+    ...(dev ? [] : ['upgrade-insecure-requests']),
+  ].join('; ');
+}
+
 /** @type {string} */
-export const contentSecurityPolicy = [
-  "base-uri 'self'",
-  "object-src 'none'",
-  "frame-ancestors 'none'",
-  "form-action 'self'",
-  'upgrade-insecure-requests',
-].join('; ');
+export const contentSecurityPolicy = buildContentSecurityPolicy();
 
 /** @type {{ key: string, value: string }[]} */
 export const securityHeaders = [
