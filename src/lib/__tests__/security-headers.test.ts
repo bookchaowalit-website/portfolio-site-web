@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { securityHeaders } from "../../../security-headers.mjs";
+import { buildContentSecurityPolicy, securityHeaders } from "../../../security-headers.mjs";
 
 // IMPROVEMENT-GOAL.md, security: every page must send a Content-Security-Policy
 // and Cross-Origin-Opener-Policy next to the existing hardening headers.
@@ -40,5 +40,11 @@ describe("security headers", () => {
 
   it("turns off the legacy XSS auditor instead of enabling it (OWASP)", () => {
     assert.equal(byKey.get("X-XSS-Protection"), "0");
+  });
+
+  it("leaves upgrade-insecure-requests out in development (plain-HTTP dev server, Safari)", () => {
+    assert.ok(!buildContentSecurityPolicy({ dev: true }).includes("upgrade-insecure-requests"));
+    assert.ok(buildContentSecurityPolicy({ dev: false }).includes("upgrade-insecure-requests"));
+    assert.match(buildContentSecurityPolicy({ dev: true }), /frame-ancestors 'none'/);
   });
 });
