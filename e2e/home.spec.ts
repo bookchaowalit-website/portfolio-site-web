@@ -8,6 +8,30 @@ test.describe('Homepage', () => {
     await expect(page.locator('#hero')).toBeVisible();
   });
 
+  // IMPROVEMENT-GOAL.md, performance: the hero heading (/en) and the value
+  // prop paragraph (/th, longer text) are the LCP elements. They must be
+  // painted from the server HTML, not wait for hydration, so they have to be
+  // visible (no opacity 0 on them or an ancestor) with JavaScript disabled.
+  for (const locale of ['en', 'th']) {
+    test(`hero text is visible before JavaScript runs (${locale})`, async ({ browser }) => {
+      const context = await browser.newContext({ javaScriptEnabled: false });
+      const page = await context.newPage();
+      await page.goto(`/${locale}`);
+      for (const selector of ['#hero h1', '#hero p.text-lg']) {
+        const el = page.locator(selector).first();
+        await expect(el).not.toBeEmpty();
+        const hiddenAncestor = await el.evaluate((node) => {
+          for (let n: Element | null = node; n; n = n.parentElement) {
+            if (getComputedStyle(n).opacity === '0') return n.outerHTML.slice(0, 120);
+          }
+          return null;
+        });
+        expect(hiddenAncestor, `${selector} on /${locale}`).toBeNull();
+      }
+      await context.close();
+    });
+  }
+
   test('has all major sections', async ({ page }) => {
     await page.goto('/en');
     // Keep the homepage focused on identity, work, writing, and contact.
