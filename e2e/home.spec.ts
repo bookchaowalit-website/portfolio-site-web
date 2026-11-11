@@ -8,24 +8,29 @@ test.describe('Homepage', () => {
     await expect(page.locator('#hero')).toBeVisible();
   });
 
-  // IMPROVEMENT-GOAL.md, performance: the hero heading is the LCP element.
-  // It must be painted from the server HTML, not wait for hydration, so it
-  // has to be visible (no opacity 0 on it or an ancestor) with JS disabled.
-  test('hero name is visible before JavaScript runs', async ({ browser }) => {
-    const context = await browser.newContext({ javaScriptEnabled: false });
-    const page = await context.newPage();
-    await page.goto('/en');
-    const heading = page.locator('#hero h1');
-    await expect(heading).toContainText('Chaowalit');
-    const hiddenAncestor = await heading.evaluate((el) => {
-      for (let node: Element | null = el; node; node = node.parentElement) {
-        if (getComputedStyle(node).opacity === '0') return node.outerHTML.slice(0, 120);
+  // IMPROVEMENT-GOAL.md, performance: the hero heading (/en) and the value
+  // prop paragraph (/th, longer text) are the LCP elements. They must be
+  // painted from the server HTML, not wait for hydration, so they have to be
+  // visible (no opacity 0 on them or an ancestor) with JavaScript disabled.
+  for (const locale of ['en', 'th']) {
+    test(`hero text is visible before JavaScript runs (${locale})`, async ({ browser }) => {
+      const context = await browser.newContext({ javaScriptEnabled: false });
+      const page = await context.newPage();
+      await page.goto(`/${locale}`);
+      for (const selector of ['#hero h1', '#hero p.text-lg']) {
+        const el = page.locator(selector).first();
+        await expect(el).not.toBeEmpty();
+        const hiddenAncestor = await el.evaluate((node) => {
+          for (let n: Element | null = node; n; n = n.parentElement) {
+            if (getComputedStyle(n).opacity === '0') return n.outerHTML.slice(0, 120);
+          }
+          return null;
+        });
+        expect(hiddenAncestor, `${selector} on /${locale}`).toBeNull();
       }
-      return null;
+      await context.close();
     });
-    expect(hiddenAncestor).toBeNull();
-    await context.close();
-  });
+  }
 
   test('has all major sections', async ({ page }) => {
     await page.goto('/en');

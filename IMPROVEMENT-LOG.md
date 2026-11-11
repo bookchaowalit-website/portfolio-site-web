@@ -39,3 +39,26 @@ Scorecard and rules: [IMPROVEMENT-GOAL.md](IMPROVEMENT-GOAL.md).
   rejected: it rewrote unrelated packages.
 - After: `npm audit` 0 vulnerabilities (prod and dev, was 8 / 13); `ci:local` passes;
   the service worker still precaches 217 entries (glob is what builds that list).
+
+## Iteration 3 — hero LCP (performance)
+
+- Picked: performance (security and a11y targets met). `/en` 69, `/th` 70 on mobile; LCP 4.4 s / 5.0 s.
+- Cause: the LCP element is the hero `h1` on `/en` and the value-prop paragraph on `/th`. Both
+  were server-rendered with `opacity:0` (framer-motion `initial`) and only appeared after
+  hydration (~1.4 s of JavaScript on a mobile CPU).
+- Test first: `e2e/home.spec.ts` "hero text is visible before JavaScript runs (en, th)" loads the
+  page with JavaScript off and fails if the `h1` or the value prop has an `opacity:0` ancestor
+  (failed on both).
+- Change: the hero text wrapper and the value-prop paragraph are plain elements (no entrance
+  fade). The avatar spring and other animations stay.
+- After (local `next start`, Lighthouse mobile, median of 3, main vs branch on the same machine):
+
+  | Page | Perf | LCP | TBT | CLS |
+  |------|------|-----|-----|-----|
+  | `/en` main → branch | 66 → 88 | 5.5 s → 1.36 s | 507 → 454 ms | 0.026 → 0.026 |
+  | `/th` main → branch | 68 → 85 | 5.4 s → 1.36 s | 478 → 613 ms | 0.001 → 0.001 |
+
+  TBT on this host is noisy (repeat runs: main 478–954 ms, branch 412–1314 ms); the change
+  only removes animation work. LCP improved in every run. e2e home/navigation/locale/keyboard
+  20/20 pass.
+- Still open: perf < 90 because TBT ~0.5 s (chunk `4952`, 1.2 s scripting on mobile).
