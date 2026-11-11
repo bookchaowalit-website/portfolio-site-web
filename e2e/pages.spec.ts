@@ -67,3 +67,18 @@ test.describe('Blog Page', () => {
     await expect(page.locator('main')).toBeVisible();
   });
 });
+
+test.describe('SEO metadata', () => {
+  for (const path of ['/en', '/th', '/en/projects', '/en/blog']) {
+    test(`${path} puts the meta description in <head> for a normal browser`, async ({ request }) => {
+      const res = await request.get(path, {
+        headers: { 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36' },
+      });
+      const html = await res.text();
+      const headEnd = html.indexOf('</head>');
+      const desc = html.indexOf('name="description"');
+      expect(desc).toBeGreaterThan(-1);
+      expect(desc).toBeLessThan(headEnd);
+    });
+  }
+});

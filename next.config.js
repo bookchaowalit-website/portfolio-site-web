@@ -4,6 +4,8 @@ import bundleAnalyzer from '@next/bundle-analyzer';
 import { withSentryConfig } from '@sentry/nextjs';
 import withSerwistInit from '@serwist/next';
 import { securityHeaders } from './security-headers.mjs';
+import { htmlLimitedBots } from './metadata-bots.mjs';
+import { sentryBuildOptions } from './sentry-build-options.mjs';
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
@@ -35,6 +37,9 @@ const withBundleAnalyzer = bundleAnalyzer({
 const nextConfig = {
   // Configure `pageExtensions` to include markdown and MDX files
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+
+  // SEO: keep metadata in <head> for every user agent (see metadata-bots.mjs).
+  htmlLimitedBots,
   
   // Performance optimizations
   experimental: {
@@ -169,21 +174,5 @@ const withMDX = createMDX({
 const bundledConfig = withSerwist(withBundleAnalyzer(withNextIntl(withMDX(nextConfig))))
 
 // Wrap with Sentry
-export default withSentryConfig(bundledConfig, {
-  // For all available options, see:
-  // https://github.com/getsentry/sentry-webpack-plugin#options
-
-  // Suppresses source map upload logs
-  silent: !process.env.CI,
-
-  org: process.env.SENTRY_ORG,
-  project: process.env.SENTRY_PROJECT,
-
-  // Set to false to disable source map uploads
-  sourcemaps: {
-    disable: process.env.NODE_ENV !== 'production',
-  },
-
-  // Hides source maps from generated client bundles
-  hideSourceMaps: true,
-})// redeploy 2026-07-02
+export default withSentryConfig(bundledConfig, sentryBuildOptions)
+// redeploy 2026-07-02

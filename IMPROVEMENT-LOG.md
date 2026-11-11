@@ -73,3 +73,27 @@ Scorecard and rules: [IMPROVEMENT-GOAL.md](IMPROVEMENT-GOAL.md).
   `glob ^14.0.4` override under `@joshwooding/vite-plugin-react-docgen-typescript`.
   `npm ci`, `npm audit` (0), `ci:local` and `build-storybook` pass.
 - Lesson: after merging main into a branch that touches `package.json`, run `npm ci` before pushing.
+
+## Iteration 4 — SEO meta in `<head>`, Sentry off the hydration path (SEO + performance) — 2026-11-13
+
+- Picked: SEO (meta description streamed into `<body>` for browsers and Googlebot; Next 15
+  streaming metadata only blocks for `htmlLimitedBots`, which includes Lighthouse, so Lighthouse
+  SEO never saw it) and performance (TBT ~0.5–1 s; biggest client chunk was Sentry, ~350 KB raw).
+- Tests first: `e2e/pages.spec.ts` "SEO metadata" (description before `</head>` with a normal
+  Chrome UA on `/en`, `/th`, `/en/projects`, `/en/blog`) failed 4/4 against live main;
+  `metadata-bots.test.ts` and `sentry-build-options.test.ts` (tree-shake flags, no static
+  `@sentry/nextjs` import in `instrumentation-client.ts`) failed before the change.
+- Change: `htmlLimitedBots: /.*/` (`metadata-bots.mjs`); withSentryConfig options moved to
+  `sentry-build-options.mjs` with `webpack.treeshake` (tracing, debug logging, replay);
+  `instrumentation-client.ts` imports the SDK after `load` + idle. Errors thrown before that
+  are not reported (errors-only setup, accepted trade-off). `onRouterTransitionStart` dropped
+  (tracing is tree-shaken anyway).
+- After (local `next start`, same dummy DSN on both builds, Lighthouse mobile, median of 5; host
+  load average 7–14 from other jobs, so TBT is noisy):
+
+  | Page | Perf | LCP | TBT | JS transfer |
+  |------|------|-----|-----|-------------|
+  | `/en` main → branch | 82 → 89 | 1.21 s → 1.36 s | 707 → 437 ms | 369 → 344 KB (treeshake alone) |
+  | `/th` main → branch | 78 → 86 | 1.21 s → 1.36 s | 984 → 546 ms | |
+
+  e2e "SEO metadata" 4/4 green on the branch build; typecheck, lint, unit tests (118) green.
