@@ -62,3 +62,14 @@ Scorecard and rules: [IMPROVEMENT-GOAL.md](IMPROVEMENT-GOAL.md).
   only removes animation work. LCP improved in every run. e2e home/navigation/locale/keyboard
   20/20 pass.
 - Still open: perf < 90 because TBT ~0.5 s (chunk `4952`, 1.2 s scripting on mobile).
+
+## Merge note — 2026-11-12
+
+- Stack #35 → #36 → #37 merged to main as 05f981d after CI 9/9 green (run 43070061432) and a
+  Codex read-only review ("no findings").
+- Main had gained Storybook (#38) meanwhile; the auto-merged lockfile was out of sync
+  (`npm ci` failed) and Storybook's docgen plugin brought glob 13.0.7 / minimatch 10.2.6 back.
+  `dependency-advisories.test.ts` caught it. Fix: lockfile resynced with npm 10 and a scoped
+  `glob ^14.0.4` override under `@joshwooding/vite-plugin-react-docgen-typescript`.
+  `npm ci`, `npm audit` (0), `ci:local` and `build-storybook` pass.
+- Lesson: after merging main into a branch that touches `package.json`, run `npm ci` before pushing.
