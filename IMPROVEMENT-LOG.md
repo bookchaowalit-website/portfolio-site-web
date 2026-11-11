@@ -73,3 +73,25 @@ Scorecard and rules: [IMPROVEMENT-GOAL.md](IMPROVEMENT-GOAL.md).
   `glob ^14.0.4` override under `@joshwooding/vite-plugin-react-docgen-typescript`.
   `npm ci`, `npm audit` (0), `ci:local` and `build-storybook` pass.
 - Lesson: after merging main into a branch that touches `package.json`, run `npm ci` before pushing.
+
+## Live check — 2026-11-12 (main 4c319aa, CI + Storybook green)
+
+Production, Lighthouse mobile, median of 3:
+
+| Page | a11y | SEO | Perf (baseline → now) | LCP (baseline → now) |
+|------|------|-----|-----------------------|----------------------|
+| `/en` | 100 | 92 | 69 → 87 | 4.4 s → 1.19 s |
+| `/th` | 100 | 92 | 70 → 69 | 5.0 s → 5.0 s |
+| `/en/projects` | 100 | 92 | 87 → 72 | 1.2 s → 4.4 s (runs: 1.2–4.4 s) |
+| `/en/blog` | 100 | 91 | 84 → 85 | 1.1 s → 1.3 s |
+
+Headers live: CSP, COOP, `X-XSS-Protection: 0`. `npm audit` 0.
+
+Finding: on `/th` and `/en/projects` the LCP element is the analytics consent banner text
+(`body > div.fixed > p.mt-2`). It mounts after hydration, so lab LCP waits for JavaScript and
+swings with CPU load (the earlier `/en/projects` 1.2 s baseline was a single run). Returning
+visitors who already answered never see it. Fixing it means changing how the consent banner
+renders (server-rendered from a cookie, or a smaller bar) — a PDPA consent UX choice.
+
+Next, no owner input needed: SEO `meta-description` is streamed into `<body>` on every page
+(92 → 100 once it is in `<head>`); TBT ~0.5 s from chunk `4952`.
