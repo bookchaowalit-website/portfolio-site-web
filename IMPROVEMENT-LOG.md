@@ -311,3 +311,20 @@ iteration 5, no regression. Screenshots 320/375/768/1440 × en/th checked.
 - After: unit 83/83; e2e 49/49 twice (analytics-on build). Screenshots: first-visit banner and the
   reopened banner unchanged. Lab effect has to be checked on production (local server sends the
   HTML in one piece, so the late-frame mode does not occur locally).
+
+## Live check — after iteration 9 (main c19c6a4)
+
+e2e against production 36/36 (incl. HTML order and Tab order). Lighthouse mobile, 3 runs each:
+
+| Page | a11y | SEO | Perf | LCP runs (s) | TBT |
+|------|------|-----|------|--------------|-----|
+| `/en` | 100 | 100 | 92 | 1.14 / 1.15 / 1.22 | 351 ms |
+| `/th` | 100 | 100 | 92 | 1.22 / 1.23 / 1.22 | 330 ms |
+| `/en/blog` | 100 | 100 | 91 | 1.17 / 1.15 / 1.14 | 361 ms |
+| `/en/projects` | 100 | 100 | 94 | 1.26 / 1.26 / 1.25 | 296 ms |
+
+Observed LCP equals observed FCP in all 12 runs: the late-frame mode is gone. Every page now meets
+perf ≥ 90 and LCP < 2.5 s. Against the first baseline (2026-11-12 morning): perf 69/70/84/87 →
+92/92/91/94, LCP 4.4/5.0 s → ~1.2 s, SEO 91–92 → 100, prod advisories 8 → 0, CSP/COOP added.
+Still open: TBT 300–360 ms (target < 200 ms), CSP `script-src` nonces, small-text and orphan-grid
+items from the UI review, Google Fonts fetch flake in CI builds.
