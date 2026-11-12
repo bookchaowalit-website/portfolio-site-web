@@ -163,3 +163,25 @@ Best practices 100. Open: perf < 90 everywhere because TBT ≈ 0.5 s (shared chu
   the blinking cursor masked, so the CSS order does not change rendering. Kept: LCP stays well
   under the 2.5 s target; recheck on production.
 - e2e 24/24, lib tests 70/70, typecheck/lint pass.
+
+## Live check — after iteration 5 (main 4c2fd49)
+
+- Sentry on production: no SDK at `load`; after idle a client with DSN exists (lazy init works).
+- Lighthouse mobile, median of 3:
+
+  | Page | a11y | SEO | Perf | LCP | TBT |
+  |------|------|-----|------|-----|-----|
+  | `/en` | 100 | 100 | 86 → **90** | 1.16 s | 525 → 415 ms |
+  | `/th` | 100 | 100 | 77 | 3.8 s (runs 1.2 / 3.8 / 4.1 s) | 457 ms |
+  | `/en/blog` | 100 | 100 | 70 | 4.8 s | 460 ms |
+  | `/en/projects` | 100 | 100 | 73 | 5.2 s (runs 1.3 / 5.2 / 5.6 s) | 329 ms |
+
+- On `/th`, `/en/blog` and `/en/projects` the LCP element is the analytics consent banner text in
+  every run, before and after this change; its paint lands either at ~1.2 s or at 4–5 s, so the
+  medians swing between deploys. This is the one blocker left for LCP < 2.5 s and perf ≥ 90 on
+  those pages. Fixing it changes how consent is asked (PDPA) → **owner decision**; loop stops here.
+- Codex P2s on Storybook (#38) fixed in #41 (fetch mock, theme sync, unprefixed pathname).
+- UI review (qa-testing ui_review, 320–1440) found only issues that production already had:
+  at 320 px the site name overlaps the theme icon and the Thai name breaks mid-word
+  ("กรี/โภค"); doodle muted subtitle contrast flagged during fade-in; header control
+  label/name mismatch. Next UX iteration.
