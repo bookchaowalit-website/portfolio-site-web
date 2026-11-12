@@ -118,3 +118,17 @@ Next, no owner input needed: SEO `meta-description` is streamed into `<body>` on
   if a page turns dynamic. (b) P2 the CSP test depended on `NODE_ENV` — fixed (asserts both modes
   explicitly; passes with `NODE_ENV=development`). (c) P3 the head test ignored status/redirects —
   fixed (`maxRedirects: 0`, 200, `<html lang>` per locale).
+
+## Live check — after iteration 4 (main 1cb3ea3, CI + Storybook green)
+
+Production, Lighthouse mobile, median of the valid runs (host load avg ~2):
+
+| Page | a11y | SEO (was) | Perf (baseline → now) | LCP (baseline → now) |
+|------|------|-----------|-----------------------|----------------------|
+| `/en` | 100 | 100 (92) | 69 → 85–86 | 4.4 s → 1.18 s |
+| `/th` | 100 | 100 (92) | 70 → 87 | 5.0 s → 1.22 s |
+| `/en/blog` | 100 | 100 (91) | 84 → 85 | 1.1 s → 1.26 s |
+| `/en/projects` | 100 | 100 (92) | 87 → 76 | 1.2 s → 3.9 s (consent banner, varies) |
+
+Best practices 100. Open: perf < 90 everywhere because TBT ≈ 0.5 s (shared chunk `4952`);
+`/en/projects` LCP is the consent banner (owner UX choice); CSP `script-src` needs nonces.
