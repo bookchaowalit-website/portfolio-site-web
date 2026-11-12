@@ -235,3 +235,34 @@ iteration 5, no regression. Screenshots 320/375/768/1440 × en/th checked.
   from first paint and waits until the sticky note has settled; the label test waits for the "⌘K"
   and "?" buttons at ≥ 768 px. Against production (old code) 7 of 10 fail as expected; on the
   branch all pass 3 runs in a row.
+
+## Iteration 8 — consent banner from static HTML + cookie (owner chose "render from cookie")
+
+- Cause of the slow LCP on `/th`, `/en/blog`, `/en/projects`: the banner was loaded with
+  `next/dynamic`, so the server HTML held it inside a hidden Suspense segment that only JavaScript
+  revealed, and during hydration it could unmount and mount again when its chunk arrived late —
+  a new, late LCP candidate (4–5 s runs). Returning visitors also saw it flash before it hid.
+- Approach (pages stay static): the provider is imported statically, so the banner is plain
+  server HTML; the answer is stored in a first-party cookie `portfolio.analytics-consent.v1`
+  (`granted|denied`, 1 year, Lax, Secure on HTTPS; legacy localStorage answers are honoured and
+  copied over); a tiny `<head>` script (`src/lib/consent-boot.ts`) reads it before first paint
+  and sets `<html data-consent>`; CSS hides the first-visit banner for those visitors. A server
+  reading the cookie would have made every page dynamic.
+- Tests first: `consent-cookie.test.ts` (cookie read/write, legacy migration, junk ignored,
+  pre-paint script), `consent-banner.test.ts` (initial/reopened marker + CSS rule), and
+  `e2e/consent-banner.spec.ts` (needs a build with analytics on, `E2E_CONSENT=1`): banner visible
+  with JS off; returning visitor sees it in 0 frames and can still reopen it; answering writes the
+  cookie. All 4 e2e fail against production, pass locally (2 runs).
+- After (local builds, both with analytics on; Lighthouse mobile, median of 3):
+
+  | Page | Perf main → branch | TBT | Lab LCP | Observed LCP |
+  |------|--------------------|-----|---------|--------------|
+  | `/en` | 92 → 97 | 330 → 206 ms | 1.21 → 1.36 s | — |
+  | `/th` | 93 → 97 | 308 → 205 ms | 1.21 → 1.36 s | 261 → 190 ms |
+  | `/en/blog` | 93 → 97 | 312 → 197 ms | 1.21 → 1.36 s | — |
+  | `/en/projects` | 88 → 97 | 388 → 179 ms | 1.21 → 1.36 s | 196 → 142 ms |
+
+  Lab LCP +150 ms is the CSS split order again: the local main build loads 99 kB + 8 kB, this
+  branch 12 kB + 95 kB — which is what production already serves today, so there is no change
+  against production. e2e 47/47 with the banner present. Screenshots 375/768/1440 × en/th × new /
+  returning: banner unchanged for new visitors, absent for returning ones.

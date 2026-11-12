@@ -65,6 +65,17 @@ describe("consent banner", () => {
     });
   }
 
+  it("marks the first-visit banner so the pre-paint script can hide it for returning visitors", () => {
+    const first = renderToStaticMarkup(React.createElement(banner.ConsentBanner, { text: text("en"), onAccept() {}, onDecline() {} }));
+    assert.match(first, /data-consent-banner="initial"/);
+    const reopened = renderToStaticMarkup(
+      React.createElement(banner.ConsentBanner, { text: text("en"), reopened: true, onAccept() {}, onDecline() {} }),
+    );
+    assert.match(reopened, /data-consent-banner="reopened"/, "a banner the visitor reopened is never hidden");
+    const css = fs.readFileSync(path.join(root, "src/app/globals.css"), "utf8");
+    assert.match(css, /html\[data-consent\]\s+\[data-consent-banner="initial"\]\s*\{\s*display:\s*none/);
+  });
+
   it("buttons call back with the choice", () => {
     const calls: string[] = [];
     const element = banner.ConsentBanner({ text: text("en"), onAccept: () => calls.push("granted"), onDecline: () => calls.push("denied") });

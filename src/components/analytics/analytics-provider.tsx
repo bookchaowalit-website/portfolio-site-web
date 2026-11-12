@@ -30,6 +30,7 @@ export function AnalyticsProvider() {
   if (state === 'choices') return <ConsentChoicesLink label={t('choices')} onOpen={() => setReopened(true)} />
   return (
     <ConsentBanner
+      reopened={reopened}
       text={{
         region: t('region'),
         title: t('title'),

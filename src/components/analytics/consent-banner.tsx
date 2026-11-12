@@ -37,7 +37,8 @@ export function reserveScrollSpace(el: HTMLElement | null) {
   if (!el || typeof ResizeObserver === 'undefined') return
   const root = document.documentElement
   const apply = () => {
-    const space = `${el.offsetHeight + BANNER_GAP_PX}px`
+    // Hidden by the pre-paint consent marker: reserve nothing.
+    const space = el.offsetHeight ? `${el.offsetHeight + BANNER_GAP_PX}px` : ''
     root.style.scrollPaddingBottom = space
     document.body.style.paddingBottom = space
   }
@@ -53,16 +54,22 @@ export function reserveScrollSpace(el: HTMLElement | null) {
 
 export function ConsentBanner({
   text,
+  reopened = false,
   onAccept,
   onDecline,
 }: {
   text: ConsentText
+  reopened?: boolean
   onAccept: () => void
   onDecline: () => void
 }) {
   return (
     <div
       ref={reserveScrollSpace}
+      // "initial" is the banner in the static HTML; the <head> script marks
+      // <html data-consent> for visitors who already chose and globals.css
+      // hides it before first paint. A banner the visitor reopened stays.
+      data-consent-banner={reopened ? 'reopened' : 'initial'}
       role="region"
       aria-label={text.region}
       className="fixed inset-x-4 bottom-4 z-50 mx-auto max-w-xl border border-border bg-background p-4 text-sm shadow-lg sm:inset-x-6 sm:bottom-6 sm:p-5"
