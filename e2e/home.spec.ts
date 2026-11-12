@@ -204,7 +204,16 @@ test.describe('Label in name', () => {
               const name = el.getAttribute('aria-label') ?? '';
               return { shown, name };
             })
-            .filter(({ shown, name }) => shown && !name.toLowerCase().includes(shown.toLowerCase())),
+            .filter(({ shown, name }) => {
+              // Like axe: punctuation-only text ("?") names nothing; otherwise the
+              // visible words must appear as whole words in the name ("(⌘K)" is
+              // not "⌘K"). Trailing sentence punctuation on name words is ignored.
+              if (!/[\p{L}\p{N}]/u.test(shown)) return false;
+              const words = (t: string) => t.toLowerCase().split(/\s+/).map((w) => w.replace(/[.,:;!]+$/, '')).filter(Boolean);
+              const want = words(shown);
+              const have = words(name);
+              return !have.some((_, i) => want.every((w, j) => have[i + j] === w));
+            }),
         );
         expect(mismatches).toEqual([]);
         await context.close();
