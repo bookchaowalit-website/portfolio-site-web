@@ -275,3 +275,21 @@ iteration 5, no regression. Screenshots 320/375/768/1440 × en/th checked.
   axe treats "(⌘K)" as a different word from the visible "⌘K". Name is now "Open command palette ⌘K"
   / "เปิดถาดคำสั่ง ⌘K"; the e2e compares whole words like axe (red on the parenthesised name, green
   after). axe 4.14 label-content-name-mismatch: 0 on `/en` and `/th`.
+
+## Live check — after iterations 7–8 (main 62281e6)
+
+- Production HTML: consent banner is plain markup (no hidden Suspense segment), pre-paint script in
+  `<head>`. e2e against production 34/34 incl. the 4 consent tests (returning visitor: banner in
+  0 frames). axe 4.14 Label in Name: 0.
+- Lighthouse mobile, median of 3 (host load avg ~10, TBT inflated):
+
+  | Page | Perf (before → now) | LCP median (runs) |
+  |------|---------------------|-------------------|
+  | `/en` | 89 → 89 | 1.20 s |
+  | `/th` | 77 → 86 | 1.24 s (1.22 / 3.33 / 1.24) |
+  | `/en/blog` | 70 → 88 | 1.26 s (1.17 / 3.07 / 1.26) |
+  | `/en/projects` | 73 → 85 | 3.32 s (1.25 / 3.33 / 3.32) |
+
+- The banner is still the LCP element. Its late mode dropped from 4–5 s to 3.1–3.3 s and the early
+  mode (~1.2 s) is now the common one (6 of 9 runs); observed render delay is 0.1–0.7 s. Next lead:
+  the banner text's web-font swap (Geist / Geist Mono) may re-time the LCP paint in Lantern.
