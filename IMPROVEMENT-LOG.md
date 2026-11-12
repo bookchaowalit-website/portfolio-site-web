@@ -200,3 +200,9 @@ Best practices 100. Open: perf < 90 everywhere because TBT ≈ 0.5 s (shared chu
 - After: e2e 28/28; at 320 px the brand ends at 165 px and the toggle starts at 165 px; the
   language button is 44 px wide (tap target). Screenshots 320/375/768/1440 × en/th: 320 fixed,
   others unchanged.
+- Codex P2 on the test (confirmed, fixed): it could measure before hydration (ThemeToggle is a
+  placeholder) and `Math.min()` of no controls is `Infinity`. It now waits for the toggle button,
+  requires ≥ 3 controls, and checks the header's own overflow. Red against production (old header)
+  at 320 px, green on the branch 3 runs in a row.
+- Found on the way: right after hydration the hero entrance animations make the page scroll
+  sideways for a moment at 320 px (0 px once they finish). Next UX item.
