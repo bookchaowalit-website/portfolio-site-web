@@ -153,7 +153,9 @@ export function StickyNote({
       }}
       initial={reducedMotion ? false : { scale: 0, rotate: rotation - 45 }}
       animate={{ scale: 1, rotate: rotation }}
-      transition={reducedMotion ? { duration: 0 } : { type: "spring", stiffness: 200, damping: 15 }}
+      // Critically damped (2*sqrt(200) ~ 28): no overshoot, so the note never
+      // grows past its box and makes narrow phones scroll sideways.
+      transition={reducedMotion ? { duration: 0 } : { type: "spring", stiffness: 200, damping: 30 }}
       whileHover={reducedMotion ? undefined : {
         scale: 1.04,
         rotate: rotation + 1.5,

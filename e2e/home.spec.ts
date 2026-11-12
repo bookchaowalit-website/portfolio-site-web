@@ -87,3 +87,102 @@ test.describe('Metadata in <head>', () => {
     });
   }
 });
+
+// IMPROVEMENT-GOAL.md, UX: at 320 px the hero sticky note's entrance spring
+// overshot to ~1.13x and the page scrolled sideways for a moment.
+test.describe('No sideways scroll while the hero animates', () => {
+  for (const path of ['/en', '/th']) {
+    test(`page never overflows horizontally at 320px during the first 3s (${path})`, async ({ browser }) => {
+      const context = await browser.newContext({ viewport: { width: 320, height: 700 } });
+      const page = await context.newPage();
+      await page.goto(path, { waitUntil: 'domcontentloaded' });
+      let worst = 0;
+      for (let i = 0; i < 30; i++) {
+        worst = Math.max(worst, await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth));
+        await page.waitForTimeout(100);
+      }
+      expect(worst, `max horizontal overflow on ${path}`).toBeLessThanOrEqual(0);
+      await context.close();
+    });
+  }
+});
+
+// IMPROVEMENT-GOAL.md, UX: Thai line breaking split the surname "กรีโภค" into
+// "กรี / โภค" at 320 px. The hero name may wrap only at its spaces.
+test.describe('Hero name wraps only between words', () => {
+  for (const path of ['/en', '/th']) {
+    test(`no word of the name is split across lines at 320px (${path})`, async ({ browser }) => {
+      const context = await browser.newContext({ viewport: { width: 320, height: 700 } });
+      const page = await context.newPage();
+      await page.goto(path);
+      const name = page.locator('#hero h1 .font-bold').first();
+      await expect(name).not.toBeEmpty();
+      const splitWords = await name.evaluate((el) => {
+        const text = el.textContent ?? '';
+        const node = [...el.childNodes].length ? el : el;
+        const range = document.createRange();
+        const words: string[] = [];
+        let offset = 0;
+        const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+        const nodes: Text[] = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode as Text);
+        for (const word of text.split(/\s+/).filter(Boolean)) {
+          const start = text.indexOf(word, offset);
+          offset = start + word.length;
+          // Map the word back to text nodes and count its line boxes.
+          let pos = 0;
+          const rects: DOMRect[] = [];
+          for (const t of nodes) {
+            const len = t.data.length;
+            const a = Math.max(start, pos), b = Math.min(start + word.length, pos + len);
+            if (a < b) {
+              range.setStart(t, a - pos);
+              range.setEnd(t, b - pos);
+              rects.push(...Array.from(range.getClientRects()));
+            }
+            pos += len;
+          }
+          const lines = new Set(rects.filter((r) => r.width > 0).map((r) => Math.round(r.top)));
+          if (lines.size > 1) words.push(word);
+        }
+        return words;
+      });
+      expect(splitWords, `words split across lines on ${path}`).toEqual([]);
+      await context.close();
+    });
+  }
+});
+
+// IMPROVEMENT-GOAL.md, a11y (WCAG 2.5.3 Label in Name): a control's accessible
+// name must contain its visible text, so voice-control users can say what they
+// see. The header showed "⌘K" and "?" on buttons named "... (Cmd+K)" and
+// "Keyboard shortcuts help". axe 4.13 here does not flag these (4.14 does), so
+// the check is done directly; emoji and flags are ignored, symbols such as ⌘ are not.
+test.describe('Label in name', () => {
+  for (const path of ['/en', '/th']) {
+    for (const width of [375, 768, 1440]) {
+      test(`header controls name what they show at ${width}px (${path})`, async ({ browser }) => {
+        const context = await browser.newContext({ viewport: { width, height: 900 } });
+        const page = await context.newPage();
+        await page.goto(path, { waitUntil: 'networkidle' });
+        const nav = page.locator('nav[aria-label="Main navigation"]');
+        await expect(nav.getByRole('button', { name: /switch to (dark|light) mode/i })).toBeVisible();
+        const mismatches = await nav.locator('button[aria-label], a[aria-label]').evaluateAll((els) =>
+          els
+            .filter((el) => (el as HTMLElement).offsetParent !== null)
+            .map((el) => {
+              const shown = (el as HTMLElement).innerText
+                .replace(/[\p{Extended_Pictographic}\p{Regional_Indicator}\uFE0F]/gu, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+              const name = el.getAttribute('aria-label') ?? '';
+              return { shown, name };
+            })
+            .filter(({ shown, name }) => shown && !name.toLowerCase().includes(shown.toLowerCase())),
+        );
+        expect(mismatches).toEqual([]);
+        await context.close();
+      });
+    }
+  }
+});

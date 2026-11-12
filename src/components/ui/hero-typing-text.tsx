@@ -33,7 +33,16 @@ export function HeroTypingText({
   return (
     <>
       {greeting}{' '}
-      <span className="font-bold text-foreground pb-1 inline-block">{name}</span>
+      <span className="font-bold text-foreground pb-1 inline-block">
+        {/* Wrap only at spaces: Thai line breaking otherwise splits the
+            surname ("กรี / โภค") on narrow phones. */}
+        {name.split(" ").map((word, i) => (
+          <span key={i}>
+            {i > 0 && " "}
+            <span className="whitespace-nowrap">{word}</span>
+          </span>
+        ))}
+      </span>
       {showCursor && (
         <motion.span
           aria-hidden="true"
