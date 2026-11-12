@@ -231,3 +231,7 @@ Three items from the UI review, all pre-existing, none needing the owner:
 After: e2e 43/43 (home, navigation, locale, keyboard, axe smoke); unit tests pass; local
 Lighthouse `/en` 94 (LCP 1.36 s, TBT 284 ms), `/th` 91 (LCP 1.36 s, TBT 356 ms) — same range as
 iteration 5, no regression. Screenshots 320/375/768/1440 × en/th checked.
+- Codex P2s on the tests (confirmed, fixed): the overflow test now records every animation frame
+  from first paint and waits until the sticky note has settled; the label test waits for the "⌘K"
+  and "?" buttons at ≥ 768 px. Against production (old code) 7 of 10 fail as expected; on the
+  branch all pass 3 runs in a row.

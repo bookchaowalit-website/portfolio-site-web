@@ -92,16 +92,37 @@ test.describe('Metadata in <head>', () => {
 // overshot to ~1.13x and the page scrolled sideways for a moment.
 test.describe('No sideways scroll while the hero animates', () => {
   for (const path of ['/en', '/th']) {
-    test(`page never overflows horizontally at 320px during the first 3s (${path})`, async ({ browser }) => {
+    test(`page never overflows horizontally at 320px while the hero animates (${path})`, async ({ browser }) => {
       const context = await browser.newContext({ viewport: { width: 320, height: 700 } });
       const page = await context.newPage();
-      await page.goto(path, { waitUntil: 'domcontentloaded' });
-      let worst = 0;
-      for (let i = 0; i < 30; i++) {
-        worst = Math.max(worst, await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth));
-        await page.waitForTimeout(100);
-      }
-      expect(worst, `max horizontal overflow on ${path}`).toBeLessThanOrEqual(0);
+      // Record the worst overflow on every animation frame from the first paint.
+      await page.addInitScript(() => {
+        const w = window as unknown as { __maxOverflow: number; __frames: number };
+        w.__maxOverflow = 0;
+        w.__frames = 0;
+        const tick = () => {
+          const el = document.documentElement;
+          if (el) w.__maxOverflow = Math.max(w.__maxOverflow, el.scrollWidth - window.innerWidth);
+          w.__frames++;
+          requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      });
+      await page.goto(path);
+      // The sticky note is the element that animates in; wait until it has
+      // settled at its final scale so the whole entrance was observed.
+      const note = page.locator('#hero .sticky-note').first();
+      await expect(note).toBeVisible();
+      await expect
+        .poll(() => note.evaluate((el) => new DOMMatrix(getComputedStyle(el).transform).a), { timeout: 5000 })
+        .toBeLessThan(1.01);
+      await page.waitForTimeout(500);
+      const { max, frames } = await page.evaluate(() => {
+        const w = window as unknown as { __maxOverflow: number; __frames: number };
+        return { max: w.__maxOverflow, frames: w.__frames };
+      });
+      expect(frames, 'frames observed').toBeGreaterThan(30);
+      expect(max, `max horizontal overflow on ${path}`).toBeLessThanOrEqual(0);
       await context.close();
     });
   }
@@ -167,6 +188,11 @@ test.describe('Label in name', () => {
         await page.goto(path, { waitUntil: 'networkidle' });
         const nav = page.locator('nav[aria-label="Main navigation"]');
         await expect(nav.getByRole('button', { name: /switch to (dark|light) mode/i })).toBeVisible();
+        if (width >= 768) {
+          // CommandPalette and HelpDialog load separately; make sure both are in.
+          await expect(nav.locator('button', { hasText: '⌘K' })).toBeVisible();
+          await expect(nav.locator('button', { hasText: '?' })).toBeVisible();
+        }
         const mismatches = await nav.locator('button[aria-label], a[aria-label]').evaluateAll((els) =>
           els
             .filter((el) => (el as HTMLElement).offsetParent !== null)
