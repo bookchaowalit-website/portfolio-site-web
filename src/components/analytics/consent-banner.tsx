@@ -22,6 +22,20 @@ export function panelState(enabled: boolean, consent: Consent, reopened: boolean
   return consent === 'unknown' || reopened ? 'banner' : 'choices'
 }
 
+// The panels are split across two slots in the layout. "top" sits at the start
+// of <body> and holds only the first-visit banner, so it is parsed and painted
+// with the first frame (it is position: fixed, so DOM order does not move it on
+// screen) and keyboard users reach the choice right after the skip link.
+// "bottom" holds the "Analytics choices" control and a banner reopened from it.
+export type PanelSlot = 'top' | 'bottom'
+
+export function panelFor(slot: PanelSlot, enabled: boolean, consent: Consent, reopened: boolean): PanelState {
+  const state = panelState(enabled, consent, reopened)
+  const firstVisit = state === 'banner' && consent === 'unknown'
+  if (slot === 'top') return firstVisit ? 'banner' : 'hidden'
+  return firstVisit ? 'hidden' : state
+}
+
 // Monochrome, sharp corners, hairline border (DESIGN.md). One class string for
 // both buttons so neither choice looks preferred.
 const CHOICE_BUTTON =

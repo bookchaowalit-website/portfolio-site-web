@@ -23,6 +23,24 @@ test('first-time visitor: banner is in the HTML and visible without JavaScript',
   await context.close();
 });
 
+test('first-visit banner comes before the page content in the HTML (paints with the first frame)', async ({ request }) => {
+  for (const path of ['/en', '/th', '/en/projects']) {
+    const html = await (await request.get(path)).text();
+    const bannerAt = html.indexOf('data-consent-banner="initial"');
+    const mainAt = html.indexOf('<main');
+    expect(bannerAt, `banner on ${path}`).toBeGreaterThan(-1);
+    expect(bannerAt, `banner before <main> on ${path}`).toBeLessThan(mainAt);
+  }
+});
+
+test('keyboard: skip link first, then the consent choices', async ({ page }) => {
+  await page.goto('/en');
+  await page.keyboard.press('Tab');
+  await expect(page.locator(':focus')).toHaveText(/skip to content/i);
+  await page.keyboard.press('Tab');
+  await expect(page.locator(':focus')).toHaveText(/decline/i);
+});
+
 for (const answer of ['granted', 'denied'] as const) {
   test(`returning visitor (${answer}): banner never painted, not even one frame`, async ({ browser, baseURL }) => {
     const context = await browser.newContext();

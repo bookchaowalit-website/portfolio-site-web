@@ -224,6 +224,10 @@ export default async function LocaleLayout({
           >
             {locale === 'th' ? 'ข้ามไปที่เนื้อหา' : 'Skip to content'}
           </a>
+          {/* First-visit consent banner: early in the HTML so it paints with
+              the first frame; fixed on screen, so its place here only sets the
+              reading and Tab order (right after the skip link). */}
+          {readConfig() && <AnalyticsProvider slot="top" />}
           <Navigation />
           <main id="main-content" className="min-h-screen relative z-10">
             <ErrorBoundary>
@@ -235,7 +239,7 @@ export default async function LocaleLayout({
           <Footer />
           <BackToTop />
           <Analytics mode="production" />
-          {readConfig() && <AnalyticsProvider />}
+          {readConfig() && <AnalyticsProvider slot="bottom" />}
         </MotionProvider>
         </NextIntlClientProvider>
       </body>
