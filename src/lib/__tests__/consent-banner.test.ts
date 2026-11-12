@@ -37,6 +37,19 @@ describe("consent banner", () => {
     assert.deepEqual(imports.filter((name) => name !== "react"), []);
   });
 
+  it("split panels: the first-visit banner sits at the top of <body>, the rest at the bottom", () => {
+    // Top slot: only the first-visit banner (early in the HTML so it paints
+    // in the first frame). Bottom slot: the choices control and a reopened banner.
+    assert.equal(banner.panelFor("top", true, "unknown", false), "banner");
+    assert.equal(banner.panelFor("top", true, "granted", false), "hidden");
+    assert.equal(banner.panelFor("top", true, "denied", true), "hidden");
+    assert.equal(banner.panelFor("top", false, "unknown", false), "hidden");
+    assert.equal(banner.panelFor("bottom", true, "unknown", false), "hidden");
+    assert.equal(banner.panelFor("bottom", true, "granted", false), "choices");
+    assert.equal(banner.panelFor("bottom", true, "denied", true), "banner");
+    assert.equal(banner.panelFor("bottom", false, "granted", true), "hidden");
+  });
+
   it("panel state: hidden when off, banner until a choice, then a small choices control", () => {
     assert.equal(banner.panelState(false, "unknown", false), "hidden");
     assert.equal(banner.panelState(false, "granted", true), "hidden");

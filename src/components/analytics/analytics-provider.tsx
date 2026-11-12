@@ -4,28 +4,29 @@ import { useEffect, useState, useSyncExternalStore } from 'react'
 import { usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { analytics } from '@/lib/browser-analytics'
-import { ConsentBanner, ConsentChoicesLink, panelState } from './consent-banner'
+import { ConsentBanner, ConsentChoicesLink, panelFor, type PanelSlot } from './consent-banner'
 
 // Sends a page view per route (path only) after consent and shows the consent
 // banner. Rendered from the locale layout only when analytics is enabled; it
 // renders nothing while analytics is off. The portfolio has no sign-in, so
 // there is no identify() / forgetIdentity() here.
-export function AnalyticsProvider() {
+export function AnalyticsProvider({ slot = 'bottom' }: { slot?: PanelSlot }) {
   const pathname = usePathname()
   const t = useTranslations('analyticsConsent')
   const consent = useSyncExternalStore(analytics.subscribe, analytics.consent, () => 'unknown' as const)
   const [reopened, setReopened] = useState(false)
 
   useEffect(() => {
-    if (consent === 'granted' && pathname) analytics.page(pathname)
-  }, [pathname, consent])
+    // Page views are sent from one slot only.
+    if (slot === 'bottom' && consent === 'granted' && pathname) analytics.page(pathname)
+  }, [slot, pathname, consent])
 
   const choose = (value: 'granted' | 'denied') => {
     analytics.setConsent(value)
     setReopened(false)
   }
 
-  const state = panelState(analytics.enabled, consent, reopened)
+  const state = panelFor(slot, analytics.enabled, consent, reopened)
   if (state === 'hidden') return null
   if (state === 'choices') return <ConsentChoicesLink label={t('choices')} onOpen={() => setReopened(true)} />
   return (
