@@ -74,7 +74,7 @@ export function Navigation() {
             </NavigationMenuList>
           </NavigationMenu>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 min-[360px]:gap-2">
             <HelpDialog />
             <CommandPalette />
             <ThemeToggle />
