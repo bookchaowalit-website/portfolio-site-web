@@ -44,8 +44,11 @@ export function Navigation() {
     { name: t('contact'), href: "/contact", key: "contact" },
   ];
 
+  // z-40: above page content (main is z-10), below the consent banner,
+  // dialogs and dropdowns (z-50). The banner comes before the nav in the DOM,
+  // so an equal z-index would let an open mobile menu cover it.
   return (
-    <nav className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/85 sticky top-0 z-50" aria-label="Main navigation">
+    <nav className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/85 sticky top-0 z-40" aria-label="Main navigation">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <NavigationBrand />

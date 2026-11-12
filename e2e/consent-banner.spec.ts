@@ -33,6 +33,24 @@ test('first-visit banner comes before the page content in the HTML (paints with 
   }
 });
 
+test('banner stays on top of the open mobile menu (short landscape phone)', async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width: 568, height: 320 } });
+  const page = await context.newPage();
+  await page.goto('/en', { waitUntil: 'networkidle' });
+  await page.locator('nav[aria-label="Main navigation"]').getByRole('button', { name: /menu/i }).click();
+  await expect(page.locator('#mobile-navigation')).toBeVisible();
+  for (const name of [/^decline$/i, /^allow analytics$/i]) {
+    const button = page.locator(banner).getByRole('button', { name });
+    const hit = await button.evaluate((el) => {
+      const r = el.getBoundingClientRect();
+      const top = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+      return !!top && (top === el || el.contains(top));
+    });
+    expect(hit, `${name} is clickable above the menu`).toBe(true);
+  }
+  await context.close();
+});
+
 test('keyboard: skip link first, then the consent choices', async ({ page }) => {
   await page.goto('/en');
   await page.keyboard.press('Tab');
