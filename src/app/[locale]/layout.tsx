@@ -13,16 +13,19 @@ import { ErrorBoundary } from '@/components/error-boundary';
 import { BackToTop } from '@/components/back-to-top';
 import { MotionProvider } from '@/components/motion-provider';
 import { readConfig } from '@/lib/browser-analytics';
+import { AnalyticsProvider } from "@/components/analytics/analytics-provider";
+import { consentBootScript } from "@/lib/consent-boot";
 
 const Footer = dynamic(() => import("@/components/footer").then(mod => ({ default: mod.Footer })), {
   loading: () => null
 });
 
 // Consent banner + page views (PostHog, ADR-0005). Only rendered when
-// NEXT_PUBLIC_ANALYTICS_ENABLED is "true" and a PostHog key is set.
-const AnalyticsProvider = dynamic(() => import("@/components/analytics/analytics-provider").then(mod => ({ default: mod.AnalyticsProvider })), {
-  loading: () => null
-});
+// NEXT_PUBLIC_ANALYTICS_ENABLED is "true" and a PostHog key is set. Imported
+// statically (not next/dynamic) so the banner is plain server HTML: it paints
+// with the page instead of after a separate chunk, and it is not torn down and
+// re-mounted during hydration.
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -193,12 +196,20 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
+      // The pre-paint consent script (src/lib/consent-boot.ts) may add
+      // data-consent here before hydration; this covers only <html>'s own
+      // attributes, not its children.
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${notoSansThai.variable} ${kalam.variable} ${isThai ? 'font-thai' : ''}`}
     >
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://icon.horse" />
+        {readConfig() && (
+          // Before first paint: hide the banner for visitors who already chose.
+          <script dangerouslySetInnerHTML={{ __html: consentBootScript() }} />
+        )}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}

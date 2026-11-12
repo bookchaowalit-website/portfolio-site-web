@@ -133,10 +133,44 @@ function browserStorage(): StorageLike | null {
   }
 }
 
-function readConsent(storage: StorageLike | null): Consent {
+// The answer lives in a first-party cookie so the pre-paint script in <head>
+// (src/lib/consent-boot.ts) can hide the server-rendered banner for visitors
+// who already chose. One year; Lax; Secure on HTTPS. It holds only
+// "granted" or "denied".
+export type CookieJar = { get(_name: string): string | null; set(_name: string, _value: string): void }
+
+const ONE_YEAR_S = 60 * 60 * 24 * 365
+
+function browserCookies(): CookieJar | null {
+  if (typeof document === 'undefined') return null
+  return {
+    get(name) {
+      for (const part of document.cookie.split('; ')) {
+        const eq = part.indexOf('=')
+        if (eq > 0 && part.slice(0, eq) === name) return part.slice(eq + 1)
+      }
+      return null
+    },
+    set(name, value) {
+      const secure = location.protocol === 'https:' ? '; Secure' : ''
+      document.cookie = `${name}=${value}; Path=/; Max-Age=${ONE_YEAR_S}; SameSite=Lax${secure}`
+    },
+  }
+}
+
+const isAnswer = (value: unknown): value is 'granted' | 'denied' => value === 'granted' || value === 'denied'
+
+function readConsent(storage: StorageLike | null, cookies: CookieJar | null): Consent {
   try {
-    const value = storage?.getItem(CONSENT_KEY)
-    return value === 'granted' || value === 'denied' ? value : 'unknown'
+    const fromCookie = cookies?.get(CONSENT_KEY)
+    if (isAnswer(fromCookie)) return fromCookie
+    // Answers given before the cookie existed: honour them and move them over.
+    const legacy = storage?.getItem(CONSENT_KEY)
+    if (isAnswer(legacy)) {
+      cookies?.set(CONSENT_KEY, legacy)
+      return legacy
+    }
+    return 'unknown'
   } catch {
     return 'unknown'
   }
@@ -146,12 +180,14 @@ export function createAnalytics({
   config,
   load,
   storage = browserStorage(),
+  cookies = browserCookies(),
 }: {
   config: AnalyticsConfig | null
   load: AdapterLoader
   storage?: StorageLike | null
+  cookies?: CookieJar | null
 }) {
-  let consent: Consent = config ? readConsent(storage) : 'unknown'
+  let consent: Consent = config ? readConsent(storage, cookies) : 'unknown'
   let adapter: Promise<AnalyticsAdapter | null> | null = null
   const listeners = new Set<(_value: Consent) => void>()
 
@@ -191,6 +227,11 @@ export function createAnalytics({
         storage?.setItem(CONSENT_KEY, value)
       } catch {
         // private mode: the choice lasts for this page view only
+      }
+      try {
+        cookies?.set(CONSENT_KEY, value)
+      } catch {
+        // cookies blocked: same as above
       }
       // optOut also resets the stored identity, so Decline clears the marker.
       // Without a loaded SDK nothing has been reset yet, so the marker stays

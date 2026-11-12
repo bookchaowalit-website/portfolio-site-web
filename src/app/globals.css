@@ -460,3 +460,11 @@
     break-inside: avoid;
   }
 }
+
+/* Consent banner: the static HTML always contains it so first-time visitors
+   see it at first paint. The <head> script (src/lib/consent-boot.ts) marks
+   <html data-consent> for visitors who already chose; hide it for them before
+   anything is painted. */
+html[data-consent] [data-consent-banner="initial"] {
+  display: none;
+}
