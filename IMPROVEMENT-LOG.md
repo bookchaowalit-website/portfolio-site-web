@@ -334,3 +334,7 @@ items from the UI review, Google Fonts fetch flake in CI builds.
   covered the help dialog's close button (keyboard-help e2e failed) — dialogs and dropdowns are
   `z-50` portals. Final: banner stays `z-50`, nav goes to `z-40` (still above `main`, z-10).
   e2e 50/50 twice; screenshots: banner above the open menu, nav above content when scrolled.
+- Codex P2 on the z-index fix (confirmed, fixed): back-to-top was also `z-40` and later in the DOM,
+  so after scrolling it covered "Contact" in the open mobile menu at 568×320 (new e2e, red). It is
+  now `z-30`. Section nav, TOC and the reading bar live inside `main` (z-10) and stay below the nav.
+  e2e 51/51 twice.

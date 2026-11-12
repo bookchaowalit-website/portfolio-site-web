@@ -83,3 +83,39 @@ test.describe('Header at phone widths', () => {
     }
   }
 });
+
+// The mobile menu must not be covered by page-level floating controls
+// (back-to-top) on short screens after scrolling. The consent cookie keeps the
+// analytics banner away in builds that have it; the banner is meant to cover.
+test('open mobile menu is fully clickable after scrolling on a short screen', async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ viewport: { width: 568, height: 320 } });
+  await context.addCookies([
+    { name: 'portfolio.analytics-consent.v1', value: 'denied', domain: new URL(baseURL ?? 'http://127.0.0.1:3000').hostname, path: '/' },
+  ]);
+  const page = await context.newPage();
+  await page.goto('/en', { waitUntil: 'networkidle' });
+  await page.mouse.wheel(0, 1500);
+  await page.waitForTimeout(600);
+  await page.locator('nav[aria-label="Main navigation"]').getByRole('button', { name: /menu/i }).click();
+  const links = page.locator('#mobile-navigation a');
+  await expect(links.first()).toBeVisible();
+  const covered = await links.evaluateAll((els) =>
+    els
+      .filter((el) => {
+        const r = el.getBoundingClientRect();
+        return r.bottom > 0 && r.top < window.innerHeight;
+      })
+      .filter((el) => {
+        const r = el.getBoundingClientRect();
+        // Check the right end too: floating buttons sit bottom-right.
+        for (const x of [r.left + 8, r.right - 8]) {
+          const top = document.elementFromPoint(x, r.top + r.height / 2);
+          if (!top || !(top === el || el.contains(top))) return true;
+        }
+        return false;
+      })
+      .map((el) => el.textContent?.trim()),
+  );
+  expect(covered).toEqual([]);
+  await context.close();
+});
