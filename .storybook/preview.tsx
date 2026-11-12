@@ -3,6 +3,7 @@ import { NextIntlClientProvider } from "next-intl";
 import th from "../messages/th.json";
 import en from "../messages/en.json";
 import "../src/app/globals.css";
+import { mockApiFetch, NAVIGATION_PATHNAME, syncStoredTheme } from "./shell";
 // Same next/font setup as the app root layout (src/app/[locale]/layout.tsx).
 import { Geist, Geist_Mono, Noto_Sans_Thai, Kalam } from "next/font/google";
 
@@ -48,6 +49,11 @@ const VIEWPORTS = {
 };
 
 // Mirrors the app root: lang, .font-thai for Thai, .dark for dark theme.
+if (typeof window !== "undefined" && !(window as { __storyFetchMocked?: boolean }).__storyFetchMocked) {
+  window.fetch = mockApiFetch(window.fetch.bind(window));
+  (window as { __storyFetchMocked?: boolean }).__storyFetchMocked = true;
+}
+
 const withAppShell: Decorator = (Story, context) => {
   const locale = context.globals.locale === "en" ? "en" : "th";
   const theme = context.globals.theme === "dark" ? "dark" : "light";
@@ -57,6 +63,11 @@ const withAppShell: Decorator = (Story, context) => {
     html.classList.add(...FONT_CLASSES);
     html.classList.toggle("font-thai", locale === "th");
     html.classList.toggle("dark", theme === "dark");
+    try {
+      syncStoredTheme(window.localStorage, theme);
+    } catch {
+      // Storage can be blocked; the class above still sets the theme.
+    }
   }
   return (
     <NextIntlClientProvider locale={locale} messages={locale === "th" ? th : en} timeZone="Asia/Bangkok"
@@ -86,7 +97,7 @@ const preview: Preview = {
   initialGlobals: { locale: "th", theme: "light" },
   parameters: {
     layout: "padded",
-    nextjs: { appDirectory: true, navigation: { pathname: "/th" } },
+    nextjs: { appDirectory: true, navigation: { pathname: NAVIGATION_PATHNAME } },
     viewport: { options: VIEWPORTS },
     a11y: { test: "error", options: { runOnly: ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"] } },
     controls: { matchers: { color: /(background|color)$/i, date: /Date$/i } },
