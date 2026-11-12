@@ -271,3 +271,7 @@ iteration 5, no regression. Screenshots 320/375/768/1440 × en/th checked.
   visitor e2e now fails on any hydration warning — red on `next dev`, green after
   `suppressHydrationWarning` on `<html>` (covers only that element's own attributes). e2e 47/47 on
   the production build, 4/4 on dev (2 runs).
+- Follow-up from the UI review (axe 4.14): "Open command palette (⌘K)" still failed Label in Name —
+  axe treats "(⌘K)" as a different word from the visible "⌘K". Name is now "Open command palette ⌘K"
+  / "เปิดถาดคำสั่ง ⌘K"; the e2e compares whole words like axe (red on the parenthesised name, green
+  after). axe 4.14 label-content-name-mismatch: 0 on `/en` and `/th`.
