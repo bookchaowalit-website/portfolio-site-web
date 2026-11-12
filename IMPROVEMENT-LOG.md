@@ -206,3 +206,32 @@ Best practices 100. Open: perf < 90 everywhere because TBT ≈ 0.5 s (shared chu
   at 320 px, green on the branch 3 runs in a row.
 - Found on the way: right after hydration the hero entrance animations make the page scroll
   sideways for a moment at 320 px (0 px once they finish). Next UX item.
+
+## Live check — after iteration 6 (main 3bfb486)
+
+`/en` perf 89, LCP 1.18 s, TBT 437 ms · `/th` perf 77, LCP 4.0 s (consent banner), TBT 429 ms ·
+a11y 100, SEO 100. e2e against production 20/20.
+
+## Iteration 7 — UX/a11y on phones and header controls
+
+Three items from the UI review, all pre-existing, none needing the owner:
+
+1. **Sideways scroll at 320 px.** The hero sticky note's entrance spring (stiffness 200, damping 15)
+   overshot to ~1.13× and the page overflowed 20–25 px for a moment. Test first: e2e samples
+   `scrollWidth - innerWidth` every 100 ms for 3 s at 320 px on `/en`, `/th` (red: 20, 25).
+   Fix: damping 30 (critical ≈ 28) — no overshoot. Green 3 runs in a row.
+2. **Thai name split mid-word** ("กรี / โภค") at 320 px. Test first: e2e maps each word of the
+   hero name to its line boxes (red on `/th`: "กรีโภค)"). Fix: each word in `whitespace-nowrap`,
+   wrapping only at spaces. `/th` now breaks "(เชาวลิต / กรีโภค)"; `/en` unchanged.
+3. **Label in Name (WCAG 2.5.3).** Header buttons showed "⌘K" and "?" but were named
+   "… (Cmd+K)" and "Keyboard shortcuts help". axe 4.13 in this repo does not flag it (4.14 in the
+   UI review does), so the e2e checks it directly at 375/768/1440 × en/th (red at 768/1440).
+   Fix: names "Open command palette (⌘K)" / "เปิดถาดคำสั่ง (⌘K)" and "Keyboard shortcuts help (?)".
+
+After: e2e 43/43 (home, navigation, locale, keyboard, axe smoke); unit tests pass; local
+Lighthouse `/en` 94 (LCP 1.36 s, TBT 284 ms), `/th` 91 (LCP 1.36 s, TBT 356 ms) — same range as
+iteration 5, no regression. Screenshots 320/375/768/1440 × en/th checked.
+- Codex P2s on the tests (confirmed, fixed): the overflow test now records every animation frame
+  from first paint and waits until the sticky note has settled; the label test waits for the "⌘K"
+  and "?" buttons at ≥ 768 px. Against production (old code) 7 of 10 fail as expected; on the
+  branch all pass 3 runs in a row.

@@ -119,7 +119,7 @@ export function HelpDialog() {
         size="icon"
         onClick={openDialog}
         className="hidden md:inline-flex font-mono text-sm"
-        aria-label="Keyboard shortcuts help"
+        aria-label="Keyboard shortcuts help (?)"
         aria-haspopup="dialog"
         aria-expanded={open}
         title="Keyboard shortcuts (?)"
