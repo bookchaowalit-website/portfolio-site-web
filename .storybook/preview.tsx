@@ -75,7 +75,9 @@ const withAppShell: Decorator = (Story, context) => {
       onError={(e) => console.warn(`[next-intl] ${e.code}: ${e.message}`)}
       getMessageFallback={({ namespace, key }) => `${namespace ? namespace + "." : ""}${key}`}
     >
-      <div className="bg-background text-foreground font-sans antialiased">
+      {/* key: remount on a toolbar theme change so components that read the
+          theme on mount (ThemeToggle) pick up the new value. */}
+      <div key={theme} className="bg-background text-foreground font-sans antialiased">
         <Story />
       </div>
     </NextIntlClientProvider>
