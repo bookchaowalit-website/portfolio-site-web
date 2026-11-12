@@ -196,6 +196,10 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
+      // The pre-paint consent script (src/lib/consent-boot.ts) may add
+      // data-consent here before hydration; this covers only <html>'s own
+      // attributes, not its children.
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${notoSansThai.variable} ${kalam.variable} ${isThai ? 'font-thai' : ''}`}
     >
       <head>

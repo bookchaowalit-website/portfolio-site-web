@@ -28,6 +28,10 @@ for (const answer of ['granted', 'denied'] as const) {
     const context = await browser.newContext();
     await context.addCookies([{ name: KEY, value: answer, domain: hostOf(baseURL), path: '/' }]);
     const page = await context.newPage();
+    const hydrationWarnings: string[] = [];
+    page.on('console', (m) => {
+      if (/hydrat|did not match|server rendered HTML/i.test(m.text())) hydrationWarnings.push(m.text().slice(0, 160));
+    });
     await page.addInitScript((selector) => {
       const w = window as unknown as { __bannerFrames: number; __frames: number };
       w.__bannerFrames = 0;
@@ -48,6 +52,8 @@ for (const answer of ['granted', 'denied'] as const) {
     });
     expect(seen.frames).toBeGreaterThan(10);
     expect(seen.banner, 'frames with the banner visible').toBe(0);
+    // The pre-paint script adds data-consent to <html>; React must accept it.
+    expect(hydrationWarnings).toEqual([]);
     // The choice can still be changed: the small control reopens the banner.
     await page.getByRole('button', { name: /analytics choices|ตัวเลือก/i }).click();
     await expect(page.locator(banner)).toBeVisible();

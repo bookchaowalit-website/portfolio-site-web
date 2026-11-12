@@ -266,3 +266,8 @@ iteration 5, no regression. Screenshots 320/375/768/1440 × en/th checked.
   branch 12 kB + 95 kB — which is what production already serves today, so there is no change
   against production. e2e 47/47 with the banner present. Screenshots 375/768/1440 × en/th × new /
   returning: banner unchanged for new visitors, absent for returning ones.
+- Codex P2 (confirmed, fixed): the pre-paint script adds `data-consent` to `<html>`, which React
+  reported as a hydration attribute mismatch (dev only; production React is silent). The returning-
+  visitor e2e now fails on any hydration warning — red on `next dev`, green after
+  `suppressHydrationWarning` on `<html>` (covers only that element's own attributes). e2e 47/47 on
+  the production build, 4/4 on dev (2 runs).
