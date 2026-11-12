@@ -51,3 +51,31 @@ test.describe('Navigation (mobile)', () => {
     await expect(page.locator('#mobile-navigation')).toBeHidden();
   });
 });
+
+// IMPROVEMENT-GOAL.md, UX: on the smallest phones the site name ran under the
+// theme toggle (UI review at 320 px). The brand and the header controls must
+// not overlap, and the header must not scroll sideways.
+test.describe('Header at phone widths', () => {
+  for (const width of [320, 375]) {
+    for (const path of ['/en', '/th']) {
+      test(`brand and controls do not overlap at ${width}px (${path})`, async ({ browser }) => {
+        const context = await browser.newContext({ viewport: { width, height: 700 } });
+        const page = await context.newPage();
+        await page.goto(path);
+        const nav = page.locator('nav[aria-label="Main navigation"]');
+        // The text can overflow a flex-shrunk link box, so measure what is drawn.
+        const brand = await nav.locator('a').first().evaluate((el) => {
+          const r = el.getBoundingClientRect();
+          return { x: r.left, width: Math.max(r.width, el.scrollWidth) };
+        });
+        const controls = await nav.locator('button:visible').evaluateAll((els) =>
+          els.map((el) => el.getBoundingClientRect()).filter((r) => r.width > 0 && r.top < 100).map((r) => r.left));
+        expect(brand).not.toBeNull();
+        expect(Math.min(...controls), 'first header control starts after the brand ends').toBeGreaterThanOrEqual(brand!.x + brand!.width);
+        const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+        expect(overflow).toBeLessThanOrEqual(0);
+        await context.close();
+      });
+    }
+  }
+});

@@ -36,7 +36,7 @@ export function LanguageSwitcher() {
           className="gap-2"
           aria-label={`Current language: ${currentLanguage.name}. Click to change language`}
         >
-          <Globe className="h-4 w-4" />
+          <Globe className="hidden min-[360px]:block h-4 w-4" aria-hidden="true" />
           <span className="hidden sm:inline">{currentLanguage.name}</span>
           <span className="sm:hidden mono-emoji">{currentLanguage.flag}</span>
         </Button>
