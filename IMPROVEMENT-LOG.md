@@ -118,3 +118,48 @@ Next, no owner input needed: SEO `meta-description` is streamed into `<body>` on
   if a page turns dynamic. (b) P2 the CSP test depended on `NODE_ENV` — fixed (asserts both modes
   explicitly; passes with `NODE_ENV=development`). (c) P3 the head test ignored status/redirects —
   fixed (`maxRedirects: 0`, 200, `<html lang>` per locale).
+
+## Live check — after iteration 4 (main 1cb3ea3, CI + Storybook green)
+
+Production, Lighthouse mobile, median of the valid runs (host load avg ~2):
+
+| Page | a11y | SEO (was) | Perf (baseline → now) | LCP (baseline → now) |
+|------|------|-----------|-----------------------|----------------------|
+| `/en` | 100 | 100 (92) | 69 → 85–86 | 4.4 s → 1.18 s |
+| `/th` | 100 | 100 (92) | 70 → 87 | 5.0 s → 1.22 s |
+| `/en/blog` | 100 | 100 (91) | 84 → 85 | 1.1 s → 1.26 s |
+| `/en/projects` | 100 | 100 (92) | 87 → 76 | 1.2 s → 3.9 s (consent banner, varies) |
+
+Best practices 100. Open: perf < 90 everywhere because TBT ≈ 0.5 s (shared chunk `4952`);
+`/en/projects` LCP is the consent banner (owner UX choice); CSP `script-src` needs nonces.
+
+## Iteration 5 — TBT: Sentry off the hydration path
+
+- Picked: performance, TBT ≈ 0.5 s on every page (perf < 90). The biggest shared client chunk
+  (`4952`, ~350 KB raw) was the Sentry SDK incl. tracing code, evaluated during hydration,
+  although Sentry runs errors-only (`src/lib/sentry.ts`).
+- Test first: `src/lib/__tests__/sentry-build-options.test.ts` — build must tree-shake tracing,
+  debug logging and replay; `instrumentation-client.ts` must not import `@sentry/nextjs`
+  statically and must load it after `load` (failed: module missing).
+- Change: `sentry-build-options.mjs` (`webpack.treeshake`); `instrumentation-client.ts` imports the
+  SDK when the browser is idle after `load`. Trade-off: errors thrown before that moment are not
+  reported; `onRouterTransitionStart` (tracing only) is gone.
+  Approach first drafted in a stray worktree (`wt-t4`) left by an interrupted run of this loop;
+  re-applied and measured here.
+- After (local `next start`, Lighthouse mobile, median of 3, main 1cb3ea3 vs branch, interleaved):
+
+  | Page | Perf | TBT | Lab LCP | CLS |
+  |------|------|-----|---------|-----|
+  | `/en` run A | 90 → 95 | 392 → 254 ms | 1.21 → 1.36 s | 0.026 → 0.030 |
+  | `/en` run B | 90 → 92 | 416 → 337 ms | 1.21 → 1.36 s | 0.030 → 0.030 |
+  | `/th` | 92 → 92 | 350 → 348 ms | 1.21 → 1.36 s | 0.001 → 0.001 |
+
+  First Load JS shared by all: 166 kB → 107 kB.
+- Lab LCP +150 ms: same LCP element; Lantern charges more render-blocking time because the two
+  CSS files load small-first in this build (12 kB + 95 kB) and big-first in the local main build
+  (99 kB + 8 kB). The split order varies by build — production before this change already loaded
+  the small file (`015d8d5…`) first. Observed (unthrottled) LCP: `/en` 150 → 118 ms, `/th` 105 →
+  142 ms (noise). Screenshots main vs branch at 375/768/1440 on 5 pages are pixel-identical with
+  the blinking cursor masked, so the CSS order does not change rendering. Kept: LCP stays well
+  under the 2.5 s target; recheck on production.
+- e2e 24/24, lib tests 70/70, typecheck/lint pass.
