@@ -36,24 +36,28 @@ export function HeroTypingText({
       <span className="font-bold text-foreground pb-1 inline-block">
         {/* Wrap only at spaces: Thai line breaking otherwise splits the
             surname ("กรี / โภค") on narrow phones. */}
-        {name.split(" ").map((word, i) => (
+        {/* The cursor rides inside the last word's nowrap span, so it can never
+            wrap onto a line of its own (UI review gate, /th at 320px). */}
+        {name.split(" ").map((word, i, words) => (
           <span key={i}>
             {i > 0 && " "}
-            <span className="whitespace-nowrap">{word}</span>
+            <span className="whitespace-nowrap">
+              {word}
+              {i === words.length - 1 && showCursor && (
+                <motion.span
+                  aria-hidden="true"
+                  data-motion-loop=""
+                  animate={reducedMotion ? {} : { opacity: [1, 0, 1] }}
+                  transition={reducedMotion ? { duration: 0 } : { duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+                  className="inline-block"
+                >
+                  |
+                </motion.span>
+              )}
+            </span>
           </span>
         ))}
       </span>
-      {showCursor && (
-        <motion.span
-          aria-hidden="true"
-          data-motion-loop=""
-          animate={reducedMotion ? {} : { opacity: [1, 0, 1] }}
-          transition={reducedMotion ? { duration: 0 } : { duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
-          className="inline-block"
-        >
-          |
-        </motion.span>
-      )}
     </>
   );
 }
