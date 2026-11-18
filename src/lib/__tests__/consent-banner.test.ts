@@ -85,6 +85,17 @@ describe("consent banner", () => {
       assert.ok(t.body.length <= 100, `body is ${t.body.length} chars; keep it to one or two lines`);
       assert.equal([...html.matchAll(/<p[ >]/g)].length, 1, "a single line of text, no separate title row");
     });
+
+    it(`${locale}: says consent covers project clicks too, keeps Thai leading, equal-width choices (Codex 2026-11-19)`, () => {
+      const t = text(locale);
+      assert.match(t.body, locale === "th" ? /คลิก/ : /click/i, "consent covers view_project / click_demo / click_source");
+      const html = renderToStaticMarkup(React.createElement(banner.ConsentBanner, { text: t, onAccept() {}, onDecline() {} }));
+      const p = /<p class="([^"]+)"/.exec(html)![1];
+      assert.match(p, /\[&(?:amp;)?:lang\(th\)\]:leading-\[1\.7\]/, "Thai body text keeps the 1.7 floor leading");
+      assert.match(html, /class="grid shrink-0 grid-cols-2/, "two equal 1fr columns sized by the longer label");
+      const buttons = [...html.matchAll(/<button class="([^"]+)"/g)].map((m) => m[1]);
+      assert.ok(buttons.every((c) => /\bw-full\b/.test(c) && !/flex-none|flex-1/.test(c)), "each button fills its column");
+    });
   }
 
   it("marks the first-visit banner so the pre-paint script can hide it for returning visitors", () => {

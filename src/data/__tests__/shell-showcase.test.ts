@@ -61,6 +61,13 @@ describe("shell rebuild showcase", () => {
     assert.ok(JSON.stringify(suite.caseStudy).includes("Workbench shell"));
   });
 
+  it("says the Markdown Editor can keep an opt-in draft in this browser", () => {
+    const editor = JSON.stringify(find("markdown-editor"));
+    assert.match(editor, /Keep draft in this browser/);
+    assert.doesNotMatch(editor, /saving beyond copying/);
+    assert.match(find("devtools-workbench").caseStudy?.result ?? "", /Markdown Editor/);
+  });
+
   it("drops copy the shell rebuild made stale", () => {
     const stale: [string, RegExp][] = [
       ["kanban-board", /On deck|In rehearsal|Cleared|Back\/Advance/],

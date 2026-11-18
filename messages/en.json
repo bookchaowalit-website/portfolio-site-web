@@ -1362,7 +1362,7 @@
   "analyticsConsent": {
     "region": "Analytics consent",
     "title": "Analytics",
-    "body": "Count page views with PostHog (EU servers)? Nothing loads until you choose.",
+    "body": "Count page views and project clicks with PostHog (EU servers)? Nothing loads until you choose.",
     "decline": "Decline",
     "accept": "Allow analytics",
     "choices": "Analytics choices",
