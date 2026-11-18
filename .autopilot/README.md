@@ -2,7 +2,7 @@
 title: "Autopilot loop — portfolio-site-web (W6)"
 status: active
 created: 2026-10-24
-updated: 2026-10-24
+updated: 2026-11-18
 owner: bookchaowalit (approver) · Claude autopilot (maker) · Claude reviewer session แยก (checker)
 ---
 
@@ -39,6 +39,22 @@ test ของ gate นี้: `python3 -m unittest discover -s .autopilot/tests
 (`Typecheck, lint, unit`, `A11y / keyboard e2e`, `Lighthouse (a11y gate)`) โดย `Typecheck, lint, unit` ไม่มีแล้วหลังย้ายไปใช้ shared CI (ตอนนี้ชื่อ `web / node (.)`)
 bot (`GITHUB_TOKEN`) จึง push merge commit เข้า `main` ไม่ได้ เมื่อเจอแบบนี้ loop จะคอมเมนต์คำสั่ง merge ในเครื่องที่ PR ถอด label อนุมัติออก (คอมเมนต์ครั้งเดียว) และแจ้ง Telegram 🔒
 ให้เจ้าของ merge เอง (admin bypass ได้) · ถ้าอยากให้ bot merge เองได้ ต้องให้เจ้าของแก้ protection ก่อน (เช่น อัปเดตชื่อ required check และให้ loop dispatch CI บน branch) ซึ่งเป็นการตัดสินใจของเจ้าของ
+
+## แยก job ตาม token (2026-11-18)
+
+ปิดความเสี่ยงที่เหลือ "token อยู่ job เดียวกัน / uid เดียวกับโค้ดที่ model เขียน": workflow แบ่งเป็น 3 job และแต่ละ job ถือแค่ token ที่ต้องใช้
+
+| job | token | ทำอะไร | รันโค้ดใน repo / ผลจาก model ไหม |
+|---|---|---|---|
+| `plan` | `GITHUB_TOKEN` แบบอ่านอย่างเดียว + `VERCEL_TOKEN` (เฉพาะ step นับโควตา) | อ่าน issue, PR, CI, ledger → ตัดสินว่า run นี้ทำอะไร (trusted authors, PR ที่อนุมัติ + `Autopilot-Head` + CI เขียว + โควตา Vercel) เขียน `plan.json` และส่ง sha256 ออกเป็น job output | ไม่ (ไม่มี `npm ci`) |
+| `work` | `CLAUDE_CODE_OAUTH_TOKEN` เท่านั้น (`contents: read` ไว้ checkout repo public) | maker, gate คำสั่ง, reviewer, visual gate, gate บน tree ที่ merge แล้วของ PR ที่อนุมัติ · การเขียน GitHub และ Telegram ทุกอย่างกลายเป็น *intent* ใน `result.json` · commit ที่ผ่าน gate ส่งต่อเป็น `work.bundle` (artifact) | ใช่ |
+| `publish` | `GITHUB_TOKEN` แบบเขียน + Telegram | ตรวจ `plan.json` กับ sha256 จาก job `plan` (job `work` ปลอม plan ไม่ได้) แล้วตรวจทุก intent: issue ต้องเป็นงานที่ plan ให้มา, push ได้แค่ branch `autopilot/<N>-…` ของงานนั้น, commit ต้องอยู่ใน bundle และต่อจาก base ที่ plan อ่าน, ห้าม kind อื่น (dispatch CI / แก้ PR / merge มาจาก plan เท่านั้น) · push commit ตามที่ gate ตรวจตรง ๆ เปิด PR (`Autopilot-Head` ใส่โดย publish) สั่ง `ci.yml` merge PR ที่อนุมัติ เขียน ledger | ไม่ (ไม่มี `npm ci`) |
+
+- merge PR ที่อนุมัติ: publish merge เองใน clone · ถ้า `main` ขยับแล้ว (tree หลัง merge ≠ tree ของ branch) ต้องมีผล gate จาก job `work` ที่ tree ตรงกันทุกตัวอักษร ไม่งั้นไม่ push (`merge_failed` ลองใหม่ run ถัดไป) · ถ้า `npm test` บน main ใน job `work` ไม่ผ่าน จะไม่ merge
+- intent ที่ถูกปฏิเสธ = run error (Telegram + ledger + workflow แดง)
+- ความเสี่ยงที่ยังเหลือ: job `work` ถือ Claude token อยู่ (model ต้องใช้) และตัวเลขค่าใช้จ่ายใน ledger มาจาก job นี้ (โค้ดใน repo อาจแก้ให้ต่ำกว่าจริงได้ ผลแค่เพดานรายวันหลวมขึ้น) · commit ใน PR อาจไม่ใช่ commit ที่ gate ตรวจจริงถ้า job `work` ถูกยึด แต่ยังต้องผ่าน CI บน PR และคนอนุมัติก่อน merge
+- รันในเครื่องแบบเดิมได้: `--phase all` (ค่าเริ่มต้น) ใช้กับ `--sandbox` และ `--dry-run`
+- `local-merge` ใช้ไม่ได้ในโหมดแยก job (job `work` push `main` ไม่ได้ งานที่ผ่านจะเปิด PR เสมอ)
 
 ## ภาพรวม
 
