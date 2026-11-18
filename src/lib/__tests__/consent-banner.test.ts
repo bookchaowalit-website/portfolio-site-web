@@ -15,7 +15,7 @@ const root = path.resolve(import.meta.dirname, "../../..");
 const source = path.join(root, "src/components/analytics/consent-banner.tsx");
 const messages = (locale: string) => JSON.parse(fs.readFileSync(path.join(root, `messages/${locale}.json`), "utf8"));
 
-type BannerText = { region: string; title: string; body: string; decline: string; accept: string; choices: string };
+type BannerText = { region: string; title: string; body: string; decline: string; accept: string; choices: string; privacy: string };
 let banner: any;
 
 before(async () => {
@@ -29,7 +29,7 @@ before(async () => {
   banner = await import(pathToFileURL(file).href);
 });
 
-const text = (locale: string): BannerText => messages(locale).analyticsConsent;
+const text = (locale: string): BannerText & { privacyHref: string } => ({ ...messages(locale).analyticsConsent, privacyHref: `/${locale}/privacy` });
 
 describe("consent banner", () => {
   it("only imports React: no analytics SDK or provider code in the banner", () => {
@@ -75,6 +75,15 @@ describe("consent banner", () => {
       assert.match(html, /PostHog/);
       assert.match(html, /EU/);
       assert.doesNotMatch(html, /checked|by continuing/i, "no pre-ticked or implied consent");
+    });
+
+    it(`${locale}: one or two lines of text with a link to /${locale}/privacy (2026-11-18 UX review)`, () => {
+      const t = text(locale);
+      const html = renderToStaticMarkup(React.createElement(banner.ConsentBanner, { text: t, onAccept() {}, onDecline() {} }));
+      assert.ok(html.includes(`href="/${locale}/privacy"`), "links the privacy page");
+      assert.ok(html.includes(`>${t.privacy}</a>`), "privacy link text from messages");
+      assert.ok(t.body.length <= 100, `body is ${t.body.length} chars; keep it to one or two lines`);
+      assert.equal([...html.matchAll(/<p[ >]/g)].length, 1, "a single line of text, no separate title row");
     });
   }
 
@@ -150,7 +159,7 @@ describe("consent banner", () => {
     const en = text("en");
     const th = text("th");
     assert.deepEqual(Object.keys(th).sort(), Object.keys(en).sort());
-    for (const key of Object.keys(en) as (keyof BannerText)[]) {
+    for (const key of Object.keys(messages("en").analyticsConsent) as (keyof BannerText)[]) {
       assert.ok(en[key].trim() && th[key].trim(), key);
     }
     assert.notEqual(th.body, en.body);

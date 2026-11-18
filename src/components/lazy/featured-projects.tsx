@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { allProjects, categoryMeta, type AppProject } from "@/data/app-projects";
-import { getProjectDomains, projectDomainMeta } from "@/data/project-domains";
+import { ProjectStatusBadge } from "@/components/project-status-badge";
+import { projectDemoState } from "@/lib/project-badge";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { ArrowUpRight, ExternalLink, Github, X, Globe } from "lucide-react";
@@ -12,44 +13,11 @@ import { MixedTypographyTitle } from "@/components/ui/mixed-typography";
 const stickyColors = ["yellow", "pink", "green", "blue"] as const;
 const rotations = [-1.5, 1, -0.5, 1.5, -1, 0.5];
 
-const evidenceLabelKey = {
-  Live: "evidence_live",
-  Prototype: "evidence_prototype",
-  "Internal System": "evidence_internal",
-  Experiment: "evidence_experiment",
-} as const;
-
-function StatusBadge({ project }: { project: AppProject }) {
-  const t = useTranslations("projects");
-  const evidenceLabel = project.evidenceLevel
-    ? t(evidenceLabelKey[project.evidenceLevel])
-    : t("status_" + project.status);
-
-  if (project.status === "live") {
-    return (
-      <span
-        className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-white bg-foreground px-1.5 py-0.5"
-        title={evidenceLabel}
-      >
-        <span className="size-1.5 rounded-full bg-white animate-pulse" />
-        {evidenceLabel}
-      </span>
-    );
-  }
-  if (project.status === "wip") {
-    return (
-      <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-foreground bg-muted px-1.5 py-0.5">
-        <span className="size-1.5 rounded-full bg-foreground/50" />
-        {evidenceLabel}
-      </span>
-    );
-  }
-  return (
-    <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-muted-foreground bg-muted px-1.5 py-0.5">
-      {evidenceLabel}
-    </span>
-  );
-}
+// Sticky notes sit on oklch 0.89–0.95 (light) and 0.22–0.28 (dark). Solid
+// #161616 / #595959 text keeps every label at 4.5:1 or more on all of them
+// (2026-11-18 UX review: 10px text-foreground/70 labels fell short).
+const INK = "text-[#161616] dark:text-[#ededed]";
+const INK_MUTED = "text-[#595959] dark:text-[#b4b4b4]";
 
 function ProjectPreviewModal({
   project,
@@ -84,7 +52,7 @@ function ProjectPreviewModal({
         <div className="space-y-4">
           <div className="flex items-start justify-between gap-3">
             <h3 className="text-lg font-bold">{project.name}</h3>
-            <StatusBadge project={project} />
+            <ProjectStatusBadge project={project} />
           </div>
 
           <p className="text-sm text-muted-foreground leading-relaxed">
@@ -151,6 +119,30 @@ function ProjectPreviewModal({
   );
 }
 
+function FeaturedCardAction({ project }: { project: AppProject }) {
+  const t = useTranslations("projects");
+  const state = projectDemoState(project);
+  const iconLink = `inline-flex min-h-11 min-w-11 items-center justify-center gap-1 text-xs uppercase tracking-wider hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${INK}`;
+  if (state === "demo") {
+    return (
+      <a href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`${project.name} — ${t("tryDemo")}`} className={iconLink}>
+        {t("liveDemo")}
+        <ArrowUpRight className="size-4" aria-hidden="true" />
+      </a>
+    );
+  }
+  if (project.githubUrl && !project.sourceUnavailable) {
+    return (
+      <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" aria-label={`${project.name} — ${t("sourceCode")}`} className={iconLink}>
+        <Github className="size-4" aria-hidden="true" />
+        {t("sourceCode")}
+      </a>
+    );
+  }
+  const label = state === "offline" ? t("demoOffline") : state === "retired" ? t("demoRetired") : t("sourceOnly");
+  return <span className={`inline-flex min-h-11 items-center text-xs uppercase tracking-wider ${INK_MUTED}`}>{label}</span>;
+}
+
 export function FeaturedProjects() {
   const t = useTranslations("home");
   const tProjects = useTranslations("projects");
@@ -171,6 +163,10 @@ export function FeaturedProjects() {
           className="mb-2"
         />
       </div>
+
+      {featured.length === 0 && (
+        <p className="text-center text-sm text-muted-foreground">{tProjects("featuredEmpty")}</p>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {featured.map((project, index) => (
@@ -194,63 +190,52 @@ export function FeaturedProjects() {
                     {project.name}
                   </h3>
                 )}
-                <StatusBadge project={project} />
+                <ProjectStatusBadge project={project} />
               </div>
 
               {project.promise && (
-                <p className="text-xs font-medium text-foreground/90 leading-relaxed mb-1">
+                <p className={`text-sm font-medium leading-relaxed mb-1 ${INK}`}>
                   {project.promise}
                 </p>
               )}
 
-              <p className="text-xs text-foreground/70 leading-relaxed mb-3 flex-1">
+              <p className={`text-sm leading-relaxed mb-3 flex-1 ${INK_MUTED}`}>
                 {project.problem ?? project.description}
               </p>
 
-              <div className="flex flex-wrap gap-1 mb-3">
+              <ul className="flex flex-wrap gap-1 mb-3" aria-label={tProjects("techStack")}>
                 {project.tech.slice(0, 3).map((tech) => (
-                  <span
+                  <li
                     key={tech}
-                    className="text-[10px] px-1.5 py-0.5 bg-foreground/5 text-foreground/80 border border-foreground/10"
+                    className={`text-xs px-1.5 py-0.5 border border-[#595959]/40 ${INK}`}
                   >
                     {tech}
-                  </span>
+                  </li>
                 ))}
-              </div>
+              </ul>
 
-              <div className="flex items-center justify-between pt-2 border-t border-foreground/10">
-                <span className="flex items-center gap-1 text-[10px] uppercase tracking-wider text-foreground/70">
-                  {getProjectDomains(project).map((domain) => tProjects(projectDomainMeta[domain].labelKey)).join(" · ")}
-                </span>
-                <div className="flex items-center gap-2">
-                  {project.promise ? (
-                    <Link
-                      href={{ pathname: "/projects/[slug]", params: { slug: project.slug } }}
-                      className="inline-flex min-h-11 items-center px-2 text-[10px] uppercase tracking-wider text-foreground/70 hover:text-foreground transition-colors underline underline-offset-2"
-                    >
-                      {tProjects("readCaseStudy")}
-                    </Link>
-                  ) : (
-                    <button
-                      onClick={() => setPreview(project)}
-                      className="inline-flex min-h-11 items-center px-2 text-[10px] uppercase tracking-wider text-foreground/70 hover:text-foreground transition-colors underline underline-offset-2"
-                      aria-label={`Preview ${project.name}`}
-                    >
-                      {tProjects("preview")}
-                    </button>
-                  )}
-                  {!project.demoUnavailable && (
-                    <a
-                      href={project.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`${project.name} live demo`}
-                      className="inline-flex items-center justify-center min-h-[44px] min-w-[44px] h-[44px] w-[44px] text-foreground/70 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                    >
-                      <ArrowUpRight className="size-4" />
-                    </a>
-                  )}
-                </div>
+              {/* Every footer has the same two slots and height: the case study
+                  (or preview) on the left; the demo, the source, or a plain
+                  Offline / Source only label on the right. */}
+              <div className="mt-auto flex min-h-11 items-center justify-between gap-2 pt-2 border-t border-[#595959]/30">
+                {project.promise ? (
+                  <Link
+                    href={{ pathname: "/projects/[slug]", params: { slug: project.slug } }}
+                    className={`inline-flex min-h-11 items-center text-xs uppercase tracking-wider underline underline-offset-2 hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${INK}`}
+                  >
+                    {tProjects("readCaseStudy")}
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setPreview(project)}
+                    className={`inline-flex min-h-11 items-center text-xs uppercase tracking-wider underline underline-offset-2 hover:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${INK}`}
+                    aria-label={`${tProjects("preview")} ${project.name}`}
+                  >
+                    {tProjects("preview")}
+                  </button>
+                )}
+                <FeaturedCardAction project={project} />
               </div>
             </div>
           </StickyNote>

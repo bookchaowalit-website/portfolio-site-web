@@ -338,3 +338,33 @@ items from the UI review, Google Fonts fetch flake in CI builds.
   so after scrolling it covered "Contact" in the open mobile menu at 568×320 (new e2e, red). It is
   now `z-30`. Section nav, TOC and the reading bar live inside `main` (z-10) and stay below the nav.
   e2e 51/51 twice.
+
+## Iteration 10 — 2026-11-18 UX review items (branch ux/portfolio-polish-1119)
+
+- Hero: "Hi, I'm Book" in Kalam with line-height 1.25, the full name as a smaller second line in the
+  same h1. 375px: h1 93px tall, one line plus the name line (was three lines plus the cursor).
+- Consent banner: one short sentence + Privacy link (`/{locale}/privacy`) + the same equal-weight
+  Decline / Allow buttons, still static HTML hidden by the cookie pre-paint script. Height 280 → 117px
+  (375px) and 190 → 70px (768/1440px). Tab order: skip link → Privacy → Decline (e2e updated).
+- Cards: badges from `src/lib/project-badge.ts` — Live solid, Prototype outline, Internal System
+  dashed, Experiment dotted, archived projects "Archived" (filled grey). Labels 12px, solid
+  #161616 / #595959 (light) and #ededed / #b4b4b4 (dark): every sticky-note label ≥ 4.5:1 in the
+  screenshot check (#636363 is only 4.3:1 on the darkest note, oklch 0.89). The identical
+  "Tech Domain · Book Dev" label is gone from cards.
+- Featured: BookNBook un-featured (consulting.bookchaowalit.com 503 on 2026-11-19); the slot goes to
+  a new Devtools Workbench suite card (devtools-suite-web, 17 tools). Every footer has two slots of
+  the same height: case study left; Live demo, Source code, or an Offline / Retired / Source only
+  label right. /projects cards show "Offline" next to the badge when a live project's host is down.
+- Shell rebuild cards: 14 App shell and 6 Dashboard shell cards now name their shell and what the
+  repo ships (Undo, list views, table view); stale copy removed (kanban columns, energy "dark
+  control-room", status 24h/7d/30d toggle, goal-tracker "cannot add milestones", cron "five fields
+  only", real-estate ledger, ideas "signal"). Checked against each repo's origin/main.
+- Copy: nav says "Projects" like the footer and headings; emoji in hero/About replaced with lucide
+  icons; the language button shows EN / TH instead of flags. Blog and Featured sections have empty
+  states (blog links /blog); blog cards draw the focus outline on the unclipped link.
+- Tests: unit 161/161 (new shell-showcase, project-badge, consent banner privacy link); e2e 43/44 +
+  18/19 against a local analytics-on build. The one failure, `pages.spec.ts` "project detail keeps
+  status and evidence localized", is stale since the 2026-10 card audit (it expects real-estate to
+  be "Live"; the card has been Prototype on main since then), not caused by this branch.
+- Not done: /en/blog still has 24 text nodes under 12px (blog page, not in this review);
+  About/Contact sections fade in on scroll and look blank in full-page headless captures.

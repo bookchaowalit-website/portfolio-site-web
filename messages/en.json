@@ -30,16 +30,15 @@
     "closeMobileMenu": "Close navigation menu"
   },
   "home": {
-    "greeting": "Hello, I'm",
-    "name": "Book (Chaowalit Greepoke)",
+    "greeting": "Hi, I'm",
+    "name": "Book",
     "subtitle": "Generalist and Solopreneur who enjoys solving problems and building things end-to-end. Creating practical and scalable solutions from Bangkok, Thailand",
     "heroAlt": "Chaowalit Greepoke - Generalist",
     "heroWord1": "Generalist",
     "heroWord2": "&",
     "heroWord3": "Solopreneur",
-    "heroWord4": "💡",
     "heroValueProp": "I build full-stack products, integrate AI systems, and grow digital presence — from idea to deployment.",
-    "heroSubtitle": "Working across <strong>software engineering, data, AI, and digital growth</strong> — connecting different tools and technologies to create solutions that are <strong>practical and scalable</strong> 🇹🇭",
+    "heroSubtitle": "Working across <strong>software engineering, data, AI, and digital growth</strong> — connecting different tools and technologies to create solutions that are <strong>practical and scalable</strong>",
     "viewWork": "View My Work",
     "getInTouch": "Get In Touch",
     "skillsTitle": "Knowledge Atlas",
@@ -113,9 +112,9 @@
     "aboutWord1": "About",
     "aboutWord2": "Me",
     "aboutWord3": "👨‍💻",
-    "bangkokBased": "🇹🇭 Bangkok Based",
-    "yearsExperience": "💼 5+ Years Experience",
-    "techGeneralist": "🌐 45 Knowledge Domains",
+    "bangkokBased": "Bangkok Based",
+    "yearsExperience": "5+ Years Experience",
+    "techGeneralist": "45 Knowledge Domains",
     "problemSolving": "Problem Solving",
     "dataAnalysis": "Data & Analysis",
     "creativeDesign": "Creative Design",
@@ -127,7 +126,10 @@
     "viewAllProjects": "View All Projects",
     "blogTitleWord1": "Latest",
     "blogTitleWord2": "Blog",
-    "blogTitleWord3": "Posts"
+    "blogTitleWord3": "Posts",
+    "fullName": "Chaowalit Greepoke",
+    "blogEmpty": "No posts to show here yet.",
+    "blogEmptyCta": "Go to the blog"
   },
   "about": {
     "title": "About Me",
@@ -341,7 +343,11 @@
     "laneDescription_growth": "SEO, campaigns, and funnels that turn an audience into measurable growth",
     "laneDescription_knowledge": "Knowledge bases, wikis, and learning paths that make information findable and usable",
     "laneDescription_dev_ai": "Developer utilities and AI playgrounds for building, testing, and debugging faster",
-    "laneDescription_experience": "Galleries, creative tools, and community features built for discovery and connection"
+    "laneDescription_experience": "Galleries, creative tools, and community features built for discovery and connection",
+    "demoOffline": "Offline",
+    "demoRetired": "Retired",
+    "sourceOnly": "Source only",
+    "featuredEmpty": "No featured projects right now."
   },
   "projectDetail": {
     "backToProjects": "All projects",
@@ -1356,9 +1362,10 @@
   "analyticsConsent": {
     "region": "Analytics consent",
     "title": "Analytics",
-    "body": "May this site count which pages and projects you open? Counts go to PostHog (EU servers) only if you allow it. Your name, email, messages and searches are never sent, and nothing loads until you choose.",
+    "body": "Count page views with PostHog (EU servers)? Nothing loads until you choose.",
     "decline": "Decline",
     "accept": "Allow analytics",
-    "choices": "Analytics choices"
+    "choices": "Analytics choices",
+    "privacy": "Privacy"
   }
 }

@@ -8,6 +8,7 @@ import { MixedTypographyTitle } from "@/components/ui/mixed-typography";
 import { StickyNote } from "@/components/ui/notebook-elements";
 import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
+import { Lightbulb } from 'lucide-react';
 
 export function HeroSection() {
   const t = useTranslations('home');
@@ -49,13 +50,20 @@ export function HeroSection() {
         </motion.div>
 
         <div className="relative py-4 overflow-visible">
-          <h1 className={`text-4xl md:text-6xl font-bold ${headingTracking} font-[family-name:var(--font-script)] leading-loose md:leading-loose pb-2 heading-depth-lg`}>
+          {/* 2026-11-18 UX review: the full name in Kalam 36px with
+              leading-loose broke onto three lines on a 390px phone. The
+              greeting now ends at "Book"; the full name is a second, smaller
+              line inside the same h1, and the line-height is 1.25. */}
+          <h1 className={`text-4xl md:text-6xl font-bold ${headingTracking} font-[family-name:var(--font-script)] leading-[1.25] pb-2 heading-depth-lg`}>
             <HeroTypingText
               greeting={t('greeting')}
               name={t('name')}
               delay={800}
               speed={80}
             />
+            <span className="mt-2 block text-xl md:text-3xl font-normal text-muted-foreground leading-snug">
+              {t('fullName')}
+            </span>
           </h1>
         </div>
 
@@ -66,7 +74,7 @@ export function HeroSection() {
                 { text: t('heroWord1'), style: "block", size: "lg" },
                 { text: t('heroWord2'), style: "cursive", size: "lg" },
                 { text: t('heroWord3'), style: "outlined", size: "md" },
-                { text: t('heroWord4'), style: "shaded", size: "lg" }
+                { text: <Lightbulb className="inline-block size-[0.9em]" aria-hidden="true" />, style: "shaded", size: "lg" }
               ]}
               className="mb-4"
             />

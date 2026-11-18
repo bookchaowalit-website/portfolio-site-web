@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useSyncExternalStore } from 'react'
 import { usePathname } from 'next/navigation'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { analytics } from '@/lib/browser-analytics'
 import { ConsentBanner, ConsentChoicesLink, panelFor, type PanelSlot } from './consent-banner'
 
@@ -13,6 +13,7 @@ import { ConsentBanner, ConsentChoicesLink, panelFor, type PanelSlot } from './c
 export function AnalyticsProvider({ slot = 'bottom' }: { slot?: PanelSlot }) {
   const pathname = usePathname()
   const t = useTranslations('analyticsConsent')
+  const locale = useLocale()
   const consent = useSyncExternalStore(analytics.subscribe, analytics.consent, () => 'unknown' as const)
   const [reopened, setReopened] = useState(false)
 
@@ -39,6 +40,8 @@ export function AnalyticsProvider({ slot = 'bottom' }: { slot?: PanelSlot }) {
         decline: t('decline'),
         accept: t('accept'),
         choices: t('choices'),
+        privacy: t('privacy'),
+        privacyHref: `/${locale}/privacy`,
       }}
       onAccept={() => choose('granted')}
       onDecline={() => choose('denied')}
