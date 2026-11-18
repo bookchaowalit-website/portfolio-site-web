@@ -62,6 +62,23 @@ test('keyboard: skip link first, then the consent choices', async ({ page }) => 
   await expect(page.locator(':focus')).toHaveText(/decline/i);
 });
 
+// Codex 2026-11-19: neither choice may look preferred, so both buttons render
+// at the same width (measured, not compared by class) in both locales.
+for (const path of ['/en', '/th']) {
+  for (const width of [390, 768, 1440]) {
+    test(`Decline and Allow render at the same width at ${width}px (${path})`, async ({ browser }) => {
+      const context = await browser.newContext({ viewport: { width, height: 800 } });
+      const page = await context.newPage();
+      await page.goto(path);
+      const buttons = page.locator('[data-consent-banner="initial"] button');
+      await expect(buttons).toHaveCount(2);
+      const [a, b] = await buttons.evaluateAll((els) => els.map((el) => el.getBoundingClientRect().width));
+      expect(Math.abs(a - b)).toBeLessThanOrEqual(1);
+      await context.close();
+    });
+  }
+}
+
 for (const answer of ['granted', 'denied'] as const) {
   test(`returning visitor (${answer}): banner never painted, not even one frame`, async ({ browser, baseURL }) => {
     const context = await browser.newContext();

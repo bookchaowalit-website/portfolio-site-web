@@ -125,7 +125,7 @@ function FeaturedCardAction({ project }: { project: AppProject }) {
   const iconLink = `inline-flex min-h-11 min-w-11 items-center justify-center gap-1 text-xs uppercase tracking-wider hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${INK}`;
   if (state === "demo") {
     return (
-      <a href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`${project.name} — ${t("tryDemo")}`} className={iconLink}>
+      <a href={project.url} target="_blank" rel="noopener noreferrer" aria-label={`${t("liveDemo")} — ${project.name}`} className={iconLink}>
         {t("liveDemo")}
         <ArrowUpRight className="size-4" aria-hidden="true" />
       </a>
@@ -133,7 +133,7 @@ function FeaturedCardAction({ project }: { project: AppProject }) {
   }
   if (project.githubUrl && !project.sourceUnavailable) {
     return (
-      <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" aria-label={`${project.name} — ${t("sourceCode")}`} className={iconLink}>
+      <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" aria-label={`${t("sourceCode")} — ${project.name}`} className={iconLink}>
         <Github className="size-4" aria-hidden="true" />
         {t("sourceCode")}
       </a>

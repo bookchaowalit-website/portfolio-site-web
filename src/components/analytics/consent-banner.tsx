@@ -42,7 +42,7 @@ export function panelFor(slot: PanelSlot, enabled: boolean, consent: Consent, re
 // Monochrome, sharp corners, hairline border (DESIGN.md). One class string for
 // both buttons so neither choice looks preferred.
 const CHOICE_BUTTON =
-  'inline-flex min-h-[44px] flex-1 items-center justify-center border border-foreground bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:flex-none sm:min-w-[8rem]'
+  'inline-flex min-h-[44px] w-full items-center justify-center border border-foreground bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:min-w-[8rem]'
 
 // WCAG 2.4.11: the fixed banner must not hide the focused control. While it is
 // shown, its height (plus the bottom gap) is reserved as scroll padding, so
@@ -94,13 +94,14 @@ export function ConsentBanner({
       // aria-label ("Analytics consent") names it for screen readers.
       className="fixed inset-x-3 bottom-3 z-50 mx-auto flex max-w-3xl flex-col gap-2 border border-border bg-background p-3 text-sm shadow-lg sm:inset-x-6 sm:bottom-6 sm:flex-row sm:items-center sm:gap-4 sm:px-4"
     >
-      <p className="leading-snug text-foreground sm:flex-1">
+      <p className="leading-snug [&:lang(th)]:leading-[1.7] text-foreground sm:flex-1">
         {text.body}{' '}
         <a href={text.privacyHref} className="whitespace-nowrap underline underline-offset-4 hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
           {text.privacy}
         </a>
       </p>
-      <div className="flex shrink-0 gap-2">
+      {/* Two 1fr columns: both buttons take the width of the longer label. */}
+      <div className="grid shrink-0 grid-cols-2 gap-2">
         <button type="button" className={CHOICE_BUTTON} onClick={onDecline}>
           {text.decline}
         </button>

@@ -221,3 +221,21 @@ test.describe('Label in name', () => {
     }
   }
 });
+
+// Codex 2026-11-19 (WCAG 2.5.3 Label in Name): Featured card links that carry an
+// aria-label must contain the words they show ("Live Demo", "Source Code").
+test.describe('Featured card links name what they show', () => {
+  for (const path of ['/en', '/th']) {
+    test(`demo and source links on ${path}`, async ({ page }) => {
+      await page.goto(path, { waitUntil: 'networkidle' });
+      const links = page.locator('#projects .sticky-note a[aria-label]');
+      await expect(links.first()).toBeVisible();
+      const mismatches = await links.evaluateAll((els) =>
+        els
+          .map((el) => ({ shown: (el as HTMLElement).innerText.replace(/\s+/g, ' ').trim(), name: el.getAttribute('aria-label') ?? '' }))
+          .filter(({ shown, name }) => shown && !name.toLowerCase().includes(shown.toLowerCase())),
+      );
+      expect(mismatches).toEqual([]);
+    });
+  }
+});
