@@ -72,8 +72,8 @@ export function BlogSearchAndList({
       {/* Search bar */}
       <motion.div
         className="max-w-md mx-auto mb-6"
-        initial={reducedMotion ? false : { opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={reducedMotion ? false : { y: 20 }}
+        animate={{ y: 0 }}
         transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.6 }}
       >
         <div className="bg-muted border border-border p-2 hover:border-primary/40 transition-colors">
@@ -104,8 +104,8 @@ export function BlogSearchAndList({
       {allTags.length > 0 && (
         <motion.div
           className="flex flex-wrap justify-center gap-2"
-          initial={reducedMotion ? false : { opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={false}
+          animate={false}
           transition={reducedMotion ? { duration: 0 } : { duration: 0.4, delay: 0.8 }}
         >
           <button

@@ -599,7 +599,7 @@ export function ProjectsClient({
             <Star className="size-3.5 text-foreground" />
             {t("featured")}
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border md:[&>*:last-child:nth-child(odd)]:col-span-2 lg:[&>*:last-child:nth-child(odd)]:col-span-1">
             {featuredProjects.map((project) => (
               <ProjectCard
                 key={project.slug}

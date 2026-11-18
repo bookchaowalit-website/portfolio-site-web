@@ -36,7 +36,7 @@ export function BlogSection({ blogPosts = [] }: { blogPosts?: BlogPost[] }) {
             </Button>
           </div>
         ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:[&>*:last-child:nth-child(odd)]:col-span-2 lg:[&>*:last-child:nth-child(odd)]:col-span-1">
           {blogPosts.map((post, index) => {
             const colors: Array<"yellow" | "pink" | "green" | "blue"> = ["yellow", "pink", "green"];
             const rotations = [-2, 1, -1];

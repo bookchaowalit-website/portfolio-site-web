@@ -368,3 +368,12 @@ items from the UI review, Google Fonts fetch flake in CI builds.
   be "Live"; the card has been Prototype on main since then), not caused by this branch.
 - Not done: /en/blog still has 24 text nodes under 12px (blog page, not in this review);
   About/Contact sections fade in on scroll and look blank in full-page headless captures.
+- UI review gate on local main bae2d8e (qa-testing ui_review, 320–1440): 22 major findings. Footer,
+  blog hero/newsletter and blog tag pills faded in from opacity 0 with up to 1.2 s delay, so axe
+  measured them half-transparent; these load-time fades now move only (no opacity), and the
+  contact frame no longer scales (social icons measured 40×40 mid-animation). Blog list tags and
+  meta: 11px `text-foreground/70` → 12px `text-muted-foreground`. Footer support links get 44px
+  height. Odd last cards span both columns at 768px (Featured, home blog, /projects featured).
+  Parentheses kept on one line (th hero, /projects status note). Re-run: 0 major on /en, /th,
+  /en/projects, /en/blog; 2 minor left per home page = the About 2×2 stat grid, whose rows differ
+  by 2px because the frame is rotated (heuristic false positive).

@@ -26,8 +26,8 @@ export function Footer() {
           <div className="text-center space-y-6">
             {/* Hand-drawn title */}
             <motion.div
-              initial={reducedMotion ? false : { opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={reducedMotion ? false : { y: 20 }}
+              animate={{ y: 0 }}
               transition={reducedMotion ? { duration: 0 } : { duration: 0.6 }}
               className="relative"
             >
@@ -40,8 +40,8 @@ export function Footer() {
             <motion.nav
               className="flex flex-wrap justify-center gap-6 mb-8"
               aria-label={t("footerNavigation")}
-              initial={reducedMotion ? false : { opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={reducedMotion ? false : { y: 20 }}
+              animate={{ y: 0 }}
               transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.2 }}
             >
               <motion.div whileHover={hoverSecondary}>
@@ -103,8 +103,8 @@ export function Footer() {
             {/* Social Media Links */}
             <motion.div
               className="flex flex-wrap justify-center gap-4 mb-6"
-              initial={reducedMotion ? false : { opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={reducedMotion ? false : { y: 20 }}
+              animate={{ y: 0 }}
               transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.3 }}
             >
               <motion.a
@@ -198,8 +198,8 @@ export function Footer() {
             {/* Support links (Stripe Payment Links) */}
             <motion.div
               className="flex flex-wrap justify-center items-center gap-3 mb-6"
-              initial={reducedMotion ? false : { opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={reducedMotion ? false : { y: 20 }}
+              animate={{ y: 0 }}
               transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.35 }}
             >
               <span className="text-sm text-muted-foreground font-[family-name:var(--font-doodle)]">
@@ -212,7 +212,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   whileHover={hoverSecondary}
-                  className="rounded-full border border-border px-3 py-1 text-sm text-foreground hover:border-primary hover:text-primary transition-colors duration-200"
+                  className="inline-flex min-h-11 items-center rounded-full border border-border px-3 py-1 text-sm text-foreground hover:border-primary hover:text-primary transition-colors duration-200"
                 >
                   <span aria-hidden="true">{link.emoji}</span> {t(link.key)}
                 </motion.a>
@@ -222,8 +222,8 @@ export function Footer() {
             {/* Hand-drawn doodle symbols */}
             <motion.div
               className="flex justify-center items-center gap-8 mb-6"
-              initial={reducedMotion ? false : { opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={reducedMotion ? false : { scale: 0.8 }}
+              animate={{ scale: 1 }}
               transition={reducedMotion ? { duration: 0 } : { duration: 0.8, delay: 0.4 }}
             >
               {/* Star doodle */}
@@ -279,8 +279,8 @@ export function Footer() {
 
             {/* Simple copyright */}
             <motion.div
-              initial={reducedMotion ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={false}
+              animate={false}
               transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.6 }}
               className="text-center"
             >

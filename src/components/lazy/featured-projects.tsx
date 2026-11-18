@@ -168,7 +168,7 @@ export function FeaturedProjects() {
         <p className="text-center text-sm text-muted-foreground">{tProjects("featuredEmpty")}</p>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:[&>*:last-child:nth-child(odd)]:col-span-2 lg:[&>*:last-child:nth-child(odd)]:col-span-1">
         {featured.map((project, index) => (
           <StickyNote
             key={project.slug}

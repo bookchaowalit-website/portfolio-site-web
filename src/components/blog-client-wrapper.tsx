@@ -16,13 +16,13 @@ export function BlogHero() {
   return (
     <motion.div
       className="text-center space-y-8 mb-12"
-      initial={reducedMotion ? false : { opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={reducedMotion ? false : { y: 30 }}
+      animate={{ y: 0 }}
       transition={reducedMotion ? { duration: 0 } : { duration: 0.8 }}
     >
       <motion.div
-        initial={reducedMotion ? false : { opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={reducedMotion ? false : { y: 20 }}
+        animate={{ y: 0 }}
         transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.2 }}
       >
         <MixedTypographyTitle as="h1"
@@ -36,8 +36,8 @@ export function BlogHero() {
 
       <motion.div
         className="max-w-md mx-auto"
-        initial={reducedMotion ? false : { opacity: 0, scale: 0.9, rotate: -1 }}
-        animate={{ opacity: 1, scale: 1, rotate: 1 }}
+        initial={reducedMotion ? false : { scale: 0.9, rotate: -1 }}
+        animate={{ scale: 1, rotate: 1 }}
         transition={reducedMotion ? { duration: 0 } : { duration: 0.8, delay: 0.4, ease: "backOut" }}
       >
         <div className="bg-muted border border-border p-4">
@@ -56,8 +56,8 @@ export function BlogSearchBar() {
   return (
     <motion.div
       className="max-w-md mx-auto mb-12"
-      initial={reducedMotion ? false : { opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={reducedMotion ? false : { y: 20 }}
+      animate={{ y: 0 }}
       transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.6 }}
     >
       <div className="bg-muted border border-border p-2 hover:border-primary/40 transition-colors">
@@ -107,15 +107,15 @@ export function BlogNewsletter() {
   return (
     <motion.section
       className="mt-16"
-      initial={reducedMotion ? false : { opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={reducedMotion ? false : { y: 30 }}
+      animate={{ y: 0 }}
       transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 0.8 }}
     >
       <SketchyFrame variant="double">
         <div className="p-8 text-center">
           <motion.div
-            initial={reducedMotion ? false : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={reducedMotion ? false : { y: 20 }}
+            animate={{ y: 0 }}
             transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 1.0 }}
           >
             <MixedTypographyTitle
@@ -129,8 +129,8 @@ export function BlogNewsletter() {
 
           <motion.div
             className="max-w-sm mx-auto mb-6"
-            initial={reducedMotion ? false : { opacity: 0, scale: 0.9, rotate: 2 }}
-            animate={{ opacity: 1, scale: 1, rotate: -1 }}
+            initial={reducedMotion ? false : { scale: 0.9, rotate: 2 }}
+            animate={{ scale: 1, rotate: -1 }}
             transition={reducedMotion ? { duration: 0 } : { duration: 0.8, delay: 1.2, ease: "backOut" }}
           >
             <div className="bg-muted border border-border p-3">
@@ -142,8 +142,8 @@ export function BlogNewsletter() {
 
           {subscribed ? (
             <motion.div
-              initial={reducedMotion ? false : { opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={reducedMotion ? false : { scale: 0.9 }}
+              animate={{ scale: 1 }}
               className="flex items-center justify-center gap-2 text-primary"
             >
               <Check className="w-5 h-5" />
@@ -156,8 +156,8 @@ export function BlogNewsletter() {
               <motion.form
                 onSubmit={handleSubmit}
                 className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto"
-                initial={reducedMotion ? false : { opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={reducedMotion ? false : { y: 20 }}
+                animate={{ y: 0 }}
                 transition={reducedMotion ? { duration: 0 } : { duration: 0.6, delay: 1.4 }}
               >
                 <Input
@@ -184,8 +184,8 @@ export function BlogNewsletter() {
               </motion.form>
               {error && (
                 <motion.p
-                  initial={reducedMotion ? false : { opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  initial={false}
+                  animate={false}
                   className="text-sm text-destructive mt-2 font-[family-name:var(--font-doodle)] flex items-center justify-center gap-1"
                 >
                   <AlertCircle className="w-4 h-4" />

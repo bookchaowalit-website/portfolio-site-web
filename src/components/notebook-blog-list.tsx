@@ -37,8 +37,8 @@ function NotebookPostEntry({
   return (
     <motion.article
       className={`group relative ${featured ? "col-span-1 md:col-span-2" : ""}`}
-      initial={reducedMotion ? false : { opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={reducedMotion ? false : { y: 20 }}
+      animate={{ y: 0 }}
       transition={reducedMotion ? { duration: 0 } : { duration: 0.4, delay: index * 0.08 }}
     >
       {/* Notebook entry container */}
@@ -69,13 +69,13 @@ function NotebookPostEntry({
               </span>
             )}
             <time
-              className="font-[family-name:var(--font-doodle)] text-xs text-foreground/70"
+              className="font-[family-name:var(--font-doodle)] text-xs text-muted-foreground"
               dateTime={post.publishedAt}
             >
               {date}
             </time>
-            <span className="text-muted-foreground/40">·</span>
-            <span className="font-[family-name:var(--font-doodle)] text-xs text-foreground/70">
+            <span className="text-muted-foreground" aria-hidden="true">·</span>
+            <span className="font-[family-name:var(--font-doodle)] text-xs text-muted-foreground">
               {post.readTime}
             </span>
           </div>
@@ -88,7 +88,7 @@ function NotebookPostEntry({
           </h3>
 
           {/* Excerpt — like a notebook annotation */}
-          <p className="text-sm text-foreground/70 leading-relaxed line-clamp-2 mb-3 text-pretty">
+          <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-3 text-pretty">
             {post.excerpt}
           </p>
 
@@ -98,13 +98,13 @@ function NotebookPostEntry({
               {post.tags.slice(0, 3).map((tag) => (
                 <span
                   key={tag}
-                  className="font-[family-name:var(--font-doodle)] text-[11px] text-foreground/70 border border-border/60 px-1.5 py-0.5 hover:border-primary/30 transition-colors"
+                  className="font-[family-name:var(--font-doodle)] text-xs text-muted-foreground border border-border/60 px-1.5 py-0.5 hover:border-primary/30 transition-colors"
                 >
                   #{tag}
                 </span>
               ))}
               {post.tags.length > 3 && (
-                <span className="font-[family-name:var(--font-doodle)] text-[11px] text-foreground/70">
+                <span className="font-[family-name:var(--font-doodle)] text-xs text-muted-foreground">
                   +{post.tags.length - 3}
                 </span>
               )}
@@ -140,8 +140,8 @@ export function NotebookBlogList({
         <section>
           <motion.div
             className="mb-6"
-            initial={reducedMotion ? false : { opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={reducedMotion ? false : { x: -10 }}
+            animate={{ x: 0 }}
             transition={reducedMotion ? { duration: 0 } : { duration: 0.4 }}
           >
             <h2 className="font-[family-name:var(--font-script)] text-2xl md:text-3xl text-foreground">
@@ -164,8 +164,8 @@ export function NotebookBlogList({
         <section>
           <motion.div
             className="mb-6"
-            initial={reducedMotion ? false : { opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={reducedMotion ? false : { x: -10 }}
+            animate={{ x: 0 }}
             transition={reducedMotion ? { duration: 0 } : { duration: 0.4, delay: 0.1 }}
           >
             <h2 className="font-[family-name:var(--font-script)] text-2xl md:text-3xl text-foreground">
