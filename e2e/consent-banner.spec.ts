@@ -55,6 +55,9 @@ test('keyboard: skip link first, then the consent choices', async ({ page }) => 
   await page.goto('/en');
   await page.keyboard.press('Tab');
   await expect(page.locator(':focus')).toHaveText(/skip to content/i);
+  // The one-line banner (2026-11-18 UX review) links the privacy page in its text.
+  await page.keyboard.press('Tab');
+  await expect(page.locator(':focus')).toHaveText(/privacy/i);
   await page.keyboard.press('Tab');
   await expect(page.locator(':focus')).toHaveText(/decline/i);
 });

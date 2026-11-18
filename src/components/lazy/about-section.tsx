@@ -7,7 +7,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useTranslations } from 'next-intl';
 import { MixedTypographyTitle } from "@/components/ui/mixed-typography";
 import { SketchyFrame } from "@/components/ui/notebook-elements";
-import { Lightbulb, BarChart3, Palette, Compass } from "lucide-react";
+import { Lightbulb, BarChart3, Palette, Compass, MapPin, Briefcase, Globe } from "lucide-react";
 
 export function AboutSection() {
   const t = useTranslations('home');
@@ -42,13 +42,16 @@ export function AboutSection() {
           <div className="p-8">
             <div className="space-y-6">
               <div className="flex flex-wrap justify-center gap-3 mb-6">
-                <Badge variant="secondary" className="bg-muted text-foreground">
+                <Badge variant="secondary" className="gap-1.5 bg-muted text-foreground">
+                  <MapPin className="size-3.5" aria-hidden="true" />
                   {t('bangkokBased')}
                 </Badge>
-                <Badge variant="secondary" className="bg-muted text-foreground">
+                <Badge variant="secondary" className="gap-1.5 bg-muted text-foreground">
+                  <Briefcase className="size-3.5" aria-hidden="true" />
                   {t('yearsExperience')}
                 </Badge>
-                <Badge variant="secondary" className="bg-muted text-foreground">
+                <Badge variant="secondary" className="gap-1.5 bg-muted text-foreground">
+                  <Globe className="size-3.5" aria-hidden="true" />
                   {t('techGeneralist')}
                 </Badge>
               </div>

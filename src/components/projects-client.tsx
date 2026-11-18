@@ -12,9 +12,10 @@ import {
   type AppProject,
   type ProblemLane,
   type ProjectDomain,
-  type ProjectStatus,
 } from "@/data/app-projects";
 import { getActiveProjectDomains, getProjectsForDomain, getProjectDomains, projectDomainMeta } from "@/data/project-domains";
+import { ProjectStatusBadge } from "@/components/project-status-badge";
+import { projectDemoState } from "@/lib/project-badge";
 import { MixedTypographyTitle } from "@/components/ui/mixed-typography";
 import { laneFrameVariant } from "@/components/lane-icon";
 import { SketchyFrame } from "@/components/ui/notebook-elements";
@@ -33,22 +34,6 @@ import {
 const PAGE_SIZE = 24;
 const FEATURED_LIMIT = 9;
 type PageItem = number | "ellipsis";
-
-const statusConfig: Record<
-  ProjectStatus,
-  { label: string; dot: string; text: string }
-> = {
-  live: { label: "Live", dot: "bg-foreground", text: "text-foreground" },
-  wip: { label: "WIP", dot: "bg-muted-foreground", text: "text-muted-foreground" },
-  archived: { label: "Archived", dot: "bg-muted-foreground/50", text: "text-muted-foreground/50" },
-};
-
-const evidenceLabelKey: Record<string, string> = {
-  Live: "evidence_live",
-  Prototype: "evidence_prototype",
-  "Internal System": "evidence_internal",
-  Experiment: "evidence_experiment",
-};
 
 function getFaviconUrl(projectUrl: string): string {
   try {
@@ -95,8 +80,7 @@ function ProjectCard({
   const [imgError, setImgError] = useState(false);
   const [screenshotError, setScreenshotError] = useState(false);
   const favicon = getFaviconUrl(project.url);
-  const status = statusConfig[project.status];
-  const domains = getProjectDomains(project);
+  const demoState = projectDemoState(project);
   const screenshotUrl = `/api/screenshot?url=${encodeURIComponent(project.url)}`;
 
   // Generate a unique gray tone from the project name for the placeholder
@@ -184,17 +168,10 @@ function ProjectCard({
       </p>
       <div className="mt-auto flex flex-wrap items-center justify-between gap-y-2 pt-3">
         <div className="flex items-center gap-2">
-          <span className="flex items-center gap-1 text-xs font-mono uppercase tracking-wider text-muted-foreground/90">
-            {domains.map((domain) => t(projectDomainMeta[domain].labelKey)).join(" · ")}
-          </span>
-          <span className="flex items-center gap-1">
-            <span className={`size-1.5 rounded-full ${status.dot}`} />
-            <span className={`text-xs font-mono ${status.text}`}>
-              {project.evidenceLevel
-                ? t(evidenceLabelKey[project.evidenceLevel])
-                : t("status_" + project.status)}
-            </span>
-          </span>
+          <ProjectStatusBadge project={project} />
+          {demoState === "offline" && (
+            <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">{t("demoOffline")}</span>
+          )}
         </div>
         <div className="flex items-center gap-2">
           {stars > 0 && (

@@ -6,9 +6,9 @@ test.describe('Navigation', () => {
   test('desktop nav links are present', async ({ page }) => {
     await page.goto('/en');
     const nav = page.locator('nav[aria-label="Main navigation"]');
-    // Labels come from next-intl `nav.*` keys (portfolio, not "Projects").
+    // Labels come from next-intl `nav.*` keys: "Projects", matching the footer and headings (2026-11-18 UX review).
     await expect(nav.getByRole('link', { name: 'Home' })).toBeVisible();
-    await expect(nav.getByRole('link', { name: 'Portfolio' })).toBeVisible();
+    await expect(nav.getByRole('link', { name: 'Projects', exact: true })).toBeVisible();
     await expect(nav.getByRole('link', { name: 'Blog' })).toBeVisible();
     await expect(nav.getByRole('link', { name: 'Contact' })).toBeVisible();
   });
@@ -17,7 +17,7 @@ test.describe('Navigation', () => {
     await page.goto('/en');
     await page
       .locator('nav[aria-label="Main navigation"]')
-      .getByRole('link', { name: 'Portfolio' })
+      .getByRole('link', { name: 'Projects', exact: true })
       .click();
     await expect(page).toHaveURL(/\/en\/projects/);
   });
