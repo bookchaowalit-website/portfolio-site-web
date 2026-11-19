@@ -15,7 +15,7 @@ import {
 } from "@/data/app-projects";
 import { getActiveProjectDomains, getProjectsForDomain, getProjectDomains, projectDomainMeta } from "@/data/project-domains";
 import { ProjectStatusBadge } from "@/components/project-status-badge";
-import { projectDemoState } from "@/lib/project-badge";
+import { projectDemoState, unavailableCopy } from "@/lib/project-badge";
 import { MixedTypographyTitle } from "@/components/ui/mixed-typography";
 import { laneFrameVariant } from "@/components/lane-icon";
 import { SketchyFrame } from "@/components/ui/notebook-elements";
@@ -103,7 +103,7 @@ function ProjectCard({
             >
               <ImageOff className="size-5" aria-hidden="true" />
               <span className="font-mono text-xs uppercase tracking-wider">{t("previewUnavailable")}</span>
-              <span className="max-w-xs text-xs leading-relaxed">{t(project.status === "archived" ? "retiredPreviewNote" : "internalPreviewNote")}</span>
+              <span className="max-w-xs text-xs leading-relaxed">{t(unavailableCopy(demoState).cardNote)}</span>
             </div>
           ) : !screenshotError ? (
             <Image

@@ -12,6 +12,7 @@ import { getProjectDomains, projectDomainMeta } from "@/data/project-domains";
 import { statusConfig } from "./status-config";
 import { SketchArrow } from "@/components/ui/notebook-elements";
 import { analytics, evidenceLevelProp } from "@/lib/browser-analytics";
+import { projectDemoState, unavailableCopy } from "@/lib/project-badge";
 import {
   ArrowLeft,
   ArrowRight,
@@ -50,6 +51,8 @@ const evidenceDescriptionKey = {
 
 export function ProjectDetailClient({ project, relatedBlogPosts = [] }: { project: AppProject; relatedBlogPosts?: RelatedBlogPost[] }) {
   const t = useTranslations("projectDetail");
+  // Offline (deployed, host down) and "no demo of ours" read differently on the detail page.
+  const unavailable = unavailableCopy(projectDemoState(project));
   const [stars, setStars] = useState(0);
   const [starsError, setStarsError] = useState(false);
   const [screenshotError, setScreenshotError] = useState(false);
@@ -115,11 +118,11 @@ export function ProjectDetailClient({ project, relatedBlogPosts = [] }: { projec
           <div
             className="relative flex h-full w-full flex-col items-center justify-center gap-2 bg-muted text-muted-foreground"
             role="img"
-            aria-label={t("previewUnavailable")}
+            aria-label={t(unavailable.detailPreview)}
           >
             <div className="absolute inset-6 border border-dashed border-border" aria-hidden="true" />
             <ImageOff className="size-8 relative" aria-hidden="true" />
-            <span className="text-sm relative max-w-md px-10 text-center">{t("previewUnavailable")}</span>
+            <span className="text-sm relative max-w-md px-10 text-center">{t(unavailable.detailPreview)}</span>
           </div>
         ) : !screenshotError ? (
           <Image
@@ -221,10 +224,10 @@ export function ProjectDetailClient({ project, relatedBlogPosts = [] }: { projec
           {project.demoUnavailable ? (
             <span
               className="inline-flex items-center gap-2 px-6 py-3 bg-muted text-muted-foreground text-sm font-medium cursor-not-allowed"
-              title={t("demoUnavailable")}
+              title={t(unavailable.detailButton)}
             >
               <ExternalLink className="size-4" />
-              {t("demoUnavailable")}
+              {t(unavailable.detailButton)}
             </span>
           ) : (
             <a

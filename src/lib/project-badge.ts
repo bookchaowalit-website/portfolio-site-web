@@ -41,3 +41,19 @@ export function projectDemoState(project: { url: string; status: Status; demoUna
   if (!project.demoUnavailable) return "demo";
   return project.status === "archived" ? "retired" : "offline";
 }
+
+export type UnavailableCopy = { cardNote: string; detailPreview: string; detailButton: string };
+
+/**
+ * Message keys for a project whose demo is not linked. An "offline" project has a deployment whose host is down
+ * (e.g. BookNBook answering 503), so it must not say "there is no demo deployment" or "internal system".
+ * cardNote is in the "projects" messages; detailPreview and detailButton are in "projectDetail".
+ */
+export function unavailableCopy(state: DemoState): UnavailableCopy {
+  if (state === "offline") return { cardNote: "offlinePreviewNote", detailPreview: "previewOffline", detailButton: "demoOffline" };
+  return {
+    cardNote: state === "retired" ? "retiredPreviewNote" : "internalPreviewNote",
+    detailPreview: "previewUnavailable",
+    detailButton: "demoUnavailable",
+  };
+}
