@@ -347,7 +347,8 @@
     "demoOffline": "Offline",
     "demoRetired": "Retired",
     "sourceOnly": "Source only",
-    "featuredEmpty": "No featured projects right now."
+    "featuredEmpty": "No featured projects right now.",
+    "designSystemLink": "How these sites are built: five shared shells"
   },
   "projectDetail": {
     "backToProjects": "All projects",

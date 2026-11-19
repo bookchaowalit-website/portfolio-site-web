@@ -150,3 +150,82 @@ Regression tests: `src/data/__tests__/source-links.test.ts` and the "portfolio c
 | bookchaowalit-portfolio-mobile | copy: promise, problem, caseStudy | Claimed offline-first caching, haptic feedback and caching of visited content; lib/ shows bundled data in lib/data/project_data.dart, SharedPreferences favorites and url_launcher, with no network fetch, cache or haptics. |
 | agencyrenting | source: `bookchaowalit-website/sales-agencyrenting-web`; evidence Live→Prototype; copy: description, promise, problem, tech, caseStudy | Card described a creative-agency booking platform with calendars, contracts, milestones and escrow payments; the repo is a real-estate agency demo where app/api/properties serves lib/sampleData.ts (9 sample properties) and the contact form sends nothing. |
 | localcrm | status live→archived; copy: description, promise, problem, tech, caseStudy | Card described a Python/SQLite local-only CRM with invoices and no cloud; the archived repos are a multi-tenant Next.js frontend plus a FastAPI/SQLAlchemy API with JWT auth, stores, deals, bookings and a storefront builder, consolidated into sales-crm on 2026-10-13 (repo description). |
+
+## Addendum 2026-11-19: shell rollout
+
+67 more cards were rechecked against their repository's origin/main after the move onto a shared shell
+(App, Dashboard or Reader shell; repo lists and counts in `src/data/shell-system.ts`, shown on
+`/projects/design-system`). Every case study now names its shell; stale features were dropped.
+Eight cards whose repositories the owner archived now show Archived and left the featured list:
+coursenotes, writing, video-gallery, photo, sentiment-analyzer, recommendation-engine, analytics-dashboard, tools.
+Regression tests: `src/data/__tests__/shell-system.test.ts`.
+
+| Card | Shell | origin/main | Fields | Evidence |
+|---|---|---|---|---|
+| ab-testing | Dashboard shell | `ae8fd59` | caseStudy | app/page.tsx (DashTop/Stat from components/dashboard-shell.tsx, sliders, Simulate one visit / Run 50 visits / Reset to sample), lib/ab-testing.ts (SEED, pickLeader tie rule), lib/local-store.ts. |
+| agencyrenting | Reader shell | `37a82a1` | caseStudy, description, promise, tech | components/agency-views.tsx (ListingsView q + mode rent/sale, ListingView, GuidesView empty state, ContactView links to portfolio), lib/copy.ts (en/th; 'no agent, phone line or inbox'), lib/sampleData.ts (8 ids); Radix UI no longer in package.json. |
+| ai-art-gallery | Reader shell | `0b8f9be` | caseStudy | data/works.ts (WORKS = []), app/page.tsx (Reader/ReaderTop), components/gallery-view.tsx (EmptyState, view chips), app/api/mcp/route.ts (list_works). |
+| announcements | App shell | `270d38c` | caseStudy | app/page.tsx (Board sidebar, search, copy, Undo toast), lib/announcements.ts (STATUSES, 3 SEED, announcements-v2 storage) |
+| artblog | Reader shell | `d3c43db` | caseStudy, description | content/posts/*.mdx (5 files), lib/subjects.ts (8 SUBJECTS), components/art-views.tsx (ReaderTop, TagFilter, Pager); no SearchForm used. Evidence raised to Live: real authored content, not a placeholder. |
+| bookmarketing | App shell | `44283d7` | caseStudy | app/page.tsx (campaign sidebar, Log next move, progressbar, Reset file + Undo, note 'nothing is saved or sent'); lib/bookmarketing.ts has 3 campaigns x 3 channels. |
+| bookreviews | Reader shell | `e686689` | caseStudy | content/book-reviews/*.mdx (3 files), lib/markdown.tsx (own renderer; no MDX dependency in package.json, only gray-matter), components/review-views.tsx (TagFilter, Pager, ISBN meta), lib/mcp-tools.ts, app/mcp/page.tsx. |
+| carbon-calculator | App shell | `9a1d763` | caseStudy | app/page.tsx (Categories sidebar, composer, factor line, 'Where it sits' bars, Undo toast, disclaimer note); lib/carbon.ts 3 initialActivities, no localStorage. |
+| certs | App shell | `c4c5b51` | caseStudy, name | app/page.tsx (AppTop 'Credentials', status sidebar, search, Copy, Undo toast); lib/certs.ts SEED has 3 records, key certs-v2; layout title changed from 'Passport' to 'Credentials'. |
+| challenges | App shell | `220b7f4` | caseStudy | app/page.tsx (By state sidebar, search, status select, Undo toast), lib/challenges.ts (STATUSES, challenges-v2 storage) |
+| changelog | Reader shell | `edd64cc` | caseStudy | components/changelog-page.tsx (Reader pieces, SearchForm live, Remove, Restore the sample lines; no Undo), lib/changelog.ts (SEED), lib/local-store.ts. |
+| chat-playground | App shell | `4b858d6` | caseStudy, description | app/page.tsx (demo/live mode, access key, lanes), lib/models.ts (3 providers via env), README.md access gate and limits |
+| collaborations | App shell | `28009e9` | caseStudy | app/page.tsx (By status sidebar, search, Undo toast), lib/collaborations.ts (STATUSES, collabs-v1 storage) |
+| comments | App shell | `03ce4a0` | caseStudy | app/page.tsx (Queue sidebar, search, Undo toast, status set on add), lib/comments.ts (STATUSES Pending/Approved/Spam) |
+| community | App shell | `167c1f2` | caseStudy | app/page.tsx (Directory sidebar, search, status select, Undo toast, Export/Import JSON), lib/channels.ts |
+| contact-forms | App shell | `7cfcad2` | caseStudy, name | app/page.tsx (AppTop 'Contact desk', Inbox sidebar All/New/Read, Copy letter, Undo toast, note 'No email is sent'); lib/contact-forms.ts 1 seed message; layout title changed from 'Inbox' to 'Contact desk'. |
+| deeplinks | App shell | `ec05811` | caseStudy | app/page.tsx (state sidebar, search name or URL, Copy URL, Undo toast); lib/deeplinks.ts SEED has 2 links, key deeplinks-v1. |
+| design | App shell | `5c051b7` | caseStudy | components/design-catalogue.tsx (status sidebar, search, Undo toast, Export/Import JSON, localStorage design-v1); data/works.json has 2 sample works; star-map view is gone. |
+| devhub | Reader shell | `9f3f948` | caseStudy | src/lib/api-catalog.ts (5 APIs), src/components/devhub-views.tsx (ReaderHead, ArticleHeader, Quick start), src/components/playground.tsx, src/app/apis/[id]/page.tsx. |
+| donation-tip-jar | App shell | `ca634ee` | caseStudy | app/page.tsx (total, remove/clear with Undo), lib/tip-jar.ts (DENOMINATIONS, NO_RAIL_STATUS, tip-jar-v2 storage) |
+| error-logs | Dashboard shell | `ec97224` | caseStudy | components/error-board.tsx (DashTop, Segmented range, 4 Stat tiles, ds-meter rows, open signal panel, 'Sample data' pill); lib/error-logs.ts has 4 LOGS. |
+| fashion-lookbook | Reader shell | `b93ea1e` | caseStudy | components/lookbook-view.tsx (cards with site-facts, silhouette chips, ResultCount, EmptyState; no detail panel any more), lib/lookbook.ts (4 looks). |
+| game-collection | Reader shell | `2e6eb8f` | caseStudy | app/page.tsx (ReaderHead, rs-list cards over GAMES), components/arcade.tsx (Reader, Pager), lib/games.ts (12 games), tests/*.test.ts, .github/workflows/ci.yml (require-tests: true), lib/roadmap.ts (high scores next). |
+| github | Reader shell | `bd5049d` | caseStudy, description | lib/github-shelf.ts (7 records), components/shelf-views.tsx (SearchForm, TagFilter, Pager), app/repos/[id]/page.tsx; PRODUCT.md notes the session add/Copy/Remove were removed 2026-11-19. |
+| giveaways | App shell | `3a8f04f` | caseStudy | app/page.tsx (status sidebar, search, status select, Undo toast, note 'not a draw'); lib/entries.ts 1 sample entry; tests/entries.test.ts. |
+| guestbook | App shell | `8e266d1` | caseStudy | app/page.tsx (sign form, newest-first list, Undo toast), lib/guestbook.ts (MAX_ENTRIES 40) |
+| history-timeline | Reader shell | `6afdfcd` | caseStudy, description | lib/archive.ts (4 eras), components/archive-views.tsx (EntryList, ArticleHeader, Pager, synthetic NOTE), app/entries/[id]/page.tsx; the era rail and artifact diagram are gone. |
+| invoice-generator | App shell | `5bcc783` | caseStudy | app/page.tsx (parties/date, lines with Undo toast, VAT/WHT, preview, copy, print), lib/invoice.ts, lib/use-stored-state.ts |
+| knowledgehub | Reader shell | `b2953a0` | caseStudy, description | content/ (16 .mdx: knowledge 7, diary 3, docs 3, ideas 3), components/hub-views.tsx (SearchForm, TagFilter), lib/mcp.ts, app/private/owner.ts (cf-access-jwt-assertion). Old card said one entry per shelf. |
+| lab | App shell | `75f9d33` | caseStudy, description, name | app/page.tsx (AppTop 'Lab notebook', State sidebar, search, Undo toast); lib/lab.ts SEED has 2 sample entries, storage key lab-v2; layout title changed from 'Lab' to 'Lab notebook'. |
+| language-forge | App shell | `8d2bd09` | caseStudy, description | components/practice-desk.tsx (phrase bank sidebar, shuffledOrder, tally, Start over, note: no saving); lib/language-forge.ts has 4 phrases. |
+| learn | Reader shell | `6d6ba55` | caseStudy, description | lib/learn.ts (3 TRACKS), components/learn-index.tsx, app/paths/[id]/page.tsx ('lessons themselves are not published'), components/mark-progress.tsx (not saved), app/api/mcp/route.ts. |
+| legal-knowledge | Reader shell | `7b1fa73` | caseStudy | components/entries-view.tsx (SearchForm, family chips counted within search, entries with touchpoint/next inline), lib/legal.ts (5 entries). |
+| linktree | App shell | `126d086` | caseStudy, description, name | app/page.tsx + app/edit/page.tsx (noindex editor); components/link-page.tsx (ShareButton, add/remove, Undo); lib/linktree.ts 3 DEFAULT_LINKS; layout title now '@bookchaowalit · Links'. |
+| math-workshop | Reader shell | `2fb1e23` | caseStudy, description | components/workshop-view.tsx (problem chips, givens Tags, notation board, folded steps, reveal/start over, role=status count; no diagram drawn), lib/math-workshop.ts (3 PROBLEMS). |
+| mcpdocs | App shell | `e89cf8f` | caseStudy | app/page.tsx (Lifecycle sidebar, search, Undo toast, note 'saved in this browser only'); lib/mcpdocs.ts 1 seed record, key mcpdocs-v2; lib/reference.ts static notes for /api/mcp. |
+| mcplist | Reader shell | `54a7bc6` | caseStudy | lib/mcp-servers.ts (23 servers), components/mcp-views.tsx (SearchForm, TagFilter), app/mcp/[id]/page.tsx, lib/mcp-hub.ts. |
+| meme-generator | App shell | `eaece7d` | caseStudy, description | app/page.tsx (presets, ink picker, Download PNG), lib/export.ts (renderPng), lib/meme.ts (3 PRESETS) |
+| military-strategy-db | Reader shell | `96d2379` | caseStudy, description | components/records-view.tsx (SearchForm, era chips, briefs inline), lib/military.ts (6 records M-01..M-06). |
+| news-aggregator | Reader shell | `94405ea` | caseStudy | lib/news.ts (5 stories), components/desk-view.tsx (SearchForm live, rs-chip beats, unread/saved count), components/story-view.tsx (Mark as read / Save for later), app/stories/[id]/page.tsx. |
+| newsletter | Reader shell | `d323f46` | caseStudy, description | components/archive-view.tsx, components/newsletter-views.tsx (IssueView + Pager), app/issues/[id]/page.tsx, app/api/mcp/route.ts, lib/newsletter.ts (3 ISSUES). |
+| popular-pages | Dashboard shell | `cce134b` | caseStudy, description | lib/popular-pages.ts (SAMPLES per range, rankRoutes, boardSummary), components/popular-board.tsx (Segmented period, Stat tiles, Selected page panel, Sample data pill). |
+| press | App shell | `f447bba` | caseStudy | app/page.tsx (Lists sidebar, search, batched Undo), lib/press.ts (STATUSES, 2 SEED examples, press-v1 storage) |
+| projects-showcase | Reader shell | `dc1dc74` | caseStudy | components/showcase-view.tsx (SearchForm GET, TagFilter all/featured, cards, MCP section; no detail panel), components/copy-endpoint.tsx, data/projects.json (2 records). |
+| prompt-library | App shell | `5979cf6` | caseStudy | app/page.tsx (stage sidebar, area filter, search, Undo toast), lib/prompts.ts (4 seed recipes), lib/local-store.ts |
+| psychology-explorer | Reader shell | `781d570` | caseStudy | components/psychology-view.tsx (theme chips, Save this prompt, Your margin with textarea and Remove), lib/use-stored-state.ts (localStorage), lib/concepts.ts (5 concepts). |
+| quote-generator | App shell | `bcb849e` | caseStudy, description | app/page.tsx (Deck/Saved sidebar, Keep card, copy), lib/quotes.ts (5 QUOTES, SAVED_KEY via use-stored-state) |
+| reading | Reader shell | `99706a6` | caseStudy | lib/reading.ts (4 items), components/reading-views.tsx (SearchForm, TagFilter, Margin note), app/read/[id]/page.tsx, app/mcp/page.tsx. |
+| recipe-explorer | Reader shell | `e55c064` | caseStudy, description | components/recipe-pages.tsx (EntryList index, ArticleHeader, Pager), components/recipe-board.tsx (swap toggle), app/recipes/[id]/page.tsx, lib/recipes.ts (3 recipes). |
+| redirect-manager | App shell | `4f3996c` | caseStudy | app/page.tsx (Status codes sidebar, search, /s/ hint, Check a path, Undo toast); lib/redirects.ts findRule is exact match. |
+| roadmaps | Reader shell | `24e571b` | caseStudy, description | content/roadmaps/*.mdx (3), app/roadmaps/page.tsx (q + level searchParams), app/roadmaps/[slug]/page.tsx, components/roadmap-views.tsx, app/api/mcp/route.ts; deps have gray-matter, no MDX compiler (lib/markdown.tsx renders bodies). |
+| sales-pipeline | App shell | `3157407` | caseStudy, description | app/page.tsx (Stages sidebar, brief with Save next action/blocker, Move to stage, Reset sample data + Undo); lib/deals.ts SEED 4 deals; lib/use-stored-state.ts localStorage. |
+| science-lab | Reader shell | `14cad1f` | caseStudy | components/bench-view.tsx (chips, range input, svg polyline, Record observation, log in useState), lib/science-bench.ts (3 experiments, LOG_LIMIT 4). |
+| smart-farming | Reader shell | `67f665d` | caseStudy, description | components/fieldbook-views.tsx (EntryList index, CropView with six-week plan + Pager; no bed diagram or tabs), app/crops/[id]/page.tsx, lib/farming.ts (3 crops). |
+| speech-to-text | App shell | `1e5050a` | caseStudy | app/page.tsx (start/stop, word count, copy/clear, unsupported and error states), lib/speech.ts |
+| sports-training | Reader shell | `83cf1df` | caseStudy | components/board-view.tsx (focus chips, session-blocks bars, queue in useState 'not saved'), lib/sports.ts (4 SESSIONS). |
+| talks | Reader shell | `a27b88e` | caseStudy, description | lib/talks.ts (2 TALKS, status from date), components/talks-view.tsx (Upcoming/Past sections, no SearchForm), app/api/mcp/route.ts (search tool), app/mcp/page.tsx. |
+| team | App shell | `25ee12f` | caseStudy | app/page.tsx (Roster sidebar, search, Undo toast), lib/team.ts (STATUSES, one seed person, team-v2 storage) |
+| techblog | Reader shell | `488a8ad` | caseStudy | content/blog/*.mdx (5 files), src/components/blog-views.tsx (SearchForm, TagFilter, share links), src/components/mdx-pre.tsx (copy), src/lib/compile-article.ts (remark-toc, no rehype-highlight), src/app/contact/page.tsx (titled About). |
+| techspace | Reader shell | `4e57b5e` | caseStudy, description | content/stacks/**/*.mdx (6), src/components/stack-views.tsx (SearchForm, TagFilter, Pager), src/lib/compile-stack.tsx, src/app/api/mcp/route.ts (7 server.tool, MCP_API_TOKEN, rate limit). |
+| testimonials | App shell | `f941c55` | caseStudy | app/page.tsx (state sidebar, search, Undo toast, Embed the featured quotes, sample marked 'not a real testimonial'); tests/testimonials.test.ts. |
+| text-summarizer | App shell | `fe50370` | caseStudy | app/page.tsx (sample, sentence count, keywords, copy), lib/summarizer.ts (opening sentences, MAX_SENTENCES 10, top 8 keywords) |
+| ticket-booking | App shell | `938b633` | caseStudy | app/page.tsx (seat map, reserve form, bookings list), lib/ticket-booking.ts (ROWS A-D x 8, seatsWithBookings keeps booked seats taken) |
+| translation | App shell | `301ce48` | caseStudy | app/page.tsx (direction switch, swap, unknown words, vocab chips), lib/translation.ts (8-word EN_TO_TH) |
+| travel-planner | Reader shell | `dc1269e` | caseStudy, description | components/atlas-views.tsx (HomeView EntryList, RouteView day list + Pager; no day tabs or next-stop button), app/routes/[id]/page.tsx, lib/trip-atlas.ts (3 routes). |
+| visitor-map | Dashboard shell | `24112a5` | caseStudy | app/page.tsx (DashTop/Stat, Mark my visit / Simulate a visitor / Clear marks, SVG map, Cities panel), lib/visits.ts (MAX_HITS, cityForTimeZone), lib/use-stored-state.ts. |
+| webhook-tester | App shell | `0dc378b` | caseStudy | app/page.tsx (POLL_MS 2500, handleSendTest, Clear queue with Undo, redaction footnote); lib/webhook-store.ts (HOOK_TTL_MS 1 h, MAX_REQUESTS_PER_HOOK 50). |

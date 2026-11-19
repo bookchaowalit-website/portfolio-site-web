@@ -16,7 +16,7 @@ import {
 describe("portfolio catalog integrity", () => {
   it("keeps the current catalog count and status breakdown explicit", () => {
     assert.equal(allProjects.length, 129);
-    assert.deepEqual(getProjectStatusCounts(), { live: 123, wip: 0, archived: 6 });
+    assert.deepEqual(getProjectStatusCounts(), { live: 115, wip: 0, archived: 14 });
   });
 
   it("keeps project records addressable and case-study complete", () => {

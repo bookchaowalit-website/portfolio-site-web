@@ -49,6 +49,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...entry('/about/trading', { priority: 0.6 }),
     ...entry('/projects', { changeFrequency: 'weekly', priority: 0.9 }),
     ...entry('/projects/domains', { changeFrequency: 'monthly', priority: 0.8 }),
+    ...entry('/projects/design-system', { changeFrequency: 'monthly', priority: 0.7 }),
     ...entry('/blog', { changeFrequency: 'weekly', priority: 0.8 }),
     ...entry('/contact', { priority: 0.7 }),
     ...entry('/atlas', { changeFrequency: 'weekly', priority: 0.8 }),

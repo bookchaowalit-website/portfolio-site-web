@@ -347,7 +347,8 @@
     "demoOffline": "ออฟไลน์",
     "demoRetired": "ปิดแล้ว",
     "sourceOnly": "มีเฉพาะซอร์สโค้ด",
-    "featuredEmpty": "ยังไม่มีผลงานเด่นในตอนนี้"
+    "featuredEmpty": "ยังไม่มีผลงานเด่นในตอนนี้",
+    "designSystemLink": "เว็บเหล่านี้สร้างอย่างไร: shell กลางห้าแบบ"
   },
   "projectDetail": {
     "backToProjects": "โปรเจกต์ทั้งหมด",

@@ -451,6 +451,17 @@ export function ProjectsClient({
               </span>
             )}
           </p>
+          {activeDomain === "all" && (
+            <p>
+              <Link
+                href="/projects/design-system"
+                className="inline-flex min-h-11 items-center gap-1 text-sm font-medium underline underline-offset-4 hover:text-foreground/80"
+              >
+                {t("designSystemLink")}
+                <ArrowUpRight size={14} aria-hidden="true" />
+              </Link>
+            </p>
+          )}
         </div>
 
         {/* Stats Banner — uses the same gap-px grid language */}

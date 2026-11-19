@@ -34,7 +34,7 @@ they won't believe `PRODUCT.md` in any of the flagship repos either.
 ### Project counts & claims — mostly accurate, one stale one fixed
 
 The real data source (`src/data/app-projects.ts`) has **129 projects**
-(123 live, 0 wip, 6 archived as of 2026-10-21), every single one with a real `caseStudy`
+(115 live, 0 wip, 14 archived as of 2026-11-19), every single one with a real `caseStudy`
 object (challenge/solution/result) — not just a name and a link. Site-wide
 copy consistently says **"100+"**, which is honestly hedged (129 ≥ 100,
 the claim ages gracefully as the count grows) — no fix needed there.
