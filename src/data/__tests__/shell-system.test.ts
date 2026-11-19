@@ -33,7 +33,7 @@ describe("shell system data", () => {
       }
     }
     // Counted with `git ls-tree origin/main` on 2026-11-19 (see the data file).
-    assert.deepEqual(shellSystem.map(shellSiteCount), [48, 11, 32, 1, 1]);
+    assert.deepEqual(shellSystem.map(shellSiteCount), [50, 12, 32, 1, 1]);
   });
 
   it("links two or three live examples per shell where the shell has that many sites", () => {
@@ -57,9 +57,9 @@ describe("shell system data", () => {
     const keys = rows.map((row) => row.key);
     assert.deepEqual(keys, ["floor", "forcedColors", "thai", "undo"]);
     const cell = (key: string, id: ShellId) => rows.find((row) => row.key === key)?.cells[id];
-    // Verified on origin/main: forced-colors rules are in 41 of 48 App shell copies and not in the Workbench.
+    // Verified on origin/main: forced-colors rules are in 43 of 50 App shell copies and not in the Workbench.
     assert.equal(cell("forcedColors", "app")?.state, "partial");
-    assert.match(cell("forcedColors", "app")?.note.en ?? "", /41 of 48/);
+    assert.match(cell("forcedColors", "app")?.note.en ?? "", /43 of 50/);
     assert.equal(cell("forcedColors", "workbench")?.state, "no");
     assert.equal(cell("thai", "reader")?.state, "yes");
     assert.equal(cell("thai", "app")?.state, "no");
@@ -108,9 +108,6 @@ describe("archived and offline cards", () => {
     "bookchaowalit-website/content-writing-web",
     "bookchaowalit-website/content-video-gallery-web",
     "bookchaowalit-website/content-photo-web",
-    "bookchaowalit-ai/ai-sentiment-analyzer-web",
-    "bookchaowalit-ai/ai-recommendation-engine-web",
-    "bookchaowalit-ai/data-analytics-dashboard-web",
     "bookchaowalit-website/devtools-tools-web",
   ];
 
@@ -121,6 +118,22 @@ describe("archived and offline cards", () => {
       assert.equal(cards[0].status, "archived");
       assert.equal(cards[0].featured, false);
       assert.equal(cards[0].featuredRank, undefined);
+    });
+  }
+
+  // 2026-11-19: these were marked archived from the retired bookchaowalit-website copies; the live repos are in
+  // bookchaowalit-ai (not archived) and the sites are up, so the cards show their evidence level, not Archived.
+  for (const [slug, repo] of [
+    ["sentiment-analyzer", "bookchaowalit-ai/ai-sentiment-analyzer-web"],
+    ["recommendation-engine", "bookchaowalit-ai/ai-recommendation-engine-web"],
+    ["analytics-dashboard", "bookchaowalit-ai/data-analytics-dashboard-web"],
+  ]) {
+    it(`${slug} is live on ${repo}, not Archived`, () => {
+      const project = find(slug);
+      assert.equal(project.status, "live");
+      assert.equal(project.repo, repo);
+      assert.equal(project.evidenceLevel, "Prototype");
+      assert.ok(publicDemoUrl(project).startsWith("https://"), `${slug} links its demo`);
     });
   }
 

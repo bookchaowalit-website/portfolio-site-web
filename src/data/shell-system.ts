@@ -59,6 +59,7 @@ export const shellSystem: Shell[] = [
         "productivity-goal-tracker-web", "productivity-habit-tracker-web", "productivity-kanban-board-web",
         "productivity-ops-center-web", "productivity-pomodoro-timer-web",
       ]),
+      ...site("bookchaowalit-ai", ["ai-sentiment-analyzer-web", "ai-recommendation-engine-web"]),
     ],
     examples: [
       { slug: "services", url: "https://services.bookchaowalit.com", label: { en: "Services (the pilot)", th: "Services (แอปนำร่อง)" } },
@@ -81,6 +82,7 @@ export const shellSystem: Shell[] = [
         "marketing-popular-pages-web", "marketing-ab-testing-web", "devtools-error-logs-web",
       ]),
       "bookchaowalit/devtools-polyglot-benchmark",
+      "bookchaowalit-ai/data-analytics-dashboard-web",
     ],
     examples: [
       { slug: "energy-dashboard", url: "https://energy.bookchaowalit.com", label: { en: "Energy (the pilot)", th: "Energy (แอปนำร่อง)" } },
@@ -180,8 +182,8 @@ export function shellGuaranteeRows(): GuaranteeRow[] {
       key: "forcedColors",
       label: { en: "Forced colors (Windows high contrast)", th: "Forced colors (โหมดคอนทราสต์สูงของ Windows)" },
       cells: {
-        app: { state: "partial", note: { en: "Rules in 41 of 48 copies", th: "มีในสำเนา 41 จาก 48 เว็บ" } },
-        dashboard: yes("Rules in all 11 copies", "มีครบทั้ง 11 เว็บ"),
+        app: { state: "partial", note: { en: "Rules in 43 of 50 copies", th: "มีในสำเนา 43 จาก 50 เว็บ" } },
+        dashboard: yes("Rules in all 12 copies", "มีครบทั้ง 12 เว็บ"),
         reader: yes("Rules in all 32 copies", "มีครบทั้ง 32 เว็บ"),
         workbench: no("Not in the stylesheet yet", "ยังไม่มีในสไตล์ชีต"),
         sales: no("Not in the stylesheet yet", "ยังไม่มีในสไตล์ชีต"),
