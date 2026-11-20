@@ -109,7 +109,8 @@ describe("event catalog", () => {
     assert.match(review, /\| Status \| pending\b[^|]*\|/);
     assert.match(review, /\| Due \| \d{4}-\d{2}-\d{2}\b/);
     assert.match(review, /^\| # \| Decision \| Type \| Owner \| Due \| Tracked in \|$/m);
-    assert.match(review, /^\| 1 \| \[[^\]]+\] \|/m);
+    // Row 1 is a placeholder before the review and a proposal while the owner decides.
+    assert.match(review, /^\| 1 \| \[[^\]]+\][^|]*\|/m);
     assert.ok(fs.existsSync(path.join(root, "docs/measurement/EXPERIMENT-LOG.md")));
   });
 });

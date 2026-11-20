@@ -25,7 +25,7 @@ portfolio uses OR-201…OR-299.
 | Release(s) covered | Production redeploy of `a2f3308` with analytics on (dpl_DsK5DHo9QJkFMkFtynaibX47ZqxN, 2026-10-26) |
 | Review period | 2026-10-26 – 2026-11-25 |
 | Review type | T+30 |
-| Status | review-ready (data filled 2026-11-20 from PostHog; owner decision pending, due 2026-11-25) |
+| Status | pending owner decision (data filled 2026-11-20 from PostHog; due 2026-11-25) |
 | Owner | Owner (bookchaowalit) |
 | AI maker | Claude Code (session w4c-loop-pilot) prepared the empty review |
 | AI reviewer | Fresh read-only Claude reviewer at review time |
@@ -90,9 +90,9 @@ change. One action per row; write the task key or issue into "Tracked in".
 
 | # | Decision | Type | Owner | Due | Tracked in |
 |---|---|---|---|---|---|
-| 1 | (proposed) Confirm `RESEND_FROM` is a verified sender and send one test contact message | backlog item | Owner | 2026-11-27 | outcome-review/OR-201#1 |
-| 2 | (proposed) Lower the rate KPIs' minimum volume to a monthly window (e.g. 50 consented sessions / month) or report them as counts until traffic grows | KPI definition change | Owner | 2026-11-25 | outcome-review/OR-201#2 |
-| 3 | (proposed) Link the portfolio from the outbound offers (kill-rule batch) and measure the next period | experiment | Owner | 2026-12-25 | outcome-review/OR-201#3 |
+| 1 | [proposed] Confirm `RESEND_FROM` is a verified sender and send one test contact message | backlog item | Owner | 2026-11-27 | outcome-review/OR-201#1 |
+| 2 | [proposed] Lower the rate KPIs' minimum volume to a monthly window (e.g. 50 consented sessions / month) or report them as counts until traffic grows | KPI definition change | Owner | 2026-11-25 | outcome-review/OR-201#2 |
+| 3 | [proposed] Link the portfolio from the outbound offers (kill-rule batch) and measure the next period | experiment | Owner | 2026-12-25 | outcome-review/OR-201#3 |
 
 Continuous discovery: open questions from this review go here.
 
