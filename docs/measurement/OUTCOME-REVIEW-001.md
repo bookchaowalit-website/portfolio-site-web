@@ -2,7 +2,7 @@
 title: portfolio-site-web — Outcome Review 001 (T+30)
 status: draft
 created: 2026-10-23
-updated: 2026-10-23
+updated: 2026-11-20
 description: First outcome review of the bookchaowalit.com KPI pilot, prepared before go-live. Due 30 days after the first production event; status stays "pending" until then (go-live 2026-10-26). Read by empire-backlog-sync once its status is "decided".
 ---
 
@@ -21,11 +21,11 @@ portfolio uses OR-201…OR-299.
 |---|---|
 | Review ID | OR-201 |
 | Project / product ID | portfolio-site-web (`bookchaowalit-website/portfolio-site-web`, bookchaowalit.com) |
-| Version | 0.1 |
+| Version | 0.2 |
 | Release(s) covered | Production redeploy of `a2f3308` with analytics on (dpl_DsK5DHo9QJkFMkFtynaibX47ZqxN, 2026-10-26) |
 | Review period | 2026-10-26 – 2026-11-25 |
 | Review type | T+30 |
-| Status | pending (live since 2026-10-26; review due 2026-11-25) |
+| Status | review-ready (data filled 2026-11-20 from PostHog; owner decision pending, due 2026-11-25) |
 | Owner | Owner (bookchaowalit) |
 | AI maker | Claude Code (session w4c-loop-pilot) prepared the empty review |
 | AI reviewer | Fresh read-only Claude reviewer at review time |
@@ -37,25 +37,37 @@ portfolio uses OR-201…OR-299.
 
 ## Summary
 
+Data snapshot: PostHog project 318524 (EU), HogQL over `events` from 2026-10-20 to 2026-11-20 03:30 UTC; live bundles checked the same day.
+
 | Objective | Outcome KPI | Verdict | One-line reason |
 |---|---|---|---|
-| OBJ-01 | KPI-O-01 (north star) | pending | Live since 2026-10-26; first events reached PostHog, baseline still collecting |
+| OBJ-01 | KPI-O-01 (north star) | off-track (low confidence) | 0 `contact_sent` in the first period; volume is far below every rate KPI's minimum |
 
-Overall decision: **pending** — live since 2026-10-26; the review runs at T+30 (2026-11-25).
+Overall decision (proposed, owner to confirm): **not measurable for the rates; north star at 0 →
+create traffic** — the instrumentation works (54 pageviews from 8 consented visitors), so the gap
+is traffic, not tracking.
+
 
 ## KPI results
 
 | KPI ID | Type | Baseline | Target (by date) | Previous review | This period | Change vs baseline | Status | Data quality note |
 |---|---|---|---|---|---|---|---|---|
-| KPI-O-01 | outcome (north star) | not yet measured | ≥ 2 / month by 2027-01-31 | — | — | — | pending go-live | Counts only messages Resend accepted; needs `RESEND_FROM` verified |
-| KPI-L-01 | leading | not yet measured | ≥ 0.5 views / consented visit by 2027-01-31 (provisional) | — | — | — | pending go-live | Consented visitors only |
-| KPI-L-02 | leading | not yet measured | ≥ 25% by 2027-01-31 (provisional) | — | — | — | pending go-live | Consented visitors only |
-| KPI-G-01 | guardrail | 0 (2026-10-21) | stay 0 | — | — | — | pending go-live | `npm run audit:links` |
-| KPI-G-02 | guardrail | 0 (2026-10-21) | stay 0 | — | — | — | pending go-live | catalog claims test |
-| KPI-G-03 | guardrail | not yet measured | ≤ 5 / week | — | — | — | pending go-live | Sentry |
+| KPI-O-01 | outcome (north star) | not yet measured | ≥ 2 / month by 2027-01-31 | — | 0 `contact_sent` | — | below target | Count KPI; valid only once `RESEND_FROM` is verified (unconfirmed) |
+| KPI-L-01 | leading | not yet measured | ≥ 0.5 views / consented visit by 2027-01-31 (provisional) | — | 2 `view_project` / 12 sessions | — | not measurable | Max 4 sessions in a week vs 200 minimum |
+| KPI-L-02 | leading | not yet measured | ≥ 25% by 2027-01-31 (provisional) | — | 1 click / 2 project views | — | not measurable | Below 100 project views per week |
+| KPI-G-01 | guardrail | 0 (2026-10-21) | stay 0 | — | not re-run in this pass | — | not checked | `npm run audit:links` |
+| KPI-G-02 | guardrail | 0 (2026-10-21) | stay 0 | — | not re-run in this pass | — | not checked | catalog claims test runs in CI on each push |
+| KPI-G-03 | guardrail | not yet measured | ≤ 5 / week | — | not collected in this pass | — | not checked | Sentry |
 
-Below the minimum volume in the KPI plan, write `not measurable`, not a
-ratio.
+Weekly PostHog counts for bookchaowalit.com (week starting Monday):
+
+| Week | `$pageview` | Sessions | `view_project` | `click_demo` + `click_source` | `contact_sent` |
+|---|---|---|---|---|---|
+| 2026-10-19 | 2 | 2 | 0 | 0 | 0 |
+| 2026-10-26 | 0 | 0 | 0 | 0 | 0 |
+| 2026-11-02 | 12 | 3 | 1 | 0 | 0 |
+| 2026-11-09 | 24 | 4 | 1 | 1 | 0 |
+| 2026-11-16 (partial) | 16 | 3 | 0 | 0 | 0 |
 
 ## Attribution
 
@@ -67,8 +79,8 @@ ratio.
 
 | Source | Volume this period | Top themes | Link |
 |---|---|---|---|
-| Contact messages (owner inbox) | — | — | — |
-| Sentry errors (`personal-yu0/portfolio-site-web`) | — | — | — |
+| Contact messages (owner inbox) | not checked in this pass | — | — |
+| Sentry errors (`personal-yu0/portfolio-site-web`) | not collected in this pass | — | — |
 
 ## Decisions and actions
 
@@ -78,12 +90,14 @@ change. One action per row; write the task key or issue into "Tracked in".
 
 | # | Decision | Type | Owner | Due | Tracked in |
 |---|---|---|---|---|---|
-| 1 | [Filled at the T+30 review] | [type] | Owner | [YYYY-MM-DD] | [outcome-review/OR-201#1] |
+| 1 | (proposed) Confirm `RESEND_FROM` is a verified sender and send one test contact message | backlog item | Owner | 2026-11-27 | outcome-review/OR-201#1 |
+| 2 | (proposed) Lower the rate KPIs' minimum volume to a monthly window (e.g. 50 consented sessions / month) or report them as counts until traffic grows | KPI definition change | Owner | 2026-11-25 | outcome-review/OR-201#2 |
+| 3 | (proposed) Link the portfolio from the outbound offers (kill-rule batch) and measure the next period | experiment | Owner | 2026-12-25 | outcome-review/OR-201#3 |
 
 Continuous discovery: open questions from this review go here.
 
-- [Question] → [Destination]
-
+- How many visitors decline consent? (no cookieless count yet) → OR-202
+- Which channel brought the 8 consented visitors? → OR-202
 ## Approval and sign-off
 
 | Decision | Approver | Date | Evidence |
