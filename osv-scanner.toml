@@ -39,19 +39,6 @@ id = "GHSA-mrhx-c7xc-m3w5"
 ignoreUntil = 2027-01-24
 reason = "zod 3.25.76 array-validation DoS; dev-only via @lhci/cli -> lighthouse -> puppeteer-core -> chromium-bidi, which validates CDP messages from the CI Chrome it launches. Fixed only in zod 4.6.6, which chromium-bidi (^3.24.1) cannot take. The site's own zod is 4.6.6 (serwist copies forced by overrides). Added 2026-10-24."
 
-# Dev-only: ESLint (eslint-config-next -> fast-glob -> micromatch -> braces) globs our own sources.
-[[IgnoredVulns]]
-id = "GHSA-vfj7-8cjw-p6xm"
-ignoreUntil = 2027-01-21
-reason = "braces stack exhaustion on attacker-shaped patterns; dev-only lint globbing of repository files. No fixed release."
-
-# Build-time: gray-matter -> js-yaml 3 -> argparse -> sprintf-js. gray-matter parses our own MDX
-# front matter at build time; argparse (and so sprintf-js) is only used by the js-yaml CLI.
-[[IgnoredVulns]]
-id = "GHSA-hp3w-g68c-fv3c"
-ignoreUntil = 2027-01-21
-reason = "sprintf-js unbounded precision DoS; reached only through the js-yaml CLI, which the site never runs. No fixed release."
-
 # Build-time: @serwist/next -> @serwist/build -> glob 13 lists our own build output when the
 # service worker is generated. Serwist never passes an AbortSignal, so the bypass has no effect.
 [[IgnoredVulns]]
