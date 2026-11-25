@@ -2,7 +2,7 @@
 title: portfolio-site-web — Outcome Review 001 (T+30)
 status: draft
 created: 2026-10-23
-updated: 2026-11-20
+updated: 2026-11-25
 description: First outcome review of the bookchaowalit.com KPI pilot, prepared before go-live. Due 30 days after the first production event; status stays "pending" until then (go-live 2026-10-26). Read by empire-backlog-sync once its status is "decided".
 ---
 
@@ -21,11 +21,11 @@ portfolio uses OR-201…OR-299.
 |---|---|
 | Review ID | OR-201 |
 | Project / product ID | portfolio-site-web (`bookchaowalit-website/portfolio-site-web`, bookchaowalit.com) |
-| Version | 0.2 |
+| Version | 0.3 |
 | Release(s) covered | Production redeploy of `a2f3308` with analytics on (dpl_DsK5DHo9QJkFMkFtynaibX47ZqxN, 2026-10-26) |
 | Review period | 2026-10-26 – 2026-11-25 |
 | Review type | T+30 |
-| Status | pending owner decision (data filled 2026-11-20 from PostHog; due 2026-11-25) |
+| Status | pending owner decision (data refreshed 2026-11-25 for the full period; due 2026-11-25) |
 | Owner | Owner (bookchaowalit) |
 | AI maker | Claude Code (session w4c-loop-pilot) prepared the empty review |
 | AI reviewer | Fresh read-only Claude reviewer at review time |
@@ -37,14 +37,14 @@ portfolio uses OR-201…OR-299.
 
 ## Summary
 
-Data snapshot: PostHog project 318524 (EU), HogQL over `events` from 2026-10-20 to 2026-11-20 03:30 UTC; live bundles checked the same day.
+Data snapshot: PostHog project 318524 (EU), HogQL over `events` from 2026-10-20 to 2026-11-25 17:00 UTC (full period); live bundles checked 2026-11-20.
 
 | Objective | Outcome KPI | Verdict | One-line reason |
 |---|---|---|---|
 | OBJ-01 | KPI-O-01 (north star) | off-track (low confidence) | 0 `contact_sent` in the first period; volume is far below every rate KPI's minimum |
 
 Overall decision (proposed, owner to confirm): **not measurable for the rates; north star at 0 →
-create traffic** — the instrumentation works (54 pageviews from 8 consented visitors), so the gap
+create traffic** — the instrumentation works (91 pageviews from 16 consented visitors in 20 sessions), so the gap
 is traffic, not tracking.
 
 
@@ -53,7 +53,7 @@ is traffic, not tracking.
 | KPI ID | Type | Baseline | Target (by date) | Previous review | This period | Change vs baseline | Status | Data quality note |
 |---|---|---|---|---|---|---|---|---|
 | KPI-O-01 | outcome (north star) | not yet measured | ≥ 2 / month by 2027-01-31 | — | 0 `contact_sent` | — | below target | Count KPI; valid only once `RESEND_FROM` is verified (unconfirmed) |
-| KPI-L-01 | leading | not yet measured | ≥ 0.5 views / consented visit by 2027-01-31 (provisional) | — | 2 `view_project` / 12 sessions | — | not measurable | Max 4 sessions in a week vs 200 minimum |
+| KPI-L-01 | leading | not yet measured | ≥ 0.5 views / consented visit by 2027-01-31 (provisional) | — | 2 `view_project` / 20 sessions | — | not measurable | Max 9 sessions in a week vs 200 minimum |
 | KPI-L-02 | leading | not yet measured | ≥ 25% by 2027-01-31 (provisional) | — | 1 click / 2 project views | — | not measurable | Below 100 project views per week |
 | KPI-G-01 | guardrail | 0 (2026-10-21) | stay 0 | — | not re-run in this pass | — | not checked | `npm run audit:links` |
 | KPI-G-02 | guardrail | 0 (2026-10-21) | stay 0 | — | not re-run in this pass | — | not checked | catalog claims test runs in CI on each push |
@@ -67,7 +67,8 @@ Weekly PostHog counts for bookchaowalit.com (week starting Monday):
 | 2026-10-26 | 0 | 0 | 0 | 0 | 0 |
 | 2026-11-02 | 12 | 3 | 1 | 0 | 0 |
 | 2026-11-09 | 24 | 4 | 1 | 1 | 0 |
-| 2026-11-16 (partial) | 16 | 3 | 0 | 0 | 0 |
+| 2026-11-16 | 37 | 9 | 0 | 0 | 0 |
+| 2026-11-23 (to 11-25) | 15 | 4 | 0 | 0 | 0 |
 
 ## Attribution
 
@@ -97,7 +98,7 @@ change. One action per row; write the task key or issue into "Tracked in".
 Continuous discovery: open questions from this review go here.
 
 - How many visitors decline consent? (no cookieless count yet) → OR-202
-- Which channel brought the 8 consented visitors? → OR-202
+- Which channel brought the 16 consented visitors? → OR-202
 ## Approval and sign-off
 
 | Decision | Approver | Date | Evidence |
