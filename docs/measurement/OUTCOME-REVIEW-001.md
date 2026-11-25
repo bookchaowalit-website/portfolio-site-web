@@ -1,8 +1,8 @@
 ---
 title: portfolio-site-web — Outcome Review 001 (T+30)
-status: draft
+status: decided
 created: 2026-10-23
-updated: 2026-11-25
+updated: 2026-11-26
 description: First outcome review of the bookchaowalit.com KPI pilot, prepared before go-live. Due 30 days after the first production event; status stays "pending" until then (go-live 2026-10-26). Read by empire-backlog-sync once its status is "decided".
 ---
 
@@ -21,11 +21,11 @@ portfolio uses OR-201…OR-299.
 |---|---|
 | Review ID | OR-201 |
 | Project / product ID | portfolio-site-web (`bookchaowalit-website/portfolio-site-web`, bookchaowalit.com) |
-| Version | 0.3 |
+| Version | 1.0 |
 | Release(s) covered | Production redeploy of `a2f3308` with analytics on (dpl_DsK5DHo9QJkFMkFtynaibX47ZqxN, 2026-10-26) |
 | Review period | 2026-10-26 – 2026-11-25 |
 | Review type | T+30 |
-| Status | pending owner decision (data refreshed 2026-11-25 for the full period; due 2026-11-25) |
+| Status | decided 2026-11-26 (owner accepted all proposed decisions) |
 | Owner | Owner (bookchaowalit) |
 | AI maker | Claude Code (session w4c-loop-pilot) prepared the empty review |
 | AI reviewer | Fresh read-only Claude reviewer at review time |
@@ -43,7 +43,7 @@ Data snapshot: PostHog project 318524 (EU), HogQL over `events` from 2026-10-20 
 |---|---|---|---|
 | OBJ-01 | KPI-O-01 (north star) | off-track (low confidence) | 0 `contact_sent` in the first period; volume is far below every rate KPI's minimum |
 
-Overall decision (proposed, owner to confirm): **not measurable for the rates; north star at 0 →
+Overall decision (owner accepted 2026-11-26): **not measurable for the rates; north star at 0 →
 create traffic** — the instrumentation works (91 pageviews from 16 consented visitors in 20 sessions), so the gap
 is traffic, not tracking.
 
@@ -91,9 +91,9 @@ change. One action per row; write the task key or issue into "Tracked in".
 
 | # | Decision | Type | Owner | Due | Tracked in |
 |---|---|---|---|---|---|
-| 1 | [proposed] Confirm `RESEND_FROM` is a verified sender and send one test contact message | backlog item | Owner | 2026-11-27 | outcome-review/OR-201#1 |
-| 2 | [proposed] Lower the rate KPIs' minimum volume to a monthly window (e.g. 50 consented sessions / month) or report them as counts until traffic grows | KPI definition change | Owner | 2026-11-25 | outcome-review/OR-201#2 |
-| 3 | [proposed] Link the portfolio from the outbound offers (kill-rule batch) and measure the next period | experiment | Owner | 2026-12-25 | outcome-review/OR-201#3 |
+| 1 | Confirm `RESEND_FROM` is a verified sender and send one test contact message | backlog item | Owner | 2026-11-27 | outcome-review/OR-201#1 |
+| 2 | Lower the rate KPIs' minimum volume to a monthly window (e.g. 50 consented sessions / month) or report them as counts until traffic grows | KPI definition change | Owner | 2026-11-25 | outcome-review/OR-201#2 |
+| 3 | Link the portfolio from the outbound offers (kill-rule batch) and measure the next period | experiment | Owner | 2026-12-25 | outcome-review/OR-201#3 |
 
 Continuous discovery: open questions from this review go here.
 
@@ -103,5 +103,5 @@ Continuous discovery: open questions from this review go here.
 
 | Decision | Approver | Date | Evidence |
 |---|---|---|---|
-| accept review and decisions | Owner | — | — |
-| next review scheduled (OR-202, T+60) | Owner | — | task `outcome-review/portfolio/<date>` |
+| accept review and decisions | Owner | 2026-11-26 | owner reply in the Claude Code session, 2026-11-26 ("ตามข้อเสนอ") |
+| next review scheduled (OR-202, T+60) | Owner | 2026-11-26 | due 2026-12-25, task `outcome-review/portfolio/2026-12-25` |
